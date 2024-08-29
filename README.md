@@ -6,18 +6,22 @@ modular code. Perfect for those looking to speed up their test automation journe
 
 # STEPS FOR THE TEST EXECUTION
 
-1. `git clone `
+1. `git clone https://github.com/iamcharankumar/playwright_test_framework.git`
 2. `cd playwright_test_framework`
 3. `git pull`
 4. `mvn clean test -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dtestng.parallel=methods
    -DthreadPoolSize=3 -Ddataproviderthreadcount=3`
 
-**NOTE**
+**SUPPORTED BROWSERS**
 
-1. `-Drunmode=headless` or `-Drunmode=local` (default value is `local`)
-2. `-Dbrowser=chrome` or `-Drunmode=firefox` or `-Drunmode=msedge` (default value is `chrome`)
-3. Run the above maven command (no testng.xml required) with the respective groups and thread counts.
-   The screenshot listeners are configured in "pom.xml" under "< property >" tag.
+- Chrome `-Dbrowser=chrome` (default value is `chrome`)
+- Firefox `-Drunmode=firefox`
+- Microsoft Edge `-Drunmode=msedge`
+
+**SUPPORTED RUN MODES**
+
+- local `-Drunmode=local` (default value is `local`)
+- headless `-Drunmode=headless`
 
 # REPORTPORTAL INTEGRATION
 
@@ -33,3 +37,38 @@ modular code. Perfect for those looking to speed up their test automation journe
   and all the classes in
   this [package](https://github.com/iamcharankumar/web_test_framework/tree/master/src/main/java/io/saucelabs/portal/qa/services/discord)
   of the same java-selenium framework repo.
+
+# EXTRAS
+
+- Below is the maven commands combo that will help you to cover all the supported browsers and runmodes.
+- These maven commands (no testng.xml required) are executed with the respective groups and thread counts.
+  The listeners [screenshot, retry, etc] are configured in "pom.xml" under "< property >" tag.
+
+#### CHROME LOCAL & HEADLESS
+
+`mvn clean test -Drunmode=local -Dbrowser=chrome -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E
+-Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3`
+
+`mvn clean test -Drunmode=headless -Dbrowser=chrome -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E
+-Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3`
+
+### MS EDGE LOCAL & HEADLESS
+
+`mvn clean test -Drunmode=local -Dbrowser=msedge -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E
+-Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3`
+
+`mvn clean test -Drunmode=headless -Dbrowser=msedge -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E
+-Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3`
+
+### FIREFOX LOCAL & HEADLESS
+
+`mvn clean test -Drunmode=local -Dbrowser=firefox -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E
+-Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3`
+
+`mvn clean test -Drunmode=headless -Dbrowser=firefox -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E
+-Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3`
+
+### DEFAULT RUN
+
+`mvn clean test -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E
+-Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3`
