@@ -62,7 +62,7 @@
                             <name>listener</name>
                             <value>
                                 io.swaglabs.portal.qa.listeners.WebTestListeners,
-                                io.swaglabs.portal.qa.listeners.AnnotationTransformer
+                                io.swaglabs.portal.qa.listeners.WebAnnotationTransformer
                             </value>
                         </property>
                     </properties>

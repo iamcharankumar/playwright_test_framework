@@ -2,7 +2,6 @@ package io.swaglabs.portal.qa.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
-import io.swaglabs.portal.qa.constants.WebLocatorConstants;
 
 public class SwagLabsCheckoutPage extends SwagLabsBasePage {
 
@@ -10,14 +9,19 @@ public class SwagLabsCheckoutPage extends SwagLabsBasePage {
         super(basePage);
     }
 
+    private static final String FIRST_NAME_TEXT_BOX = "#first-name";
+    private static final String LAST_NAME_TEXT_BOX = "#last-name";
+    private static final String POSTAL_CODE_TEXT_BOX = "#postal-code";
+    private static final String CONTINUE_BUTTON = "#continue";
+
     public boolean isCheckoutInformationEntered(String firstName, String lastName, String postalCode) {
-        getPageLocator(WebLocatorConstants.FIRST_NAME_TEXT_BOX).click();
+        locators.getPageLocator(FIRST_NAME_TEXT_BOX).click();
         basePage.keyboard().type(firstName);
-        getPageLocator(WebLocatorConstants.LAST_NAME_TEXT_BOX).click();
+        locators.getPageLocator(LAST_NAME_TEXT_BOX).click();
         basePage.keyboard().type(lastName);
-        getPageLocator(WebLocatorConstants.POSTAL_CODE_TEXT_BOX).click();
+        locators.getPageLocator(POSTAL_CODE_TEXT_BOX).click();
         basePage.keyboard().type(postalCode);
-        Locator continueButton = getPageLocator(WebLocatorConstants.CONTINUE_BUTTON);
+        Locator continueButton = locators.getPageLocator(CONTINUE_BUTTON);
         if (continueButton.isEnabled()) {
             continueButton.click();
             return true;
