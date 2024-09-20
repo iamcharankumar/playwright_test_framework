@@ -25,26 +25,21 @@ public class WebConfigLoader {
     }
 
     public String getSwagLabsUrl() {
-        String swagLabsUrl = PROPERTIES.getProperty("swaglabs.url");
-        if (!swagLabsUrl.isEmpty())
-            return swagLabsUrl;
-        else
-            throw new UtilsException("Swag Labs URL is empty!");
+        return getPropertyValue("swaglabs.url");
     }
 
     public String getSwagLabsUserName() {
-        String swagLabsUserName = PROPERTIES.getProperty("swaglabs.username");
-        if (!swagLabsUserName.isEmpty())
-            return swagLabsUserName;
-        else
-            throw new UtilsException("Swag Labs username is empty!");
+        return getPropertyValue("swaglabs.username");
     }
 
     public String getSwagLabsPassword() {
-        String swagLabsPassword = PROPERTIES.getProperty("swaglabs.password");
-        if (!swagLabsPassword.isEmpty())
-            return swagLabsPassword;
-        else
-            throw new UtilsException("Swag Labs password is empty!");
+        return getPropertyValue("swaglabs.password");
+    }
+
+    private String getPropertyValue(String propertyKey) {
+        String propertyValue = PROPERTIES.getProperty(propertyKey);
+        if (propertyValue.isEmpty())
+            throw new UtilsException("Property Value for Property Key: " + propertyKey + " is empty!");
+        return propertyValue;
     }
 }

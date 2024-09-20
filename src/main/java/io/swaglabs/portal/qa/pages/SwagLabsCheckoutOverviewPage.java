@@ -2,7 +2,6 @@ package io.swaglabs.portal.qa.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
-import io.swaglabs.portal.qa.constants.WebLocatorConstants;
 
 public class SwagLabsCheckoutOverviewPage extends SwagLabsBasePage {
 
@@ -10,8 +9,10 @@ public class SwagLabsCheckoutOverviewPage extends SwagLabsBasePage {
         super(basePage);
     }
 
+    private static final String FINISH_BUTTON = "#finish";
+
     public boolean isFinishButtonClicked() {
-        Locator finishButton = getPageLocator(WebLocatorConstants.FINISH_BUTTON);
+        Locator finishButton = locators.getPageLocator(FINISH_BUTTON);
         if (finishButton.isEnabled()) {
             finishButton.click();
             return true;
