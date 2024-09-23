@@ -19,7 +19,6 @@ public class SwagLabsTestBase extends WebBaseTest {
         log.info("Thread id in BeforeMethod for the test method : {} is {}.", method.getName(), Thread.currentThread().getId());
         SWAG_LABS_PORTAL.set(new SwagLabsPortal(page.get()));
         SWAG_LABS_PORTAL.get().visit();
-        page.get().reload();
         boolean isLoggedIn = SWAG_LABS_PORTAL.get().LOGIN_PAGE.isLoginSuccess();
         if (!isLoggedIn)
             throw new SwagLabsException("Swags Labs Portal Not Logged In!");

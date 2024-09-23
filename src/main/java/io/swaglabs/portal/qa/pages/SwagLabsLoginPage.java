@@ -1,5 +1,6 @@
 package io.swaglabs.portal.qa.pages;
 
+import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.swaglabs.portal.qa.exceptions.SwagLabsException;
 import io.swaglabs.portal.qa.utils.WebConfigLoader;
@@ -53,10 +54,14 @@ public class SwagLabsLoginPage extends SwagLabsBasePage {
         WebConfigLoader configLoader = WebConfigLoader.getInstance();
         String userName = configLoader.getSwagLabsUserName();
         String password = configLoader.getSwagLabsPassword();
-        locators.getPageLocator(USER_NAME_INPUT).click();
-        basePage.keyboard().type(userName);
-        locators.getPageLocator(PASSWORD_INPUT).click();
-        basePage.keyboard().type(password);
+        Locator userNameInputBox = locators.getPageLocator(USER_NAME_INPUT);
+        userNameInputBox.click();
+        userNameInputBox.clear();
+        userNameInputBox.fill(userName);
+        Locator passwordInputBox = locators.getPageLocator(PASSWORD_INPUT);
+        passwordInputBox.click();
+        passwordInputBox.clear();
+        passwordInputBox.fill(password);
         locators.getPageLocator(LOGIN_BUTTON).click();
         String appLogoText = locators.getPageLocator(HOME_PAGE_HEADER_TEXT).textContent();
         if (appLogoText.isEmpty())

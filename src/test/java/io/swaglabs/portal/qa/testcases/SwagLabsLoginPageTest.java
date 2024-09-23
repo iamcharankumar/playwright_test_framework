@@ -19,7 +19,6 @@ public class SwagLabsLoginPageTest extends SwagLabsTestBase {
         log.info("Thread id in BeforeMethod for the test method : {} is {}.", method.getName(), Thread.currentThread().getId());
         SWAG_LABS_PORTAL.set(new SwagLabsPortal(page.get()));
         SWAG_LABS_PORTAL.get().visit();
-        page.get().reload();
     }
 
     @Test(description = "To verify, the login page title.", groups = {TestGroups.SWAG_LABS_SMOKE})
