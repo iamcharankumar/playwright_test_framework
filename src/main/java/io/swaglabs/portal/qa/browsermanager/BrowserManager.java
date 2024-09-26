@@ -14,7 +14,7 @@ public class BrowserManager implements IBrowserManager<Page> {
         String runMode = System.getProperty(WebPortalConstants.RUN_MODE);
         BrowserFactory browserFactory = new BrowserFactory(browserName);
         log.info("Browser: {} | Run Mode: {}", browserName, runMode);
-        if (runMode.equalsIgnoreCase("headless"))
+        if (runMode.equalsIgnoreCase(WebPortalConstants.HEADLESS))
             return browserFactory.createHeadlessBrowserSession(playwright);
         else
             return browserFactory.createLocalBrowserSession(playwright);

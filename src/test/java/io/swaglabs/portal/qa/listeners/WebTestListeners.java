@@ -15,9 +15,17 @@ import java.util.Date;
 @Slf4j
 public class WebTestListeners extends WebBaseTest implements ISuiteListener, ITestListener, IRetryAnalyzer {
 
-    private Instant startDate;
-    private static final int MAX_RETRY = 0;
+    private static final int MAX_RETRY = 3;
     private int retryCount = 0;
+    private Instant startDate;
+
+    // SCREENSHOT LOCATIONS
+    private final String SCREENSHOTS_DIRECTORY = "./src/test/resources/screenshots";
+    private final String PASS = "/passed_screenshots";
+    private final String PASS_PREFIX = "PASS_";
+    private final String FAIL = "/failed_screenshots";
+    private final String FAIL_PREFIX = "FAILED_";
+    private final String IMAGE_FORMAT = ".png";
 
     @Override
     public void onStart(ISuite suite) {
@@ -54,15 +62,13 @@ public class WebTestListeners extends WebBaseTest implements ISuiteListener, ITe
         if (testResult.getParameters().length > 0)
             testData = String.valueOf(testResult.getParameters()[0]);
         if (testResult.isSuccess()) {
-            String passFilePath = WebPortalConstants.SCREENSHOTS_DIRECTORY + WebPortalConstants.PASS + File.separator
-                    + browserName + "_" + runMode + "_" + WebPortalConstants.PASS_PREFIX
-                    + testResult.getName() + "_" + testData + "_" + new Date() + WebPortalConstants.IMAGE_FORMAT;
+            String passFilePath = SCREENSHOTS_DIRECTORY + PASS + File.separator + browserName + "_"
+                    + runMode + "_" + PASS_PREFIX + testResult.getName() + "_" + testData + "_" + new Date() + IMAGE_FORMAT;
             page.get().screenshot(new Page.ScreenshotOptions().setPath(Paths.get(passFilePath)));
             log.info("Success scenario has been captured. PASSED Screenshot has been placed in the location {}", passFilePath);
         } else {
-            String failFilePath = WebPortalConstants.SCREENSHOTS_DIRECTORY + WebPortalConstants.FAIL + File.separator
-                    + browserName + "_" + runMode + "_" + WebPortalConstants.FAIL_PREFIX
-                    + testResult.getName() + testData + "_" + new Date() + WebPortalConstants.IMAGE_FORMAT;
+            String failFilePath = SCREENSHOTS_DIRECTORY + FAIL + File.separator + browserName + "_"
+                    + runMode + "_" + FAIL_PREFIX + testResult.getName() + testData + "_" + new Date() + IMAGE_FORMAT;
             page.get().screenshot(new Page.ScreenshotOptions().setPath(Paths.get(failFilePath)));
             log.info("Failed scenario has been captured. FAILED Screenshot has been placed in the location {}", failFilePath);
         }
