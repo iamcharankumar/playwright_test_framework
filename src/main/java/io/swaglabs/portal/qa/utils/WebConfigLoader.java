@@ -1,6 +1,5 @@
 package io.swaglabs.portal.qa.utils;
 
-import io.swaglabs.portal.qa.constants.WebPortalConstants;
 import io.swaglabs.portal.qa.exceptions.UtilsException;
 
 import java.util.Properties;
@@ -9,9 +8,10 @@ public class WebConfigLoader {
 
     private static WebConfigLoader instance;
     private final Properties PROPERTIES;
+    private final String WEB_CONFIG_FILE = "./src/main/resources/webconfig.properties";
 
     private WebConfigLoader() {
-        PROPERTIES = PropertiesUtils.loadProperties(WebPortalConstants.WEB_CONFIG_FILE);
+        PROPERTIES = PropertiesUtils.loadProperties(WEB_CONFIG_FILE);
     }
 
     public static WebConfigLoader getInstance() {
