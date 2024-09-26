@@ -60,6 +60,14 @@ modular code. Perfect for those looking to speed up their test automation journe
 `mvn clean test -Drunmode=headless -Dbrowser=msedge -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E
 -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3`
 
+### WEBKIT LOCAL & HEADLESS
+
+`mvn clean test -Drunmode=local -Dbrowser=webkit -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E 
+-Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3`
+
+`mvn clean test -Drunmode=headless -Dbrowser=webkit -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E 
+-Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3`
+
 ### FIREFOX LOCAL & HEADLESS
 
 `mvn clean test -Drunmode=local -Dbrowser=firefox -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E
