@@ -3,6 +3,7 @@ package io.swaglabs.portal.qa.commons;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import io.swaglabs.portal.qa.browsermanager.BrowserManager;
+import io.swaglabs.portal.qa.utils.PerformanceUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -26,6 +27,8 @@ public abstract class WebBaseTest {
         playwright.set(Playwright.create());
         page.set(browserManager.getBrowserPage(playwright.get()));
         log.info("Browser has been set.");
+        PerformanceUtils.evaluatePageLoadTime(page.get());
+        PerformanceUtils.evaluateDomContentLoadTime(page.get());
     }
 
     @AfterMethod(alwaysRun = true)

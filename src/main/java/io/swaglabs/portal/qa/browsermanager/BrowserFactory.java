@@ -3,33 +3,46 @@ package io.swaglabs.portal.qa.browsermanager;
 import com.microsoft.playwright.*;
 import io.swaglabs.portal.qa.constants.BrowserName;
 import io.swaglabs.portal.qa.exceptions.SwagLabsException;
-import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
+import java.util.Collections;
+
+
 public class BrowserFactory {
 
-    protected String browserName;
+    private final String BROWSER_NAME;
+    private final BrowserName BROWSER_TYPE;
+    private static final String MAXIMIZE_WINDOW = "--start-maximized";
+
+    public BrowserFactory(String browserName) {
+        this.BROWSER_NAME = browserName;
+        BROWSER_TYPE = BrowserName.fromString(browserName);
+    }
 
     public Page createLocalBrowserSession(Playwright playwright) {
-        BrowserName browser = BrowserName.fromString(browserName);
-        return switch (browser) {
-            case FIREFOX -> getBrowserContext(playwright.firefox().launch(new BrowserType.LaunchOptions()
-                    .setChannel(browser.getBrowserName()).setHeadless(false))).newPage();
-            case WEBKIT -> getBrowserContext(playwright.webkit().launch(new BrowserType.LaunchOptions()
-                    .setChannel(browser.getBrowserName()).setHeadless(false))).newPage();
-            default -> getBrowserContext(playwright.chromium().launch(new BrowserType.LaunchOptions()
-                    .setChannel(browser.getBrowserName()).setHeadless(false))).newPage();
+        return switch (BROWSER_TYPE) {
+            case FIREFOX ->
+                    getBrowserContext(playwright.firefox().launch(new BrowserType.LaunchOptions().setChannel(BROWSER_TYPE.getBrowserName())
+                            .setHeadless(false).setArgs(Collections.singletonList(MAXIMIZE_WINDOW)))).newPage();
+            case WEBKIT ->
+                    getBrowserContext(playwright.webkit().launch(new BrowserType.LaunchOptions().setChannel(BROWSER_TYPE.getBrowserName())
+                            .setHeadless(false).setArgs(Collections.singletonList(MAXIMIZE_WINDOW)))).newPage();
+            default ->
+                    getBrowserContext(playwright.chromium().launch(new BrowserType.LaunchOptions().setChannel(BROWSER_TYPE.getBrowserName())
+                            .setHeadless(false).setArgs(Collections.singletonList(MAXIMIZE_WINDOW)))).newPage();
         };
     }
 
     public Page createHeadlessBrowserSession(Playwright playwright) {
-        BrowserName browser = BrowserName.fromString(browserName);
-        return switch (browser) {
-            case FIREFOX -> getBrowserContext(playwright.firefox().launch()).newPage();
-            case MS_EDGE -> getBrowserContext(playwright.chromium().launch(new BrowserType.LaunchOptions()
-                    .setChannel(browser.getBrowserName()).setHeadless(true))).newPage();
-            case WEBKIT -> getBrowserContext(playwright.webkit().launch()).newPage();
-            default -> getBrowserContext(playwright.chromium().launch()).newPage();
+        return switch (BROWSER_TYPE) {
+            case FIREFOX -> getBrowserContext(playwright.firefox().launch(new BrowserType.LaunchOptions()
+                    .setArgs(Collections.singletonList(MAXIMIZE_WINDOW)))).newPage();
+            case MS_EDGE ->
+                    getBrowserContext(playwright.chromium().launch(new BrowserType.LaunchOptions().setChannel(BROWSER_TYPE.getBrowserName())
+                            .setHeadless(true).setArgs(Collections.singletonList(MAXIMIZE_WINDOW)))).newPage();
+            case WEBKIT -> getBrowserContext(playwright.webkit().launch(new BrowserType.LaunchOptions()
+                    .setArgs(Collections.singletonList(MAXIMIZE_WINDOW)))).newPage();
+            default -> getBrowserContext(playwright.chromium().launch(new BrowserType.LaunchOptions()
+                    .setArgs(Collections.singletonList(MAXIMIZE_WINDOW)))).newPage();
         };
     }
 

@@ -1,6 +1,7 @@
 package io.swaglabs.portal.qa.module;
 
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.LoadState;
 import io.swaglabs.portal.qa.pages.*;
 import io.swaglabs.portal.qa.utils.WebConfigLoader;
 
@@ -35,5 +36,6 @@ public class SwagLabsPortal {
 
     public void visit() {
         PAGE.navigate(SWAG_LABS_URL);
+        PAGE.waitForLoadState(LoadState.NETWORKIDLE);
     }
 }
