@@ -4,7 +4,7 @@ import com.microsoft.playwright.Playwright;
 
 public interface IBrowserManager<T> {
 
-    public T getBrowserPage(Playwright playwright);
+    T getBrowserPage(Playwright playwright);
 
-    public void destroyBrowserPage(T t);
+    void destroyBrowserPage(T t);
 }

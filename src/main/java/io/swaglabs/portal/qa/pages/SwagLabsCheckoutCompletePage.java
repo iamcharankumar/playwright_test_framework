@@ -9,20 +9,16 @@ public class SwagLabsCheckoutCompletePage extends SwagLabsBasePage {
         super(basePage);
     }
 
-    private static final String THANK_YOU_TEXT = ".complete-header";
-    private static final String COMPLETE_TEXT = ".complete-text";
-    private static final String BACK_TO_HOME_BUTTON = "#back-to-products";
-
     public String getThankYouText() {
-        return locators.getPageLocator(THANK_YOU_TEXT).textContent();
+        return locators.getPageLocator(".complete-header").textContent();
     }
 
     public String getOrderCompleteText() {
-        return locators.getPageLocator(COMPLETE_TEXT).textContent();
+        return locators.getPageLocator(".complete-text").textContent();
     }
 
     public boolean isBackHomeButtonClicked() {
-        Locator backHomeButton = locators.getPageLocator(BACK_TO_HOME_BUTTON);
+        Locator backHomeButton = locators.getPageLocator("#back-to-products");
         if (backHomeButton.isEnabled()) {
             backHomeButton.click();
             return true;

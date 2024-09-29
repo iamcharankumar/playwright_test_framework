@@ -5,11 +5,11 @@ import com.microsoft.playwright.options.AriaRole;
 
 public interface ILocators<T> {
 
-    public T getPageLocator(String webLocator);
+    T getPageLocator(String webLocator);
 
-    public T getByText(String webLocatorText);
+    T getByText(String webLocatorText);
 
-    public T getByLabel(String labelText);
+    T getByLabel(String labelText);
 
-    public T getByRole(AriaRole role, Page.GetByRoleOptions options);
+    T getByRole(AriaRole role, Page.GetByRoleOptions options);
 }

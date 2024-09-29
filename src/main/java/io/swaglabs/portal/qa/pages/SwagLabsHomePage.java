@@ -12,55 +12,42 @@ public class SwagLabsHomePage extends SwagLabsBasePage {
         super(basePage);
     }
 
-    private static final String PRODUCTS_TEXT = "Products";
-    private static final String SHOPPING_CART_BUTTON = ".shopping_cart_link";
-    private static final String HAMBURGER_MENU_BUTTON = ".bm-burger-button";
-    private static final String HAMBURGER_MENU_LIST = ".bm-menu";
-    private static final String INVENTORY_ITEM_NAME = ".inventory_item_name";
-    private static final String ADD_TO_CART_BACKPACK = "#add-to-cart-sauce-labs-backpack";
-    private static final String ADD_TO_CART_BIKE_LIGHT = "#add-to-cart-sauce-labs-bike-light";
-    private static final String ADD_TO_CART_BOLT_T_SHIRT = "#add-to-cart-sauce-labs-bolt-t-shirt";
-    private static final String ADD_TO_CART_FLEECE_JACKET = "#add-to-cart-sauce-labs-fleece-jacket";
-    private static final String ADD_TO_CART_ONE_SIZE = "#add-to-cart-sauce-labs-onesie";
-    private static final String ADD_TO_CART_RED_T_SHIRT = "button[id='add-to-cart-test.allthethings()-t-shirt-(red)']";
-    private static final String SHOPPING_CART_BADGE = ".shopping_cart_badge";
-
     public String getProductHeaderText() {
-        String productHeaderText = locators.getByText(PRODUCTS_TEXT).textContent();
+        String productHeaderText = locators.getByText("Products").textContent();
         if (productHeaderText.isEmpty())
             throw new SwagLabsException("Products Text not found in Home Page!");
         return productHeaderText;
     }
 
     public boolean isShoppingCartButtonEnabled() {
-        return locators.getPageLocator(SHOPPING_CART_BUTTON).isEnabled();
+        return locators.getPageLocator(".shopping_cart_link").isEnabled();
     }
 
     public boolean isHamburgerButtonEnabled() {
-        return locators.getPageLocator(HAMBURGER_MENU_BUTTON).isEnabled();
+        return locators.getPageLocator(".bm-burger-button").isEnabled();
     }
 
     public String getAllItemsText() {
-        locators.getPageLocator(HAMBURGER_MENU_BUTTON).click();
-        String hamburgerMenuList = String.join("", locators.getPageLocator(HAMBURGER_MENU_LIST).allTextContents());
+        locators.getPageLocator(".bm-burger-button").click();
+        String hamburgerMenuList = String.join("", locators.getPageLocator(".bm-menu").allTextContents());
         if (hamburgerMenuList.isEmpty())
             throw new SwagLabsException("Hamburger Menu List is empty!");
         return hamburgerMenuList;
     }
 
     public int addAllItemsToShoppingCart() {
-        locators.getPageLocator(ADD_TO_CART_BACKPACK).click();
-        locators.getPageLocator(ADD_TO_CART_BIKE_LIGHT).click();
-        locators.getPageLocator(ADD_TO_CART_BOLT_T_SHIRT).click();
-        locators.getPageLocator(ADD_TO_CART_FLEECE_JACKET).click();
-        locators.getPageLocator(ADD_TO_CART_ONE_SIZE).click();
-        locators.getPageLocator(ADD_TO_CART_RED_T_SHIRT).click();
-        String shoppingCartBadgeText = locators.getPageLocator(SHOPPING_CART_BADGE).textContent();
+        locators.getPageLocator("#add-to-cart-sauce-labs-backpack").click();
+        locators.getPageLocator("#add-to-cart-sauce-labs-bike-light").click();
+        locators.getPageLocator("#add-to-cart-sauce-labs-bolt-t-shirt").click();
+        locators.getPageLocator("#add-to-cart-sauce-labs-fleece-jacket").click();
+        locators.getPageLocator("#add-to-cart-sauce-labs-onesie").click();
+        locators.getPageLocator("button[id='add-to-cart-test.allthethings()-t-shirt-(red)']").click();
+        String shoppingCartBadgeText = locators.getPageLocator(".shopping_cart_badge").textContent();
         return Integer.parseInt(shoppingCartBadgeText);
     }
 
     public boolean isProductSelected(String productName) {
-        List<Locator> productNameList = locators.getPageLocator(INVENTORY_ITEM_NAME).all();
+        List<Locator> productNameList = locators.getPageLocator(".inventory_item_name").all();
         Locator product = productNameList.stream().filter(e -> e.textContent().equalsIgnoreCase(productName))
                 .findFirst().orElse(null);
         if (product != null && product.isEnabled()) {

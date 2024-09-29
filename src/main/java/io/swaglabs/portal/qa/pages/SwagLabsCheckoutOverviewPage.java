@@ -9,10 +9,8 @@ public class SwagLabsCheckoutOverviewPage extends SwagLabsBasePage {
         super(basePage);
     }
 
-    private static final String FINISH_BUTTON = "#finish";
-
     public boolean isFinishButtonClicked() {
-        Locator finishButton = locators.getPageLocator(FINISH_BUTTON);
+        Locator finishButton = locators.getPageLocator("#finish");
         if (finishButton.isEnabled()) {
             finishButton.click();
             return true;
