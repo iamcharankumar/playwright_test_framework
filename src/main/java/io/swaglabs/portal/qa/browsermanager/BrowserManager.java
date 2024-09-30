@@ -16,8 +16,7 @@ public class BrowserManager implements IBrowserManager<Page> {
         log.info("Browser: {} | Run Mode: {}", browserName, runMode);
         if (runMode.equalsIgnoreCase(WebPortalConstants.HEADLESS))
             return browserFactory.createHeadlessBrowserSession(playwright);
-        else
-            return browserFactory.createLocalBrowserSession(playwright);
+        return browserFactory.createLocalBrowserSession(playwright);
     }
 
     @Override

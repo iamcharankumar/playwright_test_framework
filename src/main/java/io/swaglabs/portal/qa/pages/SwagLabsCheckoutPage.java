@@ -10,26 +10,50 @@ public class SwagLabsCheckoutPage extends SwagLabsBasePage {
         super(basePage);
     }
 
-    public boolean isCheckoutInformationEntered(String firstName, String lastName, String postalCode) {
+    public boolean isFirstNameEntered(String firstName) {
         Locator firstNameInputBox = locators.getPageLocator("#first-name");
         if (!firstNameInputBox.isVisible())
-            throw new SwagLabsException("First Name Input Box not visible!");
+            return false;
         firstNameInputBox.clear();
         firstNameInputBox.fill(firstName);
+        return true;
+    }
+
+    public boolean isLastNameEntered(String lastName) {
         Locator lastNameInputBox = locators.getPageLocator("#last-name");
         if (!lastNameInputBox.isVisible())
-            throw new SwagLabsException("Last Name Input Box not visible!");
+            return false;
         lastNameInputBox.clear();
         lastNameInputBox.fill(lastName);
+        return true;
+    }
+
+    public boolean isPostalCodeEntered(String postalCode) {
         Locator postalCodeInputBox = locators.getPageLocator("#postal-code");
         if (!postalCodeInputBox.isVisible())
-            throw new SwagLabsException("Postal Code Input Box not visible!");
+            return false;
         postalCodeInputBox.clear();
         postalCodeInputBox.fill(postalCode);
+        return true;
+    }
+
+    public boolean isContinueButtonClicked() {
         Locator continueButton = locators.getPageLocator("#continue");
-        if (!continueButton.isVisible() || !continueButton.isEnabled())
-            throw new SwagLabsException("Continue Button is not visible or enabled!");
+        if (!continueButton.isEnabled())
+            return false;
         continueButton.click();
+        return true;
+    }
+
+    public boolean isCheckoutInformationEntered(String firstName, String lastName, String postalCode) {
+        if (!isFirstNameEntered(firstName))
+            throw new SwagLabsException("First Name Input Box not visible!");
+        if (!isLastNameEntered(lastName))
+            throw new SwagLabsException("Last Name Input Box not visible!");
+        if (!isPostalCodeEntered(postalCode))
+            throw new SwagLabsException("Postal Code Input Box not visible!");
+        if (!isContinueButtonClicked())
+            throw new SwagLabsException("Continue Button is not visible or enabled!");
         return true;
     }
 }

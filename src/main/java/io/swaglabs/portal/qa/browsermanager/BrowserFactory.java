@@ -9,12 +9,10 @@ import java.util.Collections;
 
 public class BrowserFactory {
 
-    private final String BROWSER_NAME;
     private final BrowserName BROWSER_TYPE;
     private static final String MAXIMIZE_WINDOW = "--start-maximized";
 
     public BrowserFactory(String browserName) {
-        this.BROWSER_NAME = browserName;
         BROWSER_TYPE = BrowserName.fromString(browserName);
     }
 
