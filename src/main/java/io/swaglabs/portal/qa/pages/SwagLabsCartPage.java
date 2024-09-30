@@ -9,10 +9,8 @@ public class SwagLabsCartPage extends SwagLabsBasePage {
         super(basePage);
     }
 
-    private static final String CHECKOUT_BUTTON = "#checkout";
-
     public boolean isCheckoutButtonClicked() {
-        Locator checkoutButton = locators.getPageLocator(CHECKOUT_BUTTON);
+        Locator checkoutButton = locators.getPageLocator("#checkout");
         if (checkoutButton.isEnabled()) {
             checkoutButton.click();
             return true;

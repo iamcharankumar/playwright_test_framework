@@ -2,6 +2,7 @@ package io.swaglabs.portal.qa.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import io.swaglabs.portal.qa.exceptions.SwagLabsException;
 
 public class SwagLabsCheckoutOverviewPage extends SwagLabsBasePage {
 
@@ -9,14 +10,11 @@ public class SwagLabsCheckoutOverviewPage extends SwagLabsBasePage {
         super(basePage);
     }
 
-    private static final String FINISH_BUTTON = "#finish";
-
     public boolean isFinishButtonClicked() {
-        Locator finishButton = locators.getPageLocator(FINISH_BUTTON);
-        if (finishButton.isEnabled()) {
-            finishButton.click();
-            return true;
-        }
-        return false;
+        Locator finishButton = locators.getPageLocator("#finish");
+        if (!finishButton.isEnabled())
+            throw new SwagLabsException("Finish button not enabled!");
+        finishButton.click();
+        return true;
     }
 }

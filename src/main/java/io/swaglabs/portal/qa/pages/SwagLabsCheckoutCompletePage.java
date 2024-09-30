@@ -2,6 +2,7 @@ package io.swaglabs.portal.qa.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import io.swaglabs.portal.qa.exceptions.SwagLabsException;
 
 public class SwagLabsCheckoutCompletePage extends SwagLabsBasePage {
 
@@ -9,24 +10,25 @@ public class SwagLabsCheckoutCompletePage extends SwagLabsBasePage {
         super(basePage);
     }
 
-    private static final String THANK_YOU_TEXT = ".complete-header";
-    private static final String COMPLETE_TEXT = ".complete-text";
-    private static final String BACK_TO_HOME_BUTTON = "#back-to-products";
-
     public String getThankYouText() {
-        return locators.getPageLocator(THANK_YOU_TEXT).textContent();
+        Locator thankYouLocator = locators.getPageLocator(".complete-header");
+        if (!thankYouLocator.isVisible())
+            throw new SwagLabsException("Thank you text not visible!");
+        return thankYouLocator.textContent();
     }
 
     public String getOrderCompleteText() {
-        return locators.getPageLocator(COMPLETE_TEXT).textContent();
+        Locator orderCompleteLocator = locators.getPageLocator(".complete-text");
+        if (!orderCompleteLocator.isVisible())
+            throw new SwagLabsException("Order Complete Text not visible!");
+        return orderCompleteLocator.textContent();
     }
 
     public boolean isBackHomeButtonClicked() {
-        Locator backHomeButton = locators.getPageLocator(BACK_TO_HOME_BUTTON);
-        if (backHomeButton.isEnabled()) {
-            backHomeButton.click();
-            return true;
-        }
-        return false;
+        Locator backHomeButton = locators.getPageLocator("#back-to-products");
+        if (!backHomeButton.isEnabled())
+            return false;
+        backHomeButton.click();
+        return true;
     }
 }

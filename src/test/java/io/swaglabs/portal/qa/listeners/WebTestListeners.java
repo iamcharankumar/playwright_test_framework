@@ -15,17 +15,8 @@ import java.util.Date;
 @Slf4j
 public class WebTestListeners extends WebBaseTest implements ISuiteListener, ITestListener, IRetryAnalyzer {
 
-    private static final int MAX_RETRY = 3;
     private int retryCount = 0;
     private Instant startDate;
-
-    // SCREENSHOT LOCATIONS
-    private final String SCREENSHOTS_DIRECTORY = "./src/test/resources/screenshots";
-    private final String PASS = "/passed_screenshots";
-    private final String PASS_PREFIX = "PASS_";
-    private final String FAIL = "/failed_screenshots";
-    private final String FAIL_PREFIX = "FAILED_";
-    private final String IMAGE_FORMAT = ".png";
 
     @Override
     public void onStart(ISuite suite) {
@@ -61,22 +52,27 @@ public class WebTestListeners extends WebBaseTest implements ISuiteListener, ITe
         String testData = "";
         if (testResult.getParameters().length > 0)
             testData = String.valueOf(testResult.getParameters()[0]);
+        String screenshotsDirectory = "./src/test/resources/screenshots";
+        String imageFormat = ".png";
         if (testResult.isSuccess()) {
-            String passFilePath = SCREENSHOTS_DIRECTORY + PASS + File.separator + browserName + "_"
-                    + runMode + "_" + PASS_PREFIX + testResult.getName() + "_" + testData + "_" + new Date() + IMAGE_FORMAT;
+            String passLocation = "/passed_screenshots";
+            String passPrefix = "PASS_";
+            String passFilePath = screenshotsDirectory + passLocation + File.separator + browserName + "_"
+                    + runMode + "_" + passPrefix + testResult.getName() + "_" + testData + "_" + new Date() + imageFormat;
             page.get().screenshot(new Page.ScreenshotOptions().setPath(Paths.get(passFilePath)));
-            log.info("Success scenario has been captured. PASSED Screenshot has been placed in the location {}", passFilePath);
         } else {
-            String failFilePath = SCREENSHOTS_DIRECTORY + FAIL + File.separator + browserName + "_"
-                    + runMode + "_" + FAIL_PREFIX + testResult.getName() + testData + "_" + new Date() + IMAGE_FORMAT;
+            String failLocation = "/failed_screenshots";
+            String failPrefix = "FAILED_";
+            String failFilePath = screenshotsDirectory + failLocation + File.separator + browserName + "_"
+                    + runMode + "_" + failPrefix + testResult.getName() + testData + "_" + new Date() + imageFormat;
             page.get().screenshot(new Page.ScreenshotOptions().setPath(Paths.get(failFilePath)));
-            log.info("Failed scenario has been captured. FAILED Screenshot has been placed in the location {}", failFilePath);
         }
     }
 
     @Override
     public boolean retry(ITestResult result) {
-        if (!result.isSuccess() && retryCount < MAX_RETRY) {
+        int maxRetry = 3;
+        if (!result.isSuccess() && retryCount < maxRetry) {
             log.info("Retrying test for {} time(s) for the test method {} with test status {}.", retryCount + 1,
                     result.getName(), getTestStatusName(result.getStatus()));
             retryCount++;

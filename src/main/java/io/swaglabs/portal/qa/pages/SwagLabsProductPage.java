@@ -10,20 +10,15 @@ public class SwagLabsProductPage extends SwagLabsBasePage {
         super(basePage);
     }
 
-    private static final String PRODUCT_NAME = ".inventory_details_name.large_size";
-    private static final String PRODUCT_PRICE = ".inventory_details_price";
-    private static final String ADD_PRODUCT_TO_CART = "#add-to-cart";
-    private static final String SHOPPING_CART_BUTTON = ".shopping_cart_link";
-
     public String getProductNameText() {
-        String productNameText = locators.getPageLocator(PRODUCT_NAME).textContent();
+        String productNameText = locators.getPageLocator(".inventory_details_name.large_size").textContent();
         if (productNameText.isEmpty())
             throw new SwagLabsException("Product Name text is empty!");
         return productNameText;
     }
 
     public String getProductPriceText() {
-        String productPriceText = locators.getPageLocator(PRODUCT_PRICE).textContent();
+        String productPriceText = locators.getPageLocator(".inventory_details_price").textContent();
         if (productPriceText.isEmpty())
             throw new SwagLabsException("Product Price Text is empty!");
         return productPriceText;
@@ -37,7 +32,7 @@ public class SwagLabsProductPage extends SwagLabsBasePage {
     }
 
     public boolean isProductAddedToCart() {
-        Locator addToCartButton = locators.getPageLocator(ADD_PRODUCT_TO_CART);
+        Locator addToCartButton = locators.getPageLocator("#add-to-cart");
         if (addToCartButton.isEnabled()) {
             addToCartButton.click();
             return true;
@@ -46,7 +41,7 @@ public class SwagLabsProductPage extends SwagLabsBasePage {
     }
 
     public boolean isShoppingCartClicked() {
-        Locator shoppingCart = locators.getPageLocator(SHOPPING_CART_BUTTON);
+        Locator shoppingCart = locators.getPageLocator(".shopping_cart_link");
         if (shoppingCart.isEnabled()) {
             shoppingCart.click();
             return true;
