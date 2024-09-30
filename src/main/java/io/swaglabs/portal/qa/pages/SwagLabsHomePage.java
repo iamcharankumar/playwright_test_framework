@@ -48,12 +48,12 @@ public class SwagLabsHomePage extends SwagLabsBasePage {
 
     public boolean isProductSelected(String productName) {
         List<Locator> productNameList = locators.getPageLocator(".inventory_item_name").all();
-        Locator product = productNameList.stream().filter(e -> e.textContent().equalsIgnoreCase(productName))
-                .findFirst().orElse(null);
-        if (product != null && product.isEnabled()) {
-            product.click();
-            return true;
-        }
-        return false;
+        Locator product = productNameList.stream()
+                .filter(productItem -> productItem.textContent().equalsIgnoreCase(productName))
+                .findFirst().orElseThrow(() -> new SwagLabsException("Product Name not found!"));
+        if (!product.isEnabled())
+            throw new SwagLabsException("Product is not enabled!");
+        product.click();
+        return true;
     }
 }
