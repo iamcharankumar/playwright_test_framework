@@ -14,11 +14,11 @@ public enum BrowserName {
     MS_EDGE("msedge"),
     WEBKIT("webkit");
 
-    private final String browserName;
+    private final String browserType;
 
     public static BrowserName fromString(String browserName) {
         return Arrays.stream(BrowserName.values())
-                .filter(browserType -> browserType.getBrowserName().equalsIgnoreCase(browserName))
+                .filter(browserType -> browserType.getBrowserType().equalsIgnoreCase(browserName))
                 .findFirst().orElseThrow(() -> new IllegalArgumentException("Unknown browser: " + browserName));
     }
 }

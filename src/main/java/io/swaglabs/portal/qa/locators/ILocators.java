@@ -12,4 +12,6 @@ public interface ILocators<T> {
     T getByLabel(String labelText);
 
     T getByRole(AriaRole role, Page.GetByRoleOptions options);
+
+    T getByPlaceholder(String placeholderText);
 }

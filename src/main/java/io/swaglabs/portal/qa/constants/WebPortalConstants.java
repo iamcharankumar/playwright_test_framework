@@ -9,7 +9,6 @@ public final class WebPortalConstants {
     // DYNAMIC BROWSER & ENVIRONMENT CHOICE
     public static final String RUN_MODE = "runmode";
     public static final String BROWSER = "browser";
-    public static final String HEADLESS = "headless";
 
     // JAVASCRIPT COMMANDS
     public static final String PAGE_LOAD_TIME_JS_SCRIPT = "() => JSON.parse(JSON.stringify(window.performance.timing))";

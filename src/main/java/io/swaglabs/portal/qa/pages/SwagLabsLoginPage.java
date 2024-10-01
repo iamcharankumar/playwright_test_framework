@@ -41,20 +41,39 @@ public class SwagLabsLoginPage extends SwagLabsBasePage {
         return allUserPasswords;
     }
 
+    public boolean isUserNameEntered(String userName) {
+        Locator userNameInputBox = locators.getPageLocator("#user-name");
+        if (!userNameInputBox.isVisible())
+            return false;
+        userNameInputBox.clear();
+        userNameInputBox.fill(userName);
+        return true;
+    }
+
+    public boolean isPasswordEntered(String password) {
+        Locator passwordInputBox = locators.getPageLocator("#password");
+        if (!passwordInputBox.isVisible())
+            return false;
+        passwordInputBox.clear();
+        passwordInputBox.fill(password);
+        return true;
+    }
+
     public boolean isLoginSuccess() {
         WebConfigLoader configLoader = WebConfigLoader.getInstance();
         String userName = configLoader.getSwagLabsUserName();
         String password = configLoader.getSwagLabsPassword();
-        Locator userNameInputBox = locators.getPageLocator("#user-name");
-        userNameInputBox.clear();
-        userNameInputBox.fill(userName);
-        Locator passwordInputBox = locators.getPageLocator("#password");
-        passwordInputBox.clear();
-        passwordInputBox.fill(password);
-        locators.getPageLocator("#login-button").click();
-        String appLogoText = locators.getPageLocator(".app_logo").textContent();
-        if (appLogoText.isEmpty())
+        if (!isUserNameEntered(userName))
+            throw new SwagLabsException("User Name not entered!");
+        if (!isPasswordEntered(password))
+            throw new SwagLabsException("Password not entered!");
+        Locator loginButton = locators.getPageLocator("#login-button");
+        if (!loginButton.isVisible())
+            throw new SwagLabsException("Login Button not clicked!");
+        loginButton.click();
+        Locator appLogo = locators.getPageLocator(".app_logo");
+        if (!appLogo.isVisible() && !appLogo.textContent().equalsIgnoreCase("Swag Labs"))
             throw new SwagLabsException("Login Failed for the username: " + userName);
-        return appLogoText.equalsIgnoreCase("Swag Labs");
+        return true;
     }
 }
