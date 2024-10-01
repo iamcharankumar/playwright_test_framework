@@ -41,4 +41,11 @@ public class Locators implements ILocators<Locator> {
             throw new UtilsException("Role or Options is null!");
         return PAGE.getByRole(role, options);
     }
+
+    @Override
+    public Locator getByPlaceholder(String placeholderText) {
+        if (placeholderText.isEmpty())
+            throw new UtilsException("Placeholder text is empty!");
+        return PAGE.getByPlaceholder(placeholderText);
+    }
 }

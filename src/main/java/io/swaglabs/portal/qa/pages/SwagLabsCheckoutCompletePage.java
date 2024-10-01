@@ -27,7 +27,7 @@ public class SwagLabsCheckoutCompletePage extends SwagLabsBasePage {
     public boolean isBackHomeButtonClicked() {
         Locator backHomeButton = locators.getPageLocator("#back-to-products");
         if (!backHomeButton.isEnabled())
-            return false;
+            throw new SwagLabsException("Back Home Button not clicked!");
         backHomeButton.click();
         return true;
     }

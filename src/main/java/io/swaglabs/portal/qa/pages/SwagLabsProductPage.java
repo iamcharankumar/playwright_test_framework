@@ -33,19 +33,17 @@ public class SwagLabsProductPage extends SwagLabsBasePage {
 
     public boolean isProductAddedToCart() {
         Locator addToCartButton = locators.getPageLocator("#add-to-cart");
-        if (addToCartButton.isEnabled()) {
-            addToCartButton.click();
-            return true;
-        }
-        return false;
+        if (!addToCartButton.isEnabled())
+            throw new SwagLabsException("Product is not added to the shopping cart!");
+        addToCartButton.click();
+        return true;
     }
 
     public boolean isShoppingCartClicked() {
         Locator shoppingCart = locators.getPageLocator(".shopping_cart_link");
-        if (shoppingCart.isEnabled()) {
-            shoppingCart.click();
-            return true;
-        }
-        return false;
+        if (!shoppingCart.isEnabled())
+            throw new SwagLabsException("Shopping Card is not clicked!");
+        shoppingCart.click();
+        return true;
     }
 }

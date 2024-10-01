@@ -36,14 +36,47 @@ public class SwagLabsHomePage extends SwagLabsBasePage {
     }
 
     public int addAllItemsToShoppingCart() {
-        locators.getPageLocator("#add-to-cart-sauce-labs-backpack").click();
-        locators.getPageLocator("#add-to-cart-sauce-labs-bike-light").click();
-        locators.getPageLocator("#add-to-cart-sauce-labs-bolt-t-shirt").click();
-        locators.getPageLocator("#add-to-cart-sauce-labs-fleece-jacket").click();
-        locators.getPageLocator("#add-to-cart-sauce-labs-onesie").click();
-        locators.getPageLocator("button[id='add-to-cart-test.allthethings()-t-shirt-(red)']").click();
-        String shoppingCartBadgeText = locators.getPageLocator(".shopping_cart_badge").textContent();
+        Locator backpack = locators.getPageLocator("#add-to-cart-sauce-labs-backpack");
+        if (!backpack.isVisible())
+            throw new SwagLabsException("Backpack not added to cart!");
+        backpack.click();
+        Locator bikeLight = locators.getPageLocator("#add-to-cart-sauce-labs-bike-light");
+        if (!bikeLight.isVisible())
+            throw new SwagLabsException("Bike Light not added to cart!");
+        bikeLight.click();
+        Locator boltTshirt = locators.getPageLocator("#add-to-cart-sauce-labs-bolt-t-shirt");
+        if (!boltTshirt.isVisible())
+            throw new SwagLabsException("Bolt T-shirt not added to cart!");
+        boltTshirt.click();
+        Locator fleeceJacket = locators.getPageLocator("#add-to-cart-sauce-labs-fleece-jacket");
+        if (!fleeceJacket.isVisible())
+            throw new SwagLabsException("Fleece Jacket not visible!");
+        fleeceJacket.click();
+        Locator onesize = locators.getPageLocator("#add-to-cart-sauce-labs-onesie");
+        if (!onesize.isVisible())
+            throw new SwagLabsException("One size is not visible!");
+        onesize.click();
+        Locator redTshirt = locators.getPageLocator("button[id='add-to-cart-test.allthethings()-t-shirt-(red)']");
+        if (!redTshirt.isVisible())
+            throw new SwagLabsException("Red T-shirt is not visible!");
+        redTshirt.click();
+        Locator shoppingCartBadge = locators.getPageLocator(".shopping_cart_badge");
+        if (!shoppingCartBadge.isVisible())
+            throw new SwagLabsException("Shopping Cart Badge is not visible!");
+        String shoppingCartBadgeText = shoppingCartBadge.textContent();
+        if (shoppingCartBadgeText.isEmpty())
+            throw new SwagLabsException("Shopping Cart Badge text is empty!");
+        if (!Character.isDigit(shoppingCartBadgeText.charAt(0)))
+            throw new SwagLabsException("Shopping Cart Badge text is not a number!");
         return Integer.parseInt(shoppingCartBadgeText);
+    }
+
+    public boolean isShoppingCartItemClicked(String webLocatorText) {
+        Locator cartItem = locators.getPageLocator(webLocatorText);
+        if (!cartItem.isVisible())
+            throw new SwagLabsException("Backpack not added to cart!");
+        cartItem.click();
+        return true;
     }
 
     public boolean isProductSelected(String productName) {

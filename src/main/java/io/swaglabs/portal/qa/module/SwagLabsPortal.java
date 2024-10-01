@@ -8,8 +8,6 @@ public class SwagLabsPortal {
 
     private final Page PAGE;
     private final String SWAG_LABS_URL;
-    private final String SWAG_LABS_USERNAME;
-    private final String SWAG_LABS_PASSWORD;
     public final SwagLabsLoginPage LOGIN_PAGE;
     public final SwagLabsHomePage HOME_PAGE;
     public final SwagLabsProductPage PRODUCT_PAGE;
@@ -19,11 +17,8 @@ public class SwagLabsPortal {
     public final SwagLabsCheckoutCompletePage CHECKOUT_COMPLETE_PAGE;
 
     public SwagLabsPortal(Page page) {
-        WebConfigLoader configLoader = WebConfigLoader.getInstance();
         this.PAGE = page;
-        SWAG_LABS_URL = configLoader.getSwagLabsUrl();
-        SWAG_LABS_USERNAME = configLoader.getSwagLabsUserName();
-        SWAG_LABS_PASSWORD = configLoader.getSwagLabsPassword();
+        SWAG_LABS_URL = WebConfigLoader.getInstance().getSwagLabsUrl();
         LOGIN_PAGE = new SwagLabsLoginPage(page);
         HOME_PAGE = new SwagLabsHomePage(page);
         PRODUCT_PAGE = new SwagLabsProductPage(page);
