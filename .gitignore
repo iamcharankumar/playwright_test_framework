@@ -187,3 +187,4 @@ test-output/
 screenshots/
 *.DS_Store
 logs/
+.fastRequest

@@ -2,6 +2,7 @@ package io.swaglabs.portal.qa.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.AriaRole;
 import io.swaglabs.portal.qa.exceptions.SwagLabsException;
 
 public class SwagLabsCheckoutCompletePage extends SwagLabsBasePage {
@@ -25,7 +26,7 @@ public class SwagLabsCheckoutCompletePage extends SwagLabsBasePage {
     }
 
     public boolean isBackHomeButtonClicked() {
-        Locator backHomeButton = locators.getPageLocator("#back-to-products");
+        Locator backHomeButton = locators.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Back Home"));
         if (!backHomeButton.isEnabled())
             throw new SwagLabsException("Back Home Button not clicked!");
         backHomeButton.click();

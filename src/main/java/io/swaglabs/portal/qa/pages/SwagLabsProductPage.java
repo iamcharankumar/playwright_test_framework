@@ -2,6 +2,7 @@ package io.swaglabs.portal.qa.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.AriaRole;
 import io.swaglabs.portal.qa.exceptions.SwagLabsException;
 
 public class SwagLabsProductPage extends SwagLabsBasePage {
@@ -32,7 +33,7 @@ public class SwagLabsProductPage extends SwagLabsBasePage {
     }
 
     public boolean isProductAddedToCart() {
-        Locator addToCartButton = locators.getPageLocator("#add-to-cart");
+        Locator addToCartButton = locators.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Add to cart"));
         if (!addToCartButton.isEnabled())
             throw new SwagLabsException("Product is not added to the shopping cart!");
         addToCartButton.click();
