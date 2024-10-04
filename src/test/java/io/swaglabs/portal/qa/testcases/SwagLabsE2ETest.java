@@ -42,5 +42,6 @@ public class SwagLabsE2ETest extends SwagLabsTestBase {
         Assert.assertEquals(actualThankYouText, "Thank you for your order!", "Thank You Text in Checkout Complete Page Mismatched!");
         String actualOrderCompleteText = SWAG_LABS_PORTAL.get().CHECKOUT_COMPLETE_PAGE.getOrderCompleteText();
         Assert.assertEquals(actualOrderCompleteText, "Your order has been dispatched, and will arrive just as fast as the pony can get there!", "Order Complete Text in Checkout Complete Page Mismatched!");
+        Assert.assertTrue(SWAG_LABS_PORTAL.get().CHECKOUT_COMPLETE_PAGE.isBackHomeButtonClicked(), "Back Home Button Not clicked");
     }
 }

@@ -2,6 +2,7 @@ package io.swaglabs.portal.qa.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import io.swaglabs.portal.qa.constants.KeyboardEvents;
 import io.swaglabs.portal.qa.exceptions.SwagLabsException;
 
 public class SwagLabsCheckoutPage extends SwagLabsBasePage {
@@ -11,7 +12,7 @@ public class SwagLabsCheckoutPage extends SwagLabsBasePage {
     }
 
     public boolean isFirstNameEntered(String firstName) {
-        Locator firstNameInputBox = locators.getPageLocator("#first-name");
+        Locator firstNameInputBox = locators.getByPlaceholder("First Name");
         if (!firstNameInputBox.isVisible())
             return false;
         firstNameInputBox.clear();
@@ -20,7 +21,7 @@ public class SwagLabsCheckoutPage extends SwagLabsBasePage {
     }
 
     public boolean isLastNameEntered(String lastName) {
-        Locator lastNameInputBox = locators.getPageLocator("#last-name");
+        Locator lastNameInputBox = locators.getByPlaceholder("Last Name");
         if (!lastNameInputBox.isVisible())
             return false;
         lastNameInputBox.clear();
@@ -29,7 +30,7 @@ public class SwagLabsCheckoutPage extends SwagLabsBasePage {
     }
 
     public boolean isPostalCodeEntered(String postalCode) {
-        Locator postalCodeInputBox = locators.getPageLocator("#postal-code");
+        Locator postalCodeInputBox = locators.getByPlaceholder("Zip/Postal Code");
         if (!postalCodeInputBox.isVisible())
             return false;
         postalCodeInputBox.clear();
@@ -38,10 +39,10 @@ public class SwagLabsCheckoutPage extends SwagLabsBasePage {
     }
 
     public boolean isContinueButtonClicked() {
-        Locator continueButton = locators.getPageLocator("#continue");
+        Locator continueButton = locators.getByText("Continue");
         if (!continueButton.isEnabled())
             return false;
-        continueButton.click();
+        continueButton.press(KeyboardEvents.ENTER.getDescription());
         return true;
     }
 

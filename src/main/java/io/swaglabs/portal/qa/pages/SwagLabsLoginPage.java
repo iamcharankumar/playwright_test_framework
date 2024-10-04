@@ -2,6 +2,7 @@ package io.swaglabs.portal.qa.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import io.swaglabs.portal.qa.constants.KeyboardEvents;
 import io.swaglabs.portal.qa.exceptions.SwagLabsException;
 import io.swaglabs.portal.qa.utils.WebConfigLoader;
 
@@ -42,7 +43,7 @@ public class SwagLabsLoginPage extends SwagLabsBasePage {
     }
 
     public boolean isUserNameEntered(String userName) {
-        Locator userNameInputBox = locators.getPageLocator("#user-name");
+        Locator userNameInputBox = locators.getByPlaceholder("Username");
         if (!userNameInputBox.isVisible())
             return false;
         userNameInputBox.clear();
@@ -51,12 +52,17 @@ public class SwagLabsLoginPage extends SwagLabsBasePage {
     }
 
     public boolean isPasswordEntered(String password) {
-        Locator passwordInputBox = locators.getPageLocator("#password");
+        Locator passwordInputBox = locators.getByPlaceholder("Password");
         if (!passwordInputBox.isVisible())
             return false;
         passwordInputBox.clear();
         passwordInputBox.fill(password);
         return true;
+    }
+
+    public boolean isHomePageLanded() {
+        Locator appLogo = locators.getPageLocator(".app_logo");
+        return appLogo.isVisible() || appLogo.textContent().equalsIgnoreCase("Swag Labs");
     }
 
     public boolean isLoginSuccess() {
@@ -67,12 +73,11 @@ public class SwagLabsLoginPage extends SwagLabsBasePage {
             throw new SwagLabsException("User Name not entered!");
         if (!isPasswordEntered(password))
             throw new SwagLabsException("Password not entered!");
-        Locator loginButton = locators.getPageLocator("#login-button");
+        Locator loginButton = locators.getByText("Login");
         if (!loginButton.isVisible())
             throw new SwagLabsException("Login Button not clicked!");
-        loginButton.click();
-        Locator appLogo = locators.getPageLocator(".app_logo");
-        if (!appLogo.isVisible() && !appLogo.textContent().equalsIgnoreCase("Swag Labs"))
+        loginButton.press(KeyboardEvents.ENTER.getDescription());
+        if (!isHomePageLanded())
             throw new SwagLabsException("Login Failed for the username: " + userName);
         return true;
     }
