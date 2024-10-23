@@ -7,18 +7,22 @@ import io.swaglabs.portal.qa.exceptions.UtilsException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PageUtils {
 
     public static Page getPageByText(Page basePage, String selectorsText) {
-        if (basePage == null || selectorsText.isEmpty())
+        Objects.requireNonNull(basePage, "Page cannot be null!");
+        if (selectorsText.isEmpty())
             throw new UtilsException("");
         return basePage.context().waitForPage(() -> basePage.getByText(selectorsText));
     }
 
     public static Locator locatePageElementByRole(Page newPage, AriaRole role, Page.GetByRoleOptions options) {
-        if (newPage == null || role == null || options == null)
-            throw new UtilsException("Unable to Locate element by Role!");
+        Objects.requireNonNull(newPage, "Page cannot be null!");
+        Objects.requireNonNull(role, "Role cannot be null!");
+        Objects.requireNonNull(options, "Options cannot be null!");
         return newPage.getByRole(role, options);
     }
 }

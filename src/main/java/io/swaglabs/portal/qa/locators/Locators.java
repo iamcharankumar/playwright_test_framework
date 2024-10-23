@@ -3,8 +3,8 @@ package io.swaglabs.portal.qa.locators;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
-import io.swaglabs.portal.qa.exceptions.SwagLabsException;
-import io.swaglabs.portal.qa.exceptions.UtilsException;
+
+import java.util.Objects;
 
 public class Locators implements ILocators<Locator> {
 
@@ -16,36 +16,32 @@ public class Locators implements ILocators<Locator> {
 
     @Override
     public Locator getPageLocator(String webLocator) {
-        if (webLocator.isEmpty())
-            throw new SwagLabsException("Web Locator is Empty!");
+        Objects.requireNonNull(webLocator, "Web Locator cannot be null or empty!");
         return PAGE.locator(webLocator);
     }
 
     @Override
     public Locator getByText(String webLocatorText) {
-        if (webLocatorText.isEmpty())
-            throw new SwagLabsException("Web Locator Text is Empty!");
+        Objects.requireNonNull(webLocatorText, "Web Locator Text cannot be null or empty!");
         return PAGE.getByText(webLocatorText);
     }
 
     @Override
     public Locator getByLabel(String labelText) {
-        if (labelText.isEmpty())
-            throw new UtilsException("Label Text is empty!");
+        Objects.requireNonNull(labelText, "Label Text cannot be null or empty!");
         return PAGE.getByLabel(labelText);
     }
 
     @Override
     public Locator getByRole(AriaRole role, Page.GetByRoleOptions options) {
-        if (role == null || options == null)
-            throw new UtilsException("Role or Options is null!");
+        Objects.requireNonNull(role, "Role cannot be null!");
+        Objects.requireNonNull(options, "Options cannot be null!");
         return PAGE.getByRole(role, options);
     }
 
     @Override
     public Locator getByPlaceholder(String placeholderText) {
-        if (placeholderText.isEmpty())
-            throw new UtilsException("Placeholder text is empty!");
+        Objects.requireNonNull(placeholderText, "Placeholder text cannot be null or empty!");
         return PAGE.getByPlaceholder(placeholderText);
     }
 }

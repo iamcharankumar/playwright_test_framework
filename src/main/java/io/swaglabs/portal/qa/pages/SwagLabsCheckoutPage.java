@@ -3,7 +3,6 @@ package io.swaglabs.portal.qa.pages;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.swaglabs.portal.qa.constants.KeyboardEvents;
-import io.swaglabs.portal.qa.exceptions.SwagLabsException;
 
 public class SwagLabsCheckoutPage extends SwagLabsBasePage {
 
@@ -47,14 +46,10 @@ public class SwagLabsCheckoutPage extends SwagLabsBasePage {
     }
 
     public boolean isCheckoutInformationEntered(String firstName, String lastName, String postalCode) {
-        if (!isFirstNameEntered(firstName))
-            throw new SwagLabsException("First Name Input Box not visible!");
-        if (!isLastNameEntered(lastName))
-            throw new SwagLabsException("Last Name Input Box not visible!");
-        if (!isPostalCodeEntered(postalCode))
-            throw new SwagLabsException("Postal Code Input Box not visible!");
-        if (!isContinueButtonClicked())
-            throw new SwagLabsException("Continue Button is not visible or enabled!");
+        validateAction(isFirstNameEntered(firstName), "First Name Input Box not visible!");
+        validateAction(isLastNameEntered(lastName), "Last Name Input Box not visible!");
+        validateAction(isPostalCodeEntered(postalCode), "Postal Code Input Box not visible!");
+        validateAction(isContinueButtonClicked(), "Continue Button is not visible or enabled!");
         return true;
     }
 }
