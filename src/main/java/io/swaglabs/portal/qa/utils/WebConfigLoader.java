@@ -8,7 +8,7 @@ public class WebConfigLoader {
 
     private static WebConfigLoader instance;
     private final Properties PROPERTIES;
-    private final String WEB_CONFIG_FILE = "./src/main/resources/webconfig.properties";
+    private static final String WEB_CONFIG_FILE = "./src/main/resources/webconfig.properties";
 
     private WebConfigLoader() {
         PROPERTIES = PropertiesUtils.loadProperties(WEB_CONFIG_FILE);

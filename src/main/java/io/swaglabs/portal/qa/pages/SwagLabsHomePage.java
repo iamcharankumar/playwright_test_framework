@@ -15,27 +15,28 @@ public class SwagLabsHomePage extends SwagLabsBasePage {
 
     public String getProductHeaderText() {
         String productHeaderText = locators.getByText("Products").textContent();
-        if (productHeaderText.isEmpty())
-            throw new SwagLabsException("Products Text not found in Home Page!");
+        validateNonEmptyText(productHeaderText, "Products Text not found in Home Page!");
         return productHeaderText;
     }
 
     public boolean isShoppingCartButtonEnabled() {
-        return locators.getPageLocator(".shopping_cart_link").isEnabled();
+        Locator shoppingCartLink = locators.getPageLocator(".shopping_cart_link");
+        validateAction(shoppingCartLink.isEnabled(), "Shopping Cart Link is not enabled!");
+        return shoppingCartLink.isEnabled();
     }
 
     public boolean isHamburgerButtonEnabled() {
-        return locators.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Open Menu")).isEnabled();
+        Locator hamburgerButton = locators.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Open Menu"));
+        validateAction(hamburgerButton.isEnabled(), "Hamburger Button is not enabled!");
+        return hamburgerButton.isEnabled();
     }
 
     public String getAllItemsText() {
         Locator openMenuButton = locators.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Open Menu"));
-        if (!openMenuButton.isVisible())
-            throw new SwagLabsException("Hamburger Menu Button not visible!");
+        validateAction(openMenuButton.isVisible(), "Hamburger Menu Button not visible!");
         openMenuButton.click();
         String hamburgerMenuList = String.join("", locators.getPageLocator(".bm-menu").allTextContents());
-        if (hamburgerMenuList.isEmpty())
-            throw new SwagLabsException("Hamburger Menu List is empty!");
+        validateNonEmptyText(hamburgerMenuList, "Hamburger Menu List is empty!");
         return hamburgerMenuList;
     }
 
@@ -46,22 +47,18 @@ public class SwagLabsHomePage extends SwagLabsBasePage {
                 "button[id='add-to-cart-test.allthethings()-t-shirt-(red)']");
         itemLocators.forEach(item -> {
             Locator shoppingItem = locators.getPageLocator(item);
-            if (!shoppingItem.isVisible())
-                throw new SwagLabsException("Shopping item: " + item + " not visible!");
+            validateAction(shoppingItem.isVisible(), "Shopping item: " + item + " not visible!");
             shoppingItem.click();
         });
         Locator shoppingCartBadge = locators.getPageLocator(".shopping_cart_badge");
-        if (!shoppingCartBadge.isVisible())
-            throw new SwagLabsException("Shopping Cart Badge is not visible!");
+        validateAction(shoppingCartBadge.isVisible(), "Shopping Cart Badge is not visible!");
         return validateAndParseShoppingCartBadge(shoppingCartBadge);
     }
 
     private int validateAndParseShoppingCartBadge(Locator shoppingCartBadge) throws SwagLabsException {
         String shoppingCartBadgeText = shoppingCartBadge.textContent();
-        if (shoppingCartBadgeText.isEmpty())
-            throw new SwagLabsException("Shopping Cart Badge text is empty!");
-        if (!Character.isDigit(shoppingCartBadgeText.charAt(0)))
-            throw new SwagLabsException("Shopping Cart Badge text is not a number!");
+        validateNonEmptyText(shoppingCartBadgeText, "Shopping Cart Badge text is empty!");
+        validateAction(Character.isDigit(shoppingCartBadgeText.charAt(0)), "Shopping Cart Badge text is not a number!");
         return Integer.parseInt(shoppingCartBadgeText);
     }
 
@@ -70,8 +67,7 @@ public class SwagLabsHomePage extends SwagLabsBasePage {
         Locator product = productNameList.stream()
                 .filter(productItem -> productItem.textContent().equalsIgnoreCase(productName))
                 .findFirst().orElseThrow(() -> new SwagLabsException("Product Name not found!"));
-        if (!product.isEnabled())
-            throw new SwagLabsException("Product is not enabled!");
+        validateAction(product.isEnabled(), "Product is not enabled!");
         product.click();
         return true;
     }

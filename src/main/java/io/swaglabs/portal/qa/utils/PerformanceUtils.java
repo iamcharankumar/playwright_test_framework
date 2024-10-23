@@ -2,12 +2,12 @@ package io.swaglabs.portal.qa.utils;
 
 import com.microsoft.playwright.Page;
 import io.swaglabs.portal.qa.constants.WebPortalConstants;
-import io.swaglabs.portal.qa.exceptions.UtilsException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -30,8 +30,7 @@ public class PerformanceUtils {
     }
 
     private static Map<String, Object> getPerformanceMetrics(Page page) {
-        if (page == null)
-            throw new UtilsException("Either Playwright Page or Javascript Command is null!");
+        Objects.requireNonNull(page, "Page cannot be null!");
         return (Map<String, Object>) page.evaluate(WebPortalConstants.PAGE_LOAD_TIME_JS_SCRIPT);
     }
 }
