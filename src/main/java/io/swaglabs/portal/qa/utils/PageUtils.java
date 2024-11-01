@@ -15,7 +15,7 @@ public class PageUtils {
     public static Page getPageByText(Page basePage, String selectorsText) {
         Objects.requireNonNull(basePage, "Page cannot be null!");
         if (selectorsText.isEmpty())
-            throw new UtilsException("");
+            throw new UtilsException("Selector Text should not be empty!");
         return basePage.context().waitForPage(() -> basePage.getByText(selectorsText));
     }
 

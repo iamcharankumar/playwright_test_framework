@@ -1,7 +1,6 @@
 package io.swaglabs.portal.qa.utils;
 
-import io.swaglabs.portal.qa.exceptions.UtilsException;
-
+import java.util.Objects;
 import java.util.Properties;
 
 public class WebConfigLoader {
@@ -38,8 +37,7 @@ public class WebConfigLoader {
 
     private String getPropertyValue(String propertyKey) {
         String propertyValue = PROPERTIES.getProperty(propertyKey);
-        if (propertyValue.isEmpty())
-            throw new UtilsException("Property Value for Property Key: " + propertyKey + " is empty!");
+        Objects.requireNonNull(propertyKey, "Property Value for Property Key: " + propertyKey + " is empty!");
         return propertyValue;
     }
 }

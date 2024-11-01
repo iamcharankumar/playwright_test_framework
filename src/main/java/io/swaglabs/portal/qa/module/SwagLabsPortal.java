@@ -1,8 +1,8 @@
 package io.swaglabs.portal.qa.module;
 
 import com.microsoft.playwright.Page;
+import io.swaglabs.portal.qa.constants.WebPortalConstants;
 import io.swaglabs.portal.qa.pages.*;
-import io.swaglabs.portal.qa.utils.WebConfigLoader;
 
 public class SwagLabsPortal {
 
@@ -18,7 +18,7 @@ public class SwagLabsPortal {
 
     public SwagLabsPortal(Page page) {
         this.PAGE = page;
-        SWAG_LABS_URL = WebConfigLoader.getInstance().getSwagLabsUrl();
+        SWAG_LABS_URL = WebPortalConstants.SWAG_LABS_URL;
         LOGIN_PAGE = new SwagLabsLoginPage(page);
         HOME_PAGE = new SwagLabsHomePage(page);
         PRODUCT_PAGE = new SwagLabsProductPage(page);

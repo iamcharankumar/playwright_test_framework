@@ -20,8 +20,11 @@ public class WebTestListeners extends WebBaseTest implements ISuiteListener, ITe
 
     @Override
     public void onStart(ISuite suite) {
+        String browserName = System.getProperty(WebPortalConstants.BROWSER);
+        String runMode = System.getProperty(WebPortalConstants.RUN_MODE);
         startDate = Instant.now();
         log.info("Web Test Suite {} started executing at {}.", suite.getName(), startDate);
+        log.info("Browser: {} | Run Mode: {}", browserName, runMode);
     }
 
     @Override
@@ -49,9 +52,7 @@ public class WebTestListeners extends WebBaseTest implements ISuiteListener, ITe
     private void takeScreenshot(ITestResult testResult) {
         String browserName = System.getProperty(WebPortalConstants.BROWSER);
         String runMode = System.getProperty(WebPortalConstants.RUN_MODE);
-        String testData = "";
-        if (testResult.getParameters().length > 0)
-            testData = String.valueOf(testResult.getParameters()[0]);
+        String testData = (testResult.getParameters().length > 0) ? String.valueOf(testResult.getParameters()[0]) : "No_Params";
         String screenshotsDirectory = "./src/test/resources/screenshots";
         String imageFormat = ".png";
         if (testResult.isSuccess()) {
@@ -71,7 +72,7 @@ public class WebTestListeners extends WebBaseTest implements ISuiteListener, ITe
 
     @Override
     public boolean retry(ITestResult result) {
-        int maxRetry = 3;
+        int maxRetry = 1;
         if (!result.isSuccess() && retryCount < maxRetry) {
             log.info("Retrying test for {} time(s) for the test method {} with test status {}.", retryCount + 1,
                     result.getName(), getTestStatusName(result.getStatus()));
