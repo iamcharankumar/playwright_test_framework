@@ -55,7 +55,7 @@ public class SwagLabsHomePage extends SwagLabsBasePage {
         return validateAndParseShoppingCartBadge(shoppingCartBadge);
     }
 
-    private int validateAndParseShoppingCartBadge(Locator shoppingCartBadge) throws SwagLabsException {
+    private int validateAndParseShoppingCartBadge(Locator shoppingCartBadge) {
         String shoppingCartBadgeText = shoppingCartBadge.textContent();
         validateNonEmptyText(shoppingCartBadgeText, "Shopping Cart Badge text is empty!");
         validateAction(Character.isDigit(shoppingCartBadgeText.charAt(0)), "Shopping Cart Badge text is not a number!");

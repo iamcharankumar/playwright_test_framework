@@ -1,7 +1,7 @@
 package io.swaglabs.portal.qa.commons;
 
 import com.microsoft.playwright.Page;
-import io.swaglabs.portal.qa.exceptions.SwagLabsException;
+import io.swaglabs.portal.qa.exceptions.WebPageException;
 import io.swaglabs.portal.qa.locators.Locators;
 
 public abstract class WebBasePage {
@@ -16,11 +16,11 @@ public abstract class WebBasePage {
 
     protected void validateAction(boolean condition, String errorMessage) {
         if (!condition)
-            throw new SwagLabsException(errorMessage);
+            throw new WebPageException(errorMessage);
     }
 
     protected void validateNonEmptyText(String text, String errorMessage) {
         if (text.isEmpty())
-            throw new SwagLabsException(errorMessage);
+            throw new WebPageException(errorMessage);
     }
 }

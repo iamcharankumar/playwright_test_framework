@@ -2,9 +2,9 @@ package io.swaglabs.portal.qa.browsermanager;
 
 import com.microsoft.playwright.*;
 import io.swaglabs.portal.qa.constants.BrowserName;
-import io.swaglabs.portal.qa.exceptions.SwagLabsException;
 
 import java.util.Collections;
+import java.util.Objects;
 
 
 public class BrowserFactory {
@@ -45,8 +45,7 @@ public class BrowserFactory {
     }
 
     private BrowserContext getBrowserContext(Browser browser) {
-        if (browser == null)
-            throw new SwagLabsException("Playwright Browser is null in Browser Factory!");
+        Objects.requireNonNull(browser, "Playwright Browser is null in Browser Factory!");
         return browser.newContext(new Browser.NewContextOptions().setViewportSize(null));
     }
 }

@@ -3,7 +3,7 @@ package io.swaglabs.portal.qa.pages;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.swaglabs.portal.qa.constants.KeyboardEvents;
-import io.swaglabs.portal.qa.utils.WebConfigLoader;
+import io.swaglabs.portal.qa.constants.WebPortalConstants;
 
 public class SwagLabsLoginPage extends SwagLabsBasePage {
 
@@ -61,15 +61,12 @@ public class SwagLabsLoginPage extends SwagLabsBasePage {
     }
 
     public boolean isLoginSuccess() {
-        WebConfigLoader configLoader = WebConfigLoader.getInstance();
-        String userName = configLoader.getSwagLabsUserName();
-        String password = configLoader.getSwagLabsPassword();
-        validateAction(isUserNameEntered(userName), "User Name not entered!");
-        validateAction(isPasswordEntered(password), "Password not entered!");
+        validateAction(isUserNameEntered(WebPortalConstants.USERNAME), "User Name not entered!");
+        validateAction(isPasswordEntered(WebPortalConstants.PASSWORD), "Password not entered!");
         Locator loginButton = locators.getByText("Login");
         validateAction(loginButton.isVisible(), "Login Button not clicked!");
         loginButton.press(KeyboardEvents.ENTER.getDescription());
-        validateAction(isHomePageLanded(), "Login Failed for the username: " + userName);
+        validateAction(isHomePageLanded(), "Login Failed for the username: " + WebPortalConstants.USERNAME);
         return true;
     }
 }

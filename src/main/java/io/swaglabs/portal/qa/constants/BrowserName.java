@@ -1,5 +1,6 @@
 package io.swaglabs.portal.qa.constants;
 
+import io.swaglabs.portal.qa.exceptions.UtilsException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -19,6 +20,6 @@ public enum BrowserName {
     public static BrowserName fromString(String browserName) {
         return Arrays.stream(BrowserName.values())
                 .filter(browserType -> browserType.getBrowserType().equalsIgnoreCase(browserName))
-                .findFirst().orElseThrow(() -> new IllegalArgumentException("Unknown browser: " + browserName));
+                .findFirst().orElseThrow(() -> new UtilsException("Unknown browser: " + browserName));
     }
 }
