@@ -48,7 +48,7 @@ jobs:
         run: mvn org.jacoco:jacoco-maven-plugin:prepare-agent install -Pcoverage-per-test
 
       - name: Upload target folder
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: target
           path: |
