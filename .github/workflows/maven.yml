@@ -52,14 +52,9 @@ jobs:
             ${{ github.workspace }}/target
             ${{ github.workspace }}/reports
 
-      # Optional: Uploads the full dependency graph to GitHub
-      # to improve the quality of Dependabot alerts this repository can receive
-      - name: Update dependency graph
-        uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
-
   smoke_job:
 
-    name: Build and Test
+    name: Smoke Jobs
     runs-on: ubuntu-latest
 
     steps:
@@ -73,5 +68,11 @@ jobs:
           distribution: 'adopt'
           cache: maven
 
-      - name: Smoke tests for Chrome Browser
+      - name: Smoke Headless Chrome
         run: mvn clean test -Drunmode=headless -Dbrowser=chrome -Dgroups=SWAG_LABS_SMOKE -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3
+
+      - name: Smoke Headless Firefox
+        run: mvn clean test -Drunmode=headless -Dbrowser=firefox -Dgroups=SWAG_LABS_SMOKE -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3
+
+      - name: Smoke Headless MS Edge
+        run: mvn clean test -Drunmode=headless -Dbrowser=msedge -Dgroups=SWAG_LABS_SMOKE -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3
