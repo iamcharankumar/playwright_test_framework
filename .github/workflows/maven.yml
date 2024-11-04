@@ -1,6 +1,3 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
-
 name: Java CI with Maven
 
 on:
@@ -21,30 +18,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
-      - name: checkout Git repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install Java and Maven
+      - name: Setup Java and Maven
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'adopt'
           cache: maven
 
-      - name: Install Chrome
+      - name: Install Browsers
         uses: browser-actions/setup-chrome@latest
+      - uses: browser-actions/setup-firefox@latest
+      - uses: browser-actions/setup-edge@latest
 
-      - name: Install Firefox
-        uses: browser-actions/setup-firefox@latest
-
-      - name: Install MS Edge
-        uses: browser-actions/setup-edge@latest
-
-      - name: Build the Project
+      - name: Build Project
         run: mvn clean install -DskipTests
 
-      - name: Upload target folder
+      - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: target
@@ -53,26 +45,31 @@ jobs:
             ${{ github.workspace }}/reports
 
   smoke_job:
-
-    name: Smoke Jobs
+    name: Smoke Tests
     runs-on: ubuntu-latest
+    needs: build_and_test
 
     steps:
-      - name: checkout Git repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install Java and Maven
+      - name: Setup Java and Maven
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'adopt'
           cache: maven
 
-      - name: Smoke Headless Chrome
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: target
+
+      - name: Run Smoke Tests (Chrome)
         run: mvn clean test -Drunmode=headless -Dbrowser=chrome -Dgroups=SWAG_LABS_SMOKE -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3
 
-      - name: Smoke Headless Firefox
+      - name: Run Smoke Tests (Firefox)
         run: mvn clean test -Drunmode=headless -Dbrowser=firefox -Dgroups=SWAG_LABS_SMOKE -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3
 
-      - name: Smoke Headless MS Edge
+      - name: Run Smoke Tests (MS Edge)
         run: mvn clean test -Drunmode=headless -Dbrowser=msedge -Dgroups=SWAG_LABS_SMOKE -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3
