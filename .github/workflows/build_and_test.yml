@@ -43,4 +43,3 @@ jobs:
           path: |
             ${{ github.workspace }}/target
             ${{ github.workspace }}/reports
-            ${{ github.workspace }}/screenshots
