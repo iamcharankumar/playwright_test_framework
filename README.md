@@ -1,10 +1,12 @@
+[![UI test execution](https://github.com/iamcharankumar/playwright_test_framework/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/iamcharankumar/playwright_test_framework/actions/workflows/ci.yml)
+
 # ABOUT
 
 Automated end-to-end testing framework built with Playwright and Java, tailored for any website. Designed
 for scalability and maintainability, this framework covers critical test scenarios with robust assertions and clean,
 modular code. Perfect for those looking to speed up their test automation journey or enhance their Playwright skills!
 
-# STEPS FOR THE TEST EXECUTION
+# STEPS FOR THE TEST EXECUTION IN LOCAL
 
 1. `git clone https://github.com/iamcharankumar/playwright_test_framework.git`
 2. `cd playwright_test_framework`
