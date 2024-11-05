@@ -145,7 +145,7 @@ jobs:
         run: mvn clean test -Drunmode=headless -Dbrowser=chrome -Dgroups=SWAG_LABS_REGRESSION -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3
 
   regression_job_firefox_headless:
-    name: E2E Tests Firefox Headless
+    name: Regression Tests Firefox Headless
     runs-on: ubuntu-latest
     needs:
       - build_and_test
@@ -274,3 +274,25 @@ jobs:
 
       - name: Run E2E Tests (MS Edge)
         run: mvn clean test -Drunmode=headless -Dbrowser=msedge -Dgroups=SWAG_LABS_E2E -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3
+
+  cleanup:
+    name: Cleanup Cache
+    runs-on: ubuntu-latest
+    if: ${{ github.event.pull_request.merged == false && github.event.action == 'closed' }}
+
+    steps:
+      - name: Cleanup
+        run: |
+          echo "Fetching list of cache keys"
+          cacheKeysForPR=$(gh cache list --ref $BRANCH --limit 100 --json id --jq '.[].id')
+          
+          set +e
+          echo "Deleting caches..."
+          for cacheKey in $cacheKeysForPR
+          do
+              gh cache delete $cacheKey
+          done
+          echo "Done"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: refs/pull/${{ github.event.pull_request.number }}/merge
