@@ -72,7 +72,8 @@ jobs:
   smoke_job_firefox_headless:
     name: Smoke Tests Firefox Headless
     runs-on: ubuntu-latest
-    needs: build_and_test
+    needs:
+      - build_and_test
 
     steps:
       - name: Checkout Repository
@@ -96,7 +97,8 @@ jobs:
   smoke_job_msedge_headless:
     name: Smoke Tests MS Edge Headless
     runs-on: ubuntu-latest
-    needs: build_and_test
+    needs:
+      - build_and_test
 
     steps:
       - name: Checkout Repository
@@ -120,7 +122,8 @@ jobs:
   regression_job_chrome_headless:
     name: Regression Tests Chrome Headless
     runs-on: ubuntu-latest
-    needs: build_and_test
+    needs:
+      - build_and_test
 
     steps:
       - name: Checkout Repository
@@ -142,9 +145,10 @@ jobs:
         run: mvn clean test -Drunmode=headless -Dbrowser=chrome -Dgroups=SWAG_LABS_REGRESSION -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3
 
   regression_job_firefox_headless:
-    name: E2E Tests Firefox Headless
+    name: Regression Tests Firefox Headless
     runs-on: ubuntu-latest
-    needs: build_and_test
+    needs:
+      - build_and_test
 
     steps:
       - name: Checkout Repository
@@ -168,7 +172,8 @@ jobs:
   regression_job_msedge_headless:
     name: Regression Tests MS Edge Headless
     runs-on: ubuntu-latest
-    needs: build_and_test
+    needs:
+      - build_and_test
 
     steps:
       - name: Checkout Repository
@@ -192,7 +197,10 @@ jobs:
   E2E_job_chrome_headless:
     name: E2E Tests Chrome Headless
     runs-on: ubuntu-latest
-    needs: build_and_test
+    needs:
+      - build_and_test
+      - smoke_job_chrome_headless
+      - regression_job_chrome_headless
 
     steps:
       - name: Checkout Repository
@@ -216,7 +224,10 @@ jobs:
   E2E_job_firefox_headless:
     name: E2E Tests Firefox Headless
     runs-on: ubuntu-latest
-    needs: build_and_test
+    needs:
+      - build_and_test
+      - smoke_job_firefox_headless
+      - regression_job_firefox_headless
 
     steps:
       - name: Checkout Repository
@@ -240,7 +251,10 @@ jobs:
   E2E_job_msedge_headless:
     name: E2E Tests MS Edge Headless
     runs-on: ubuntu-latest
-    needs: build_and_test
+    needs:
+      - build_and_test
+      - smoke_job_msedge_headless
+      - regression_job_msedge_headless
 
     steps:
       - name: Checkout Repository
@@ -260,3 +274,37 @@ jobs:
 
       - name: Run E2E Tests (MS Edge)
         run: mvn clean test -Drunmode=headless -Dbrowser=msedge -Dgroups=SWAG_LABS_E2E -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3
+
+  cleanup:
+    name: Cleanup Cache
+    runs-on: ubuntu-latest
+    needs:
+      - build_and_test
+      - smoke_job_chrome_headless
+      - smoke_job_msedge_headless
+      - smoke_job_firefox_headless
+      - regression_job_chrome_headless
+      - regression_job_firefox_headless
+      - regression_job_msedge_headless
+      - E2E_job_chrome_headless
+      - E2E_job_firefox_headless
+      - E2E_job_msedge_headless
+
+    if: ${{ github.event.pull_request.merged == false && github.event.action == 'closed' }}
+
+    steps:
+      - name: Cleanup
+        run: |
+          echo "Fetching list of cache keys"
+          cacheKeysForPR=$(gh cache list --ref $BRANCH --limit 100 --json id --jq '.[].id')
+          
+          set +e
+          echo "Deleting caches..."
+          for cacheKey in $cacheKeysForPR
+          do
+              gh cache delete $cacheKey
+          done
+          echo "Done"
+        env:
+          GH_TOKEN: ${{ vars.TOKEN }}
+          BRANCH: refs/pull/${{ github.event.pull_request.number }}/merge
