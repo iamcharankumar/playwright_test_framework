@@ -1,0 +1,77 @@
+name: Smoke Jobs
+
+on:
+  workflow_dispatch: # Allows manual triggering from the GitHub UI
+
+jobs:
+  smoke_job_chrome_headless:
+    name: Smoke Tests Chrome Headless
+    runs-on: ubuntu-latest
+    needs:
+      - build_and_test
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java and Maven
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          cache: maven
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: target
+
+      - name: Run Smoke Tests (Chrome)
+        run: mvn clean test -Drunmode=headless -Dbrowser=chrome -Dgroups=SWAG_LABS_SMOKE -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3
+
+  smoke_job_firefox_headless:
+    name: Smoke Tests Firefox Headless
+    runs-on: ubuntu-latest
+    needs: build_and_test
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java and Maven
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          cache: maven
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: target
+
+      - name: Run Smoke Tests (Firefox)
+        run: mvn clean test -Drunmode=headless -Dbrowser=firefox -Dgroups=SWAG_LABS_SMOKE -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3
+
+  smoke_job_msedge_headless:
+    name: Smoke Tests MS Edge Headless
+    runs-on: ubuntu-latest
+    needs: build_and_test
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java and Maven
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          cache: maven
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: target
+
+      - name: Run Smoke Tests (MS Edge)
+        run: mvn clean test -Drunmode=headless -Dbrowser=msedge -Dgroups=SWAG_LABS_SMOKE -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3

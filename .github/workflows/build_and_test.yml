@@ -1,0 +1,46 @@
+name: Build and Test
+
+on:
+  pull_request:
+    branches:
+      - master
+      - issue-*
+      - fb_*
+  push:
+    branches:
+      - master
+      - issue-*
+      - fb_*
+
+jobs:
+  build_and_test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java and Maven
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          cache: maven
+
+      - name: Install Browsers
+        uses: browser-actions/setup-chrome@latest
+      - uses: browser-actions/setup-firefox@latest
+      - uses: browser-actions/setup-edge@latest
+
+      - name: Build Project
+        run: mvn clean install -DskipTests
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifact
+          path: |
+            ${{ github.workspace }}/target
+            ${{ github.workspace }}/reports
+            ${{ github.workspace }}/screenshots
