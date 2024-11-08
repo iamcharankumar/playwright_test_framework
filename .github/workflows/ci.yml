@@ -47,13 +47,6 @@ jobs:
             ${{ github.workspace }}/target
             ${{ github.workspace }}/reports
 
-      # Generate test summary report
-      - name: Generate Test Summary
-        uses: test-summary/action@v2
-        id: summary
-        with:
-          paths: target/surefire-reports # Path to the test report files
-
   smoke_job_chrome_headless:
     name: Smoke Tests Chrome Headless
     runs-on: ubuntu-latest
@@ -78,6 +71,16 @@ jobs:
       - name: Run Smoke Tests (Chrome)
         run: mvn clean test -Drunmode=headless -Dbrowser=chrome -Dgroups=SWAG_LABS_SMOKE -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3
 
+      - name: Verify Report Directory
+        run: ls target/surefire-reports || echo "Report directory not found"
+
+      # Generate test summary report
+      - name: Generate Test Summary
+        uses: test-summary/action@v2
+        id: summary
+        with:
+          paths: target/surefire-reports # Path to the test report files
+
       - name: Send Smoke Tests (Chrome) Results to Discord
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
@@ -99,14 +102,13 @@ jobs:
           \n📊 **Total**: ${total_count}
           \n✅ **Pass %**: ${pass_percentage}%
           \n❌ **Fail %**: ${fail_percentage}%
-          \n[View Full Report](${YOUR_REPORT_URL})
           "
-          
           # Send message to Discord
-          curl --location '${{ env.DISCORD_WEBHOOK }}' \
+          curl --location "$DISCORD_WEBHOOK_URL" \
             --header 'Content-Type: application/json' \
             --data '{
               "content": "'"${discord_message}"'"
+              "username": "TestBot"
             }'
 
   smoke_job_firefox_headless:
