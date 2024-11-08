@@ -95,21 +95,22 @@ jobs:
           fail_percentage=$(awk "BEGIN {print ($failed_count/$total_count)*100}")
           
           # Construct message with emojis and formatting for better readability
-          content="----------------------------------------\n\n"
-          content="🚀 **JOB: ${{ github.job }}** 🚀\n\n"
-          content="🚀 **User: ${{ github.actor }}** 🚀\n\n"
-          content+="🎉 **Passed**: ${passed_count}\n"
-          content+="❌ **Failed**: ${failed_count}\n"
-          content+="⚠️ **Skipped**: ${skipped_count}\n"
-          content+="📊 **Total**: ${total_count}\n\n"
-          content+="✅ **Pass %**: ${pass_percentage}%\n"
-          content+="❌ **Fail %**: ${fail_percentage}%\n\n"
-          content="----------------------------------------\n\n"
+          discord_message="
+          🎉 **Test Execution Summary** 🎉
+          \n🛠️**Job**: ${{ github.job }}
+          \n👤**User**: ${{ github.actor }}
+          \n✔️ **Passed**: ${passed_count}
+          \n❌ **Failed**: ${failed_count}
+          \n🚫 **Skipped**: ${skipped_count}
+          \n📊 **Total**: ${total_count}
+          \n✅ **Pass %**: ${pass_percentage}%
+          \n❌ **Fail %**: ${fail_percentage}%
+          "
           curl --location "$DISCORD_WEBHOOK_URL" \
                --header 'Content-Type: application/json' \
                --data-raw "{
-                   \"content\": \"$content\",
-                   \"username\": \"TestBot\"
+                  "content": "'"${discord_message}"'",
+                   "username": "TestBot"
                }"
 
   smoke_job_firefox_headless:
@@ -150,21 +151,22 @@ jobs:
           fail_percentage=$(awk "BEGIN {print ($failed_count/$total_count)*100}")
           
           # Construct message with emojis and formatting for better readability
-          content="----------------------------------------\n\n"
-          content="🚀 **JOB: ${{ github.job }}** 🚀\n\n"
-          content="🚀 **User: ${{ github.actor }}** 🚀\n\n"
-          content+="🎉 **Passed**: ${passed_count}\n"
-          content+="❌ **Failed**: ${failed_count}\n"
-          content+="⚠️ **Skipped**: ${skipped_count}\n"
-          content+="📊 **Total**: ${total_count}\n\n"
-          content+="✅ **Pass %**: ${pass_percentage}%\n"
-          content+="❌ **Fail %**: ${fail_percentage}%\n\n"
-          content="----------------------------------------\n\n"
+          discord_message="
+          🎉 **Test Execution Summary** 🎉
+          \n🛠️**Job**: ${{ github.job }}
+          \n👤**User**: ${{ github.actor }}
+          \n✔️ **Passed**: ${passed_count}
+          \n❌ **Failed**: ${failed_count}
+          \n🚫 **Skipped**: ${skipped_count}
+          \n📊 **Total**: ${total_count}
+          \n✅ **Pass %**: ${pass_percentage}%
+          \n❌ **Fail %**: ${fail_percentage}%
+          "
           curl --location "$DISCORD_WEBHOOK_URL" \
                --header 'Content-Type: application/json' \
                --data-raw "{
-                   \"content\": \"$content\",
-                   \"username\": \"TestBot\"
+                  "content": "'"${discord_message}"'",
+                   "username": "TestBot"
                }"
 
   smoke_job_msedge_headless:
@@ -205,21 +207,22 @@ jobs:
           fail_percentage=$(awk "BEGIN {print ($failed_count/$total_count)*100}")
           
           # Construct message with emojis and formatting for better readability
-          content="----------------------------------------\n\n"
-          content="🚀 **JOB: ${{ github.job }}** 🚀\n\n"
-          content="🚀 **User: ${{ github.actor }}** 🚀\n\n"
-          content+="🎉 **Passed**: ${passed_count}\n"
-          content+="❌ **Failed**: ${failed_count}\n"
-          content+="⚠️ **Skipped**: ${skipped_count}\n"
-          content+="📊 **Total**: ${total_count}\n\n"
-          content+="✅ **Pass %**: ${pass_percentage}%\n"
-          content+="❌ **Fail %**: ${fail_percentage}%\n\n"
-          content="----------------------------------------\n\n"
+          discord_message="
+          🎉 **Test Execution Summary** 🎉
+          \n🛠️**Job**: ${{ github.job }}
+          \n👤**User**: ${{ github.actor }}
+          \n✔️ **Passed**: ${passed_count}
+          \n❌ **Failed**: ${failed_count}
+          \n🚫 **Skipped**: ${skipped_count}
+          \n📊 **Total**: ${total_count}
+          \n✅ **Pass %**: ${pass_percentage}%
+          \n❌ **Fail %**: ${fail_percentage}%
+          "
           curl --location "$DISCORD_WEBHOOK_URL" \
                --header 'Content-Type: application/json' \
                --data-raw "{
-                   \"content\": \"$content\",
-                   \"username\": \"TestBot\"
+                  "content": "'"${discord_message}"'",
+                   "username": "TestBot"
                }"
 
   regression_job_chrome_headless:
@@ -260,21 +263,22 @@ jobs:
           fail_percentage=$(awk "BEGIN {print ($failed_count/$total_count)*100}")
           
           # Construct message with emojis and formatting for better readability
-          content="----------------------------------------\n\n"
-          content="🚀 **JOB: ${{ github.job }}** 🚀\n\n"
-          content="🚀 **User: ${{ github.actor }}** 🚀\n\n"
-          content+="🎉 **Passed**: ${passed_count}\n"
-          content+="❌ **Failed**: ${failed_count}\n"
-          content+="⚠️ **Skipped**: ${skipped_count}\n"
-          content+="📊 **Total**: ${total_count}\n\n"
-          content+="✅ **Pass %**: ${pass_percentage}%\n"
-          content+="❌ **Fail %**: ${fail_percentage}%\n\n"
-          content="----------------------------------------\n\n"
+          discord_message="
+          🎉 **Test Execution Summary** 🎉
+          \n🛠️**Job**: ${{ github.job }}
+          \n👤**User**: ${{ github.actor }}
+          \n✔️ **Passed**: ${passed_count}
+          \n❌ **Failed**: ${failed_count}
+          \n🚫 **Skipped**: ${skipped_count}
+          \n📊 **Total**: ${total_count}
+          \n✅ **Pass %**: ${pass_percentage}%
+          \n❌ **Fail %**: ${fail_percentage}%
+          "
           curl --location "$DISCORD_WEBHOOK_URL" \
                --header 'Content-Type: application/json' \
                --data-raw "{
-                   \"content\": \"$content\",
-                   \"username\": \"TestBot\"
+                  "content": "'"${discord_message}"'",
+                   "username": "TestBot"
                }"
 
   regression_job_firefox_headless:
@@ -315,21 +319,22 @@ jobs:
           fail_percentage=$(awk "BEGIN {print ($failed_count/$total_count)*100}")
           
           # Construct message with emojis and formatting for better readability
-          content="----------------------------------------\n\n"
-          content="🚀 **JOB: ${{ github.job }}** 🚀\n\n"
-          content="🚀 **User: ${{ github.actor }}** 🚀\n\n"
-          content+="🎉 **Passed**: ${passed_count}\n"
-          content+="❌ **Failed**: ${failed_count}\n"
-          content+="⚠️ **Skipped**: ${skipped_count}\n"
-          content+="📊 **Total**: ${total_count}\n\n"
-          content+="✅ **Pass %**: ${pass_percentage}%\n"
-          content+="❌ **Fail %**: ${fail_percentage}%\n\n"
-          content="----------------------------------------\n\n"
+          discord_message="
+          🎉 **Test Execution Summary** 🎉
+          \n🛠️**Job**: ${{ github.job }}
+          \n👤**User**: ${{ github.actor }}
+          \n✔️ **Passed**: ${passed_count}
+          \n❌ **Failed**: ${failed_count}
+          \n🚫 **Skipped**: ${skipped_count}
+          \n📊 **Total**: ${total_count}
+          \n✅ **Pass %**: ${pass_percentage}%
+          \n❌ **Fail %**: ${fail_percentage}%
+          "
           curl --location "$DISCORD_WEBHOOK_URL" \
                --header 'Content-Type: application/json' \
                --data-raw "{
-                   \"content\": \"$content\",
-                   \"username\": \"TestBot\"
+                  "content": "'"${discord_message}"'",
+                   "username": "TestBot"
                }"
 
   regression_job_msedge_headless:
@@ -370,21 +375,22 @@ jobs:
           fail_percentage=$(awk "BEGIN {print ($failed_count/$total_count)*100}")
           
           # Construct message with emojis and formatting for better readability
-          content="----------------------------------------\n\n"
-          content="🚀 **JOB: ${{ github.job }}** 🚀\n\n"
-          content="🚀 **User: ${{ github.actor }}** 🚀\n\n"
-          content+="🎉 **Passed**: ${passed_count}\n"
-          content+="❌ **Failed**: ${failed_count}\n"
-          content+="⚠️ **Skipped**: ${skipped_count}\n"
-          content+="📊 **Total**: ${total_count}\n\n"
-          content+="✅ **Pass %**: ${pass_percentage}%\n"
-          content+="❌ **Fail %**: ${fail_percentage}%\n\n"
-          content="----------------------------------------\n\n"
+          discord_message="
+          🎉 **Test Execution Summary** 🎉
+          \n🛠️**Job**: ${{ github.job }}
+          \n👤**User**: ${{ github.actor }}
+          \n✔️ **Passed**: ${passed_count}
+          \n❌ **Failed**: ${failed_count}
+          \n🚫 **Skipped**: ${skipped_count}
+          \n📊 **Total**: ${total_count}
+          \n✅ **Pass %**: ${pass_percentage}%
+          \n❌ **Fail %**: ${fail_percentage}%
+          "
           curl --location "$DISCORD_WEBHOOK_URL" \
                --header 'Content-Type: application/json' \
                --data-raw "{
-                   \"content\": \"$content\",
-                   \"username\": \"TestBot\"
+                  "content": "'"${discord_message}"'",
+                   "username": "TestBot"
                }"
 
   E2E_job_chrome_headless:
@@ -427,21 +433,22 @@ jobs:
           fail_percentage=$(awk "BEGIN {print ($failed_count/$total_count)*100}")
           
           # Construct message with emojis and formatting for better readability
-          content="----------------------------------------\n\n"
-          content="🚀 **JOB: ${{ github.job }}** 🚀\n\n"
-          content="🚀 **User: ${{ github.actor }}** 🚀\n\n"
-          content+="🎉 **Passed**: ${passed_count}\n"
-          content+="❌ **Failed**: ${failed_count}\n"
-          content+="⚠️ **Skipped**: ${skipped_count}\n"
-          content+="📊 **Total**: ${total_count}\n\n"
-          content+="✅ **Pass %**: ${pass_percentage}%\n"
-          content+="❌ **Fail %**: ${fail_percentage}%\n\n"
-          content="----------------------------------------\n\n"
+          discord_message="
+          🎉 **Test Execution Summary** 🎉
+          \n🛠️**Job**: ${{ github.job }}
+          \n👤**User**: ${{ github.actor }}
+          \n✔️ **Passed**: ${passed_count}
+          \n❌ **Failed**: ${failed_count}
+          \n🚫 **Skipped**: ${skipped_count}
+          \n📊 **Total**: ${total_count}
+          \n✅ **Pass %**: ${pass_percentage}%
+          \n❌ **Fail %**: ${fail_percentage}%
+          "
           curl --location "$DISCORD_WEBHOOK_URL" \
                --header 'Content-Type: application/json' \
                --data-raw "{
-                   \"content\": \"$content\",
-                   \"username\": \"TestBot\"
+                  "content": "'"${discord_message}"'",
+                   "username": "TestBot"
                }"
 
   E2E_job_firefox_headless:
@@ -484,21 +491,22 @@ jobs:
           fail_percentage=$(awk "BEGIN {print ($failed_count/$total_count)*100}")
           
           # Construct message with emojis and formatting for better readability
-          content="----------------------------------------\n\n"
-          content="🚀 **JOB: ${{ github.job }}** 🚀\n\n"
-          content="🚀 **User: ${{ github.actor }}** 🚀\n\n"
-          content+="🎉 **Passed**: ${passed_count}\n"
-          content+="❌ **Failed**: ${failed_count}\n"
-          content+="⚠️ **Skipped**: ${skipped_count}\n"
-          content+="📊 **Total**: ${total_count}\n\n"
-          content+="✅ **Pass %**: ${pass_percentage}%\n"
-          content+="❌ **Fail %**: ${fail_percentage}%\n\n"
-          content="----------------------------------------\n\n"
+          discord_message="
+          🎉 **Test Execution Summary** 🎉
+          \n🛠️**Job**: ${{ github.job }}
+          \n👤**User**: ${{ github.actor }}
+          \n✔️ **Passed**: ${passed_count}
+          \n❌ **Failed**: ${failed_count}
+          \n🚫 **Skipped**: ${skipped_count}
+          \n📊 **Total**: ${total_count}
+          \n✅ **Pass %**: ${pass_percentage}%
+          \n❌ **Fail %**: ${fail_percentage}%
+          "
           curl --location "$DISCORD_WEBHOOK_URL" \
                --header 'Content-Type: application/json' \
                --data-raw "{
-                   \"content\": \"$content\",
-                   \"username\": \"TestBot\"
+                  "content": "'"${discord_message}"'",
+                   "username": "TestBot"
                }"
 
   E2E_job_msedge_headless:
@@ -541,19 +549,20 @@ jobs:
           fail_percentage=$(awk "BEGIN {print ($failed_count/$total_count)*100}")
           
           # Construct message with emojis and formatting for better readability
-          content="----------------------------------------\n\n"
-          content="🚀 **JOB: ${{ github.job }}** 🚀\n\n"
-          content="🚀 **User: ${{ github.actor }}** 🚀\n\n"
-          content+="🎉 **Passed**: ${passed_count}\n"
-          content+="❌ **Failed**: ${failed_count}\n"
-          content+="⚠️ **Skipped**: ${skipped_count}\n"
-          content+="📊 **Total**: ${total_count}\n\n"
-          content+="✅ **Pass %**: ${pass_percentage}%\n"
-          content+="❌ **Fail %**: ${fail_percentage}%\n\n"
-          content="----------------------------------------\n\n"
+          discord_message="
+          🎉 **Test Execution Summary** 🎉
+          \n🛠️**Job**: ${{ github.job }}
+          \n👤**User**: ${{ github.actor }}
+          \n✔️ **Passed**: ${passed_count}
+          \n❌ **Failed**: ${failed_count}
+          \n🚫 **Skipped**: ${skipped_count}
+          \n📊 **Total**: ${total_count}
+          \n✅ **Pass %**: ${pass_percentage}%
+          \n❌ **Fail %**: ${fail_percentage}%
+          "
           curl --location "$DISCORD_WEBHOOK_URL" \
                --header 'Content-Type: application/json' \
                --data-raw "{
-                   \"content\": \"$content\",
-                   \"username\": \"TestBot\"
+                  "content": "'"${discord_message}"'",
+                   "username": "TestBot"
                }"
