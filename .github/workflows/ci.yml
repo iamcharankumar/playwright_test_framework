@@ -47,11 +47,13 @@ jobs:
             ${{ github.workspace }}/target
             ${{ github.workspace }}/reports
 
-  smoke_job_chrome_headless:
-    name: Smoke Tests Chrome Headless
+  smoke_test:
+    name: Smoke Tests
+    needs: build_and_test
     runs-on: ubuntu-latest
-    needs:
-      - build_and_test
+    strategy:
+      matrix:
+        browser: [ chrome, firefox, msedge ]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -66,15 +68,11 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: target
+          name: build-output
 
-      - name: Run Smoke Tests (Chrome)
-        run: mvn clean test -Drunmode=headless -Dbrowser=chrome -Dgroups=SWAG_LABS_SMOKE -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3
+      - name: Run Smoke Tests
+        run: mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} -Dgroups=SWAG_LABS_SMOKE -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3
 
-      - name: Verify Report Directory
-        run: ls target/surefire-reports || echo "Report directory not found"
-
-      # Generate test summary report
       - name: Generate Test Summary
         uses: test-summary/action@v2
         id: summary
@@ -82,11 +80,10 @@ jobs:
           paths: "target/surefire-reports/TEST-*.xml" # Path to the test report files
         if: always()
 
-      - name: Send Smoke Tests (Chrome) Results to Discord
+      - name: Send Smoke Test Results to Discord
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
-          # Get test metrics from `test-summary` output
           passed_count="${{ steps.summary.outputs.passed }}"
           failed_count="${{ steps.summary.outputs.failed }}"
           skipped_count="${{ steps.summary.outputs.skipped }}"
@@ -94,29 +91,21 @@ jobs:
           pass_percentage=$(awk "BEGIN {print ($passed_count/$total_count)*100}")
           fail_percentage=$(awk "BEGIN {print ($failed_count/$total_count)*100}")
           
-          # Construct message with emojis and formatting for better readability
-          content="🚀 **Test Summary** 🚀\n\n"
-          content+="🛠️ **Job: ${{ github.job }}**\n"
-          content+="👤 **User: ${{ github.actor }}**\n"
-          content+="🎉 **Passed**: ${passed_count}\n"
-          content+="❌ **Failed**: ${failed_count}\n"
-          content+="⚠️ **Skipped**: ${skipped_count}\n"
-          content+="📊 **Total**: ${total_count}\n\n"
-          content+="✅ **Pass %**: ${pass_percentage}%\n"
-          content+="❌ **Fail %**: ${fail_percentage}%\n\n"
+          content="🚀 **Smoke Test Summary for ${matrix.browser}** 🚀\n"
+          content+="🎉 **Passed**: ${passed_count}\n❌ **Failed**: ${failed_count}\n⚠️ **Skipped**: ${skipped_count}\n📊 **Total**: ${total_count}\n"
+          content+="✅ **Pass %**: ${pass_percentage}% ❌ **Fail %**: ${fail_percentage}%\n"
+          
           curl --location "$DISCORD_WEBHOOK_URL" \
                --header 'Content-Type: application/json' \
-               --data-raw "{
-                   \"content\": \"$content\",
-                   \"username\": \"TestBot\"
-               }"
+               --data-raw "{\"content\": \"$content\", \"username\": \"TestBot\"}"
 
-  smoke_job_firefox_headless:
-    name: Smoke Tests Firefox Headless
+  regression_test:
+    name: Regression Tests
+    needs: build_and_test
     runs-on: ubuntu-latest
-    needs:
-      - build_and_test
-
+    strategy:
+      matrix:
+        browser: [ chrome, firefox, msedge ]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -131,46 +120,47 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: target
+          name: build-output
 
-      - name: Run Smoke Tests (Firefox)
-        run: mvn clean test -Drunmode=headless -Dbrowser=firefox -Dgroups=SWAG_LABS_SMOKE -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3
+      - name: Run Regression Tests
+        run: mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} -Dgroups=SWAG_LABS_REGRESSION -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3
 
-      - name: Send Smoke Tests (Firefox) Results to Discord
+      - name: Generate Test Summary
+        uses: test-summary/action@v2
+        id: summary
+        with:
+          paths: "target/surefire-reports/TEST-*.xml" # Path to the test report files
+        if: always()
+
+      - name: Send Regression Test Results to Discord
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
-          # Get test metrics from `test-summary` output
           passed_count="${{ steps.summary.outputs.passed }}"
           failed_count="${{ steps.summary.outputs.failed }}"
           skipped_count="${{ steps.summary.outputs.skipped }}"
           total_count="${{ steps.summary.outputs.total }}"
           pass_percentage=$(awk "BEGIN {print ($passed_count/$total_count)*100}")
           fail_percentage=$(awk "BEGIN {print ($failed_count/$total_count)*100}")
-          
-          # Construct message with emojis and formatting for better readability
-          content="🚀 **Test Summary** 🚀\n\n"
-          content+="🛠️ **Job: ${{ github.job }}**\n"
-          content+="👤 **User: ${{ github.actor }}**\n"
-          content+="🎉 **Passed**: ${passed_count}\n"
-          content+="❌ **Failed**: ${failed_count}\n"
-          content+="⚠️ **Skipped**: ${skipped_count}\n"
-          content+="📊 **Total**: ${total_count}\n\n"
-          content+="✅ **Pass %**: ${pass_percentage}%\n"
-          content+="❌ **Fail %**: ${fail_percentage}%\n\n"
+
+          content="🚀 **Smoke Test Summary for ${matrix.browser}** 🚀\n"
+          content+="🎉 **Passed**: ${passed_count}\n❌ **Failed**: ${failed_count}\n⚠️ **Skipped**: ${skipped_count}\n📊 **Total**: ${total_count}\n"
+          content+="✅ **Pass %**: ${pass_percentage}% ❌ **Fail %**: ${fail_percentage}%\n"
+
           curl --location "$DISCORD_WEBHOOK_URL" \
                --header 'Content-Type: application/json' \
-               --data-raw "{
-                   \"content\": \"$content\",
-                   \"username\": \"TestBot\"
-               }"
+               --data-raw "{\"content\": \"$content\", \"username\": \"TestBot\"}"
 
-  smoke_job_msedge_headless:
-    name: Smoke Tests MS Edge Headless
-    runs-on: ubuntu-latest
+  e2e_test:
+    name: E2E Tests
     needs:
-      - build_and_test
-
+    - build_and_test
+    - smoke_test
+    - regression_test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        browser: [ chrome, firefox, msedge ]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -185,366 +175,33 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: target
+          name: build-output
 
-      - name: Run Smoke Tests (MS Edge)
-        run: mvn clean test -Drunmode=headless -Dbrowser=msedge -Dgroups=SWAG_LABS_SMOKE -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3
+      - name: Run Regression Tests
+        run: mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} -Dgroups=SWAG_LABS_E2E -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3
 
-      - name: Send Smoke Tests (MS Edge) Results to Discord
+      - name: Generate Test Summary
+        uses: test-summary/action@v2
+        id: summary
+        with:
+          paths: "target/surefire-reports/TEST-*.xml" # Path to the test report files
+        if: always()
+
+      - name: Send E2E Test Results to Discord
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
-          # Get test metrics from `test-summary` output
           passed_count="${{ steps.summary.outputs.passed }}"
           failed_count="${{ steps.summary.outputs.failed }}"
           skipped_count="${{ steps.summary.outputs.skipped }}"
           total_count="${{ steps.summary.outputs.total }}"
           pass_percentage=$(awk "BEGIN {print ($passed_count/$total_count)*100}")
           fail_percentage=$(awk "BEGIN {print ($failed_count/$total_count)*100}")
-          
-          # Construct message with emojis and formatting for better readability
-          content="🚀 **Test Summary** 🚀\n\n"
-          content+="🛠️ **Job: ${{ github.job }}**\n"
-          content+="👤 **User: ${{ github.actor }}**\n"
-          content+="🎉 **Passed**: ${passed_count}\n"
-          content+="❌ **Failed**: ${failed_count}\n"
-          content+="⚠️ **Skipped**: ${skipped_count}\n"
-          content+="📊 **Total**: ${total_count}\n\n"
-          content+="✅ **Pass %**: ${pass_percentage}%\n"
-          content+="❌ **Fail %**: ${fail_percentage}%\n\n"
+
+          content="🚀 **Smoke Test Summary for ${matrix.browser}** 🚀\n"
+          content+="🎉 **Passed**: ${passed_count}\n❌ **Failed**: ${failed_count}\n⚠️ **Skipped**: ${skipped_count}\n📊 **Total**: ${total_count}\n"
+          content+="✅ **Pass %**: ${pass_percentage}% ❌ **Fail %**: ${fail_percentage}%\n"
+
           curl --location "$DISCORD_WEBHOOK_URL" \
                --header 'Content-Type: application/json' \
-               --data-raw "{
-                   \"content\": \"$content\",
-                   \"username\": \"TestBot\"
-               }"
-
-  regression_job_chrome_headless:
-    name: Regression Tests Chrome Headless
-    runs-on: ubuntu-latest
-    needs:
-      - build_and_test
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Java and Maven
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'adopt'
-          cache: maven
-
-      - name: Download Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: target
-
-      - name: Run Regression Tests (Chrome)
-        run: mvn clean test -Drunmode=headless -Dbrowser=chrome -Dgroups=SWAG_LABS_REGRESSION -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3
-
-      - name: Send Regression Tests (Chrome) Results to Discord
-        env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        run: |
-          # Get test metrics from `test-summary` output
-          passed_count="${{ steps.summary.outputs.passed }}"
-          failed_count="${{ steps.summary.outputs.failed }}"
-          skipped_count="${{ steps.summary.outputs.skipped }}"
-          total_count="${{ steps.summary.outputs.total }}"
-          pass_percentage=$(awk "BEGIN {print ($passed_count/$total_count)*100}")
-          fail_percentage=$(awk "BEGIN {print ($failed_count/$total_count)*100}")
-          
-          # Construct message with emojis and formatting for better readability
-          content="🚀 **Test Summary** 🚀\n\n"
-          content+="🛠️ **Job: ${{ github.job }}**\n"
-          content+="👤 **User: ${{ github.actor }}**\n"
-          content+="🎉 **Passed**: ${passed_count}\n"
-          content+="❌ **Failed**: ${failed_count}\n"
-          content+="⚠️ **Skipped**: ${skipped_count}\n"
-          content+="📊 **Total**: ${total_count}\n\n"
-          content+="✅ **Pass %**: ${pass_percentage}%\n"
-          content+="❌ **Fail %**: ${fail_percentage}%\n\n"
-          curl --location "$DISCORD_WEBHOOK_URL" \
-               --header 'Content-Type: application/json' \
-               --data-raw "{
-                   \"content\": \"$content\",
-                   \"username\": \"TestBot\"
-               }"
-
-  regression_job_firefox_headless:
-    name: Regression Tests Firefox Headless
-    runs-on: ubuntu-latest
-    needs:
-      - build_and_test
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Java and Maven
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'adopt'
-          cache: maven
-
-      - name: Download Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: target
-
-      - name: Run Regression Tests (Firefox)
-        run: mvn clean test -Drunmode=headless -Dbrowser=firefox -Dgroups=SWAG_LABS_REGRESSION -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3
-
-      - name: Send Regression Tests (Firefox) Results to Discord
-        env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        run: |
-          # Get test metrics from `test-summary` output
-          passed_count="${{ steps.summary.outputs.passed }}"
-          failed_count="${{ steps.summary.outputs.failed }}"
-          skipped_count="${{ steps.summary.outputs.skipped }}"
-          total_count="${{ steps.summary.outputs.total }}"
-          pass_percentage=$(awk "BEGIN {print ($passed_count/$total_count)*100}")
-          fail_percentage=$(awk "BEGIN {print ($failed_count/$total_count)*100}")
-          
-          # Construct message with emojis and formatting for better readability
-          content="🚀 **Test Summary** 🚀\n\n"
-          content+="🛠️ **Job: ${{ github.job }}**\n"
-          content+="👤 **User: ${{ github.actor }}**\n"
-          content+="🎉 **Passed**: ${passed_count}\n"
-          content+="❌ **Failed**: ${failed_count}\n"
-          content+="⚠️ **Skipped**: ${skipped_count}\n"
-          content+="📊 **Total**: ${total_count}\n\n"
-          content+="✅ **Pass %**: ${pass_percentage}%\n"
-          content+="❌ **Fail %**: ${fail_percentage}%\n\n"
-          curl --location "$DISCORD_WEBHOOK_URL" \
-               --header 'Content-Type: application/json' \
-               --data-raw "{
-                   \"content\": \"$content\",
-                   \"username\": \"TestBot\"
-               }"
-
-  regression_job_msedge_headless:
-    name: Regression Tests MS Edge Headless
-    runs-on: ubuntu-latest
-    needs:
-      - build_and_test
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Java and Maven
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'adopt'
-          cache: maven
-
-      - name: Download Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: target
-
-      - name: Run Regression Tests (MS Edge)
-        run: mvn clean test -Drunmode=headless -Dbrowser=msedge -Dgroups=SWAG_LABS_REGRESSION -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3
-
-      - name: Send Regression Tests (MS Edge) Results to Discord
-        env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        run: |
-          # Get test metrics from `test-summary` output
-          passed_count="${{ steps.summary.outputs.passed }}"
-          failed_count="${{ steps.summary.outputs.failed }}"
-          skipped_count="${{ steps.summary.outputs.skipped }}"
-          total_count="${{ steps.summary.outputs.total }}"
-          pass_percentage=$(awk "BEGIN {print ($passed_count/$total_count)*100}")
-          fail_percentage=$(awk "BEGIN {print ($failed_count/$total_count)*100}")
-          
-          # Construct message with emojis and formatting for better readability
-          content="🚀 **Test Summary** 🚀\n\n"
-          content+="🛠️ **Job: ${{ github.job }}**\n"
-          content+="👤 **User: ${{ github.actor }}**\n"
-          content+="🎉 **Passed**: ${passed_count}\n"
-          content+="❌ **Failed**: ${failed_count}\n"
-          content+="⚠️ **Skipped**: ${skipped_count}\n"
-          content+="📊 **Total**: ${total_count}\n\n"
-          content+="✅ **Pass %**: ${pass_percentage}%\n"
-          content+="❌ **Fail %**: ${fail_percentage}%\n\n"
-          curl --location "$DISCORD_WEBHOOK_URL" \
-               --header 'Content-Type: application/json' \
-               --data-raw "{
-                   \"content\": \"$content\",
-                   \"username\": \"TestBot\"
-               }"
-
-  E2E_job_chrome_headless:
-    name: E2E Tests Chrome Headless
-    runs-on: ubuntu-latest
-    needs:
-      - build_and_test
-      - smoke_job_chrome_headless
-      - regression_job_chrome_headless
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Java and Maven
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'adopt'
-          cache: maven
-
-      - name: Download Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: target
-
-      - name: Run E2E Tests (Chrome)
-        run: mvn clean test -Drunmode=headless -Dbrowser=chrome -Dgroups=SWAG_LABS_E2E -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3
-
-      - name: Send E2E Tests (Chrome) Results to Discord
-        env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        run: |
-          # Get test metrics from `test-summary` output
-          passed_count="${{ steps.summary.outputs.passed }}"
-          failed_count="${{ steps.summary.outputs.failed }}"
-          skipped_count="${{ steps.summary.outputs.skipped }}"
-          total_count="${{ steps.summary.outputs.total }}"
-          pass_percentage=$(awk "BEGIN {print ($passed_count/$total_count)*100}")
-          fail_percentage=$(awk "BEGIN {print ($failed_count/$total_count)*100}")
-          
-          # Construct message with emojis and formatting for better readability
-          content="🚀 **Test Summary** 🚀\n\n"
-          content+="🛠️ **Job: ${{ github.job }}**\n"
-          content+="👤 **User: ${{ github.actor }}**\n"
-          content+="🎉 **Passed**: ${passed_count}\n"
-          content+="❌ **Failed**: ${failed_count}\n"
-          content+="⚠️ **Skipped**: ${skipped_count}\n"
-          content+="📊 **Total**: ${total_count}\n\n"
-          content+="✅ **Pass %**: ${pass_percentage}%\n"
-          content+="❌ **Fail %**: ${fail_percentage}%\n\n"
-          curl --location "$DISCORD_WEBHOOK_URL" \
-               --header 'Content-Type: application/json' \
-               --data-raw "{
-                   \"content\": \"$content\",
-                   \"username\": \"TestBot\"
-               }"
-
-  E2E_job_firefox_headless:
-    name: E2E Tests Firefox Headless
-    runs-on: ubuntu-latest
-    needs:
-      - build_and_test
-      - smoke_job_firefox_headless
-      - regression_job_firefox_headless
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Java and Maven
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'adopt'
-          cache: maven
-
-      - name: Download Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: target
-
-      - name: Run E2E Tests (Firefox)
-        run: mvn clean test -Drunmode=headless -Dbrowser=firefox -Dgroups=SWAG_LABS_E2E -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3
-
-      - name: Send E2E Tests (Firefox) Results to Discord
-        env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        run: |
-          # Get test metrics from `test-summary` output
-          passed_count="${{ steps.summary.outputs.passed }}"
-          failed_count="${{ steps.summary.outputs.failed }}"
-          skipped_count="${{ steps.summary.outputs.skipped }}"
-          total_count="${{ steps.summary.outputs.total }}"
-          pass_percentage=$(awk "BEGIN {print ($passed_count/$total_count)*100}")
-          fail_percentage=$(awk "BEGIN {print ($failed_count/$total_count)*100}")
-          
-          # Construct message with emojis and formatting for better readability
-          content="🚀 **Test Summary** 🚀\n\n"
-          content+="🛠️ **Job: ${{ github.job }}**\n"
-          content+="👤 **User: ${{ github.actor }}**\n"
-          content+="🎉 **Passed**: ${passed_count}\n"
-          content+="❌ **Failed**: ${failed_count}\n"
-          content+="⚠️ **Skipped**: ${skipped_count}\n"
-          content+="📊 **Total**: ${total_count}\n\n"
-          content+="✅ **Pass %**: ${pass_percentage}%\n"
-          content+="❌ **Fail %**: ${fail_percentage}%\n\n"
-          curl --location "$DISCORD_WEBHOOK_URL" \
-               --header 'Content-Type: application/json' \
-               --data-raw "{
-                   \"content\": \"$content\",
-                   \"username\": \"TestBot\"
-               }"
-
-  E2E_job_msedge_headless:
-    name: E2E Tests MS Edge Headless
-    runs-on: ubuntu-latest
-    needs:
-      - build_and_test
-      - smoke_job_msedge_headless
-      - regression_job_msedge_headless
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Java and Maven
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'adopt'
-          cache: maven
-
-      - name: Download Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: target
-
-      - name: Run E2E Tests (MS Edge)
-        run: mvn clean test -Drunmode=headless -Dbrowser=msedge -Dgroups=SWAG_LABS_E2E -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3
-
-      - name: Send E2E Tests (MS Edge) Results to Discord
-        env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        run: |
-          # Get test metrics from `test-summary` output
-          passed_count="${{ steps.summary.outputs.passed }}"
-          failed_count="${{ steps.summary.outputs.failed }}"
-          skipped_count="${{ steps.summary.outputs.skipped }}"
-          total_count="${{ steps.summary.outputs.total }}"
-          pass_percentage=$(awk "BEGIN {print ($passed_count/$total_count)*100}")
-          fail_percentage=$(awk "BEGIN {print ($failed_count/$total_count)*100}")
-          
-          # Construct message with emojis and formatting for better readability
-          content="🚀 **Test Summary** 🚀\n\n"
-          content+="🛠️ **Job: ${{ github.job }}**\n"
-          content+="👤 **User: ${{ github.actor }}**\n"
-          content+="🎉 **Passed**: ${passed_count}\n"
-          content+="❌ **Failed**: ${failed_count}\n"
-          content+="⚠️ **Skipped**: ${skipped_count}\n"
-          content+="📊 **Total**: ${total_count}\n\n"
-          content+="✅ **Pass %**: ${pass_percentage}%\n"
-          content+="❌ **Fail %**: ${fail_percentage}%\n\n"
-          curl --location "$DISCORD_WEBHOOK_URL" \
-               --header 'Content-Type: application/json' \
-               --data-raw "{
-                   \"content\": \"$content\",
-                   \"username\": \"TestBot\"
-               }"
+               --data-raw "{\"content\": \"$content\", \"username\": \"TestBot\"}"
