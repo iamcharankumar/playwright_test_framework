@@ -79,7 +79,8 @@ jobs:
         uses: test-summary/action@v2
         id: summary
         with:
-          paths: target/surefire-reports # Path to the test report files
+          paths: "target/surefire-reports/TEST-*.xml" # Path to the test report files
+        if: always()
 
       - name: Send Smoke Tests (Chrome) Results to Discord
         env:
