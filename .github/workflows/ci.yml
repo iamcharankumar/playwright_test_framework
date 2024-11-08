@@ -47,8 +47,8 @@ jobs:
             ${{ github.workspace }}/target
             ${{ github.workspace }}/reports
 
-  run_tests:
-    name: Run Tests
+  smoke_regression_tests:
+    name: Run Smoke & Regression Tests
     runs-on: ubuntu-latest
     needs: build_and_test
     strategy:
@@ -71,7 +71,7 @@ jobs:
         with:
           name: target
 
-      - name: Run Tests
+      - name: Run Tests for ${{ matrix.browser }} - ${{ matrix.test_group }}
         run: |
           mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
                          -Dgroups=${{ matrix.test_group }} \
@@ -99,6 +99,76 @@ jobs:
           pass_percentage=$(awk "BEGIN {print ($passed/$total)*100}")
           fail_percentage=$(awk "BEGIN {print ($failed/$total)*100}")
           
+          content="🚀 **Test Summary** 🚀\n\n"
+          content+="🛠️ **Job: ${{ github.job }}**\n"
+          content+="👤 **User: ${{ github.actor }}**\n"
+          content+="🎉 **Passed**: ${passed}\n"
+          content+="❌ **Failed**: ${failed}\n"
+          content+="⚠️ **Skipped**: ${skipped}\n"
+          content+="📊 **Total**: ${total}\n\n"
+          content+="✅ **Pass %**: ${pass_percentage}%\n"
+          content+="❌ **Fail %**: ${fail_percentage}%\n\n"
+          curl --location "$DISCORD_WEBHOOK_URL" \
+               --header 'Content-Type: application/json' \
+               --data-raw "{
+                   \"content\": \"$content\",
+                   \"username\": \"TestBot\"
+               }"
+
+  e2e_tests:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    needs:
+      - build_and_test
+      - smoke_regression_tests
+    strategy:
+      matrix:
+        browser: [ chrome, firefox, msedge ]
+        test_group: [ SWAG_LABS_E2E ]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java and Maven
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          cache: maven
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: target
+
+      - name: Run E2E Tests for ${{ matrix.browser }}
+        run: |
+          mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
+                         -Dgroups=${{ matrix.test_group }} \
+                         -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3
+
+      - name: Verify Report Directory
+        run: ls target/surefire-reports || echo "Report directory not found"
+
+      - name: Generate Test Summary
+        uses: test-summary/action@v2
+        id: summary
+        with:
+          paths: "target/surefire-reports/TEST-*.xml"
+        if: always()
+
+      - name: Send Results to Discord
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          # Gather metrics from test-summary output
+          passed="${{ steps.summary.outputs.passed }}"
+          failed="${{ steps.summary.outputs.failed }}"
+          skipped="${{ steps.summary.outputs.skipped }}"
+          total="${{ steps.summary.outputs.total }}"
+          pass_percentage=$(awk "BEGIN {print ($passed/$total)*100}")
+          fail_percentage=$(awk "BEGIN {print ($failed/$total)*100}")
+
           content="🚀 **Test Summary** 🚀\n\n"
           content+="🛠️ **Job: ${{ github.job }}**\n"
           content+="👤 **User: ${{ github.actor }}**\n"
