@@ -95,15 +95,16 @@ jobs:
           fail_percentage=$(awk "BEGIN {print ($failed_count/$total_count)*100}")
           
           # Construct message with emojis and formatting for better readability
-          content="🚀 **Test Summary** 🚀\n\n"
+          content="----------------------------------------\n\n"
           content="🚀 **JOB: ${{ github.job }}** 🚀\n\n"
-          content="🚀 **JOB: ${{ github.actor }}** 🚀\n\n"
+          content="🚀 **User: ${{ github.actor }}** 🚀\n\n"
           content+="🎉 **Passed**: ${passed_count}\n"
           content+="❌ **Failed**: ${failed_count}\n"
           content+="⚠️ **Skipped**: ${skipped_count}\n"
           content+="📊 **Total**: ${total_count}\n\n"
           content+="✅ **Pass %**: ${pass_percentage}%\n"
           content+="❌ **Fail %**: ${fail_percentage}%\n\n"
+          content="----------------------------------------\n\n"
           curl --location "$DISCORD_WEBHOOK_URL" \
                --header 'Content-Type: application/json' \
                --data-raw "{
@@ -140,22 +141,25 @@ jobs:
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
-          passed="${{ steps.test_summary.outputs.passed }}/${{ steps.test_summary.outputs.total }}"
-          failed="${{ steps.test_summary.outputs.failed }}/${{ steps.test_summary.outputs.total }}"
-          skipped="${{ steps.test_summary.outputs.skipped }}/${{ steps.test_summary.outputs.total }}"
-          total="${{ steps.test_summary.outputs.total }}"
+          # Get test metrics from `test-summary` output
+          passed_count="${{ steps.summary.outputs.passed }}"
+          failed_count="${{ steps.summary.outputs.failed }}"
+          skipped_count="${{ steps.summary.outputs.skipped }}"
+          total_count="${{ steps.summary.outputs.total }}"
+          pass_percentage=$(awk "BEGIN {print ($passed_count/$total_count)*100}")
+          fail_percentage=$(awk "BEGIN {print ($failed_count/$total_count)*100}")
           
-          pass_percent=$(( 100 * passed / total ))
-          fail_percent=$(( 100 * failed / total ))
-          
-          content="🚀 **Test Summary** 🚀\n\n"
+          # Construct message with emojis and formatting for better readability
+          content="----------------------------------------\n\n"
           content="🚀 **JOB: ${{ github.job }}** 🚀\n\n"
-          content+="🎉 **Passed**: $passed\n"
-          content+="❌ **Failed**: $failed\n"
-          content+="⚠️ **Skipped**: $skipped\n"
-          content+="📊 **Total**: $total\n\n"
-          content+="✅ **Pass %**: $pass_percent%\n"
-          content+="❌ **Fail %**: $fail_percent%\n\n"
+          content="🚀 **User: ${{ github.actor }}** 🚀\n\n"
+          content+="🎉 **Passed**: ${passed_count}\n"
+          content+="❌ **Failed**: ${failed_count}\n"
+          content+="⚠️ **Skipped**: ${skipped_count}\n"
+          content+="📊 **Total**: ${total_count}\n\n"
+          content+="✅ **Pass %**: ${pass_percentage}%\n"
+          content+="❌ **Fail %**: ${fail_percentage}%\n\n"
+          content="----------------------------------------\n\n"
           curl --location "$DISCORD_WEBHOOK_URL" \
                --header 'Content-Type: application/json' \
                --data-raw "{
@@ -192,22 +196,25 @@ jobs:
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
-          passed="${{ steps.test_summary.outputs.passed }}/${{ steps.test_summary.outputs.total }}"
-          failed="${{ steps.test_summary.outputs.failed }}/${{ steps.test_summary.outputs.total }}"
-          skipped="${{ steps.test_summary.outputs.skipped }}/${{ steps.test_summary.outputs.total }}"
-          total="${{ steps.test_summary.outputs.total }}"
+          # Get test metrics from `test-summary` output
+          passed_count="${{ steps.summary.outputs.passed }}"
+          failed_count="${{ steps.summary.outputs.failed }}"
+          skipped_count="${{ steps.summary.outputs.skipped }}"
+          total_count="${{ steps.summary.outputs.total }}"
+          pass_percentage=$(awk "BEGIN {print ($passed_count/$total_count)*100}")
+          fail_percentage=$(awk "BEGIN {print ($failed_count/$total_count)*100}")
           
-          pass_percent=$(( 100 * passed / total ))
-          fail_percent=$(( 100 * failed / total ))
-          
-          content="🚀 **Test Summary** 🚀\n\n"
+          # Construct message with emojis and formatting for better readability
+          content="----------------------------------------\n\n"
           content="🚀 **JOB: ${{ github.job }}** 🚀\n\n"
-          content+="🎉 **Passed**: $passed\n"
-          content+="❌ **Failed**: $failed\n"
-          content+="⚠️ **Skipped**: $skipped\n"
-          content+="📊 **Total**: $total\n\n"
-          content+="✅ **Pass %**: $pass_percent%\n"
-          content+="❌ **Fail %**: $fail_percent%\n\n"
+          content="🚀 **User: ${{ github.actor }}** 🚀\n\n"
+          content+="🎉 **Passed**: ${passed_count}\n"
+          content+="❌ **Failed**: ${failed_count}\n"
+          content+="⚠️ **Skipped**: ${skipped_count}\n"
+          content+="📊 **Total**: ${total_count}\n\n"
+          content+="✅ **Pass %**: ${pass_percentage}%\n"
+          content+="❌ **Fail %**: ${fail_percentage}%\n\n"
+          content="----------------------------------------\n\n"
           curl --location "$DISCORD_WEBHOOK_URL" \
                --header 'Content-Type: application/json' \
                --data-raw "{
@@ -244,22 +251,25 @@ jobs:
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
-          passed="${{ steps.test_summary.outputs.passed }}/${{ steps.test_summary.outputs.total }}"
-          failed="${{ steps.test_summary.outputs.failed }}/${{ steps.test_summary.outputs.total }}"
-          skipped="${{ steps.test_summary.outputs.skipped }}/${{ steps.test_summary.outputs.total }}"
-          total="${{ steps.test_summary.outputs.total }}"
+          # Get test metrics from `test-summary` output
+          passed_count="${{ steps.summary.outputs.passed }}"
+          failed_count="${{ steps.summary.outputs.failed }}"
+          skipped_count="${{ steps.summary.outputs.skipped }}"
+          total_count="${{ steps.summary.outputs.total }}"
+          pass_percentage=$(awk "BEGIN {print ($passed_count/$total_count)*100}")
+          fail_percentage=$(awk "BEGIN {print ($failed_count/$total_count)*100}")
           
-          pass_percent=$(( 100 * passed / total ))
-          fail_percent=$(( 100 * failed / total ))
-          
-          content="🚀 **Test Summary** 🚀\n\n"
+          # Construct message with emojis and formatting for better readability
+          content="----------------------------------------\n\n"
           content="🚀 **JOB: ${{ github.job }}** 🚀\n\n"
-          content+="🎉 **Passed**: $passed\n"
-          content+="❌ **Failed**: $failed\n"
-          content+="⚠️ **Skipped**: $skipped\n"
-          content+="📊 **Total**: $total\n\n"
-          content+="✅ **Pass %**: $pass_percent%\n"
-          content+="❌ **Fail %**: $fail_percent%\n\n"
+          content="🚀 **User: ${{ github.actor }}** 🚀\n\n"
+          content+="🎉 **Passed**: ${passed_count}\n"
+          content+="❌ **Failed**: ${failed_count}\n"
+          content+="⚠️ **Skipped**: ${skipped_count}\n"
+          content+="📊 **Total**: ${total_count}\n\n"
+          content+="✅ **Pass %**: ${pass_percentage}%\n"
+          content+="❌ **Fail %**: ${fail_percentage}%\n\n"
+          content="----------------------------------------\n\n"
           curl --location "$DISCORD_WEBHOOK_URL" \
                --header 'Content-Type: application/json' \
                --data-raw "{
@@ -296,22 +306,25 @@ jobs:
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
-          passed="${{ steps.test_summary.outputs.passed }}/${{ steps.test_summary.outputs.total }}"
-          failed="${{ steps.test_summary.outputs.failed }}/${{ steps.test_summary.outputs.total }}"
-          skipped="${{ steps.test_summary.outputs.skipped }}/${{ steps.test_summary.outputs.total }}"
-          total="${{ steps.test_summary.outputs.total }}"
+          # Get test metrics from `test-summary` output
+          passed_count="${{ steps.summary.outputs.passed }}"
+          failed_count="${{ steps.summary.outputs.failed }}"
+          skipped_count="${{ steps.summary.outputs.skipped }}"
+          total_count="${{ steps.summary.outputs.total }}"
+          pass_percentage=$(awk "BEGIN {print ($passed_count/$total_count)*100}")
+          fail_percentage=$(awk "BEGIN {print ($failed_count/$total_count)*100}")
           
-          pass_percent=$(( 100 * passed / total ))
-          fail_percent=$(( 100 * failed / total ))
-          
-          content="🚀 **Test Summary** 🚀\n\n"
+          # Construct message with emojis and formatting for better readability
+          content="----------------------------------------\n\n"
           content="🚀 **JOB: ${{ github.job }}** 🚀\n\n"
-          content+="🎉 **Passed**: $passed\n"
-          content+="❌ **Failed**: $failed\n"
-          content+="⚠️ **Skipped**: $skipped\n"
-          content+="📊 **Total**: $total\n\n"
-          content+="✅ **Pass %**: $pass_percent%\n"
-          content+="❌ **Fail %**: $fail_percent%\n\n"
+          content="🚀 **User: ${{ github.actor }}** 🚀\n\n"
+          content+="🎉 **Passed**: ${passed_count}\n"
+          content+="❌ **Failed**: ${failed_count}\n"
+          content+="⚠️ **Skipped**: ${skipped_count}\n"
+          content+="📊 **Total**: ${total_count}\n\n"
+          content+="✅ **Pass %**: ${pass_percentage}%\n"
+          content+="❌ **Fail %**: ${fail_percentage}%\n\n"
+          content="----------------------------------------\n\n"
           curl --location "$DISCORD_WEBHOOK_URL" \
                --header 'Content-Type: application/json' \
                --data-raw "{
@@ -348,22 +361,25 @@ jobs:
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
-          passed="${{ steps.test_summary.outputs.passed }}/${{ steps.test_summary.outputs.total }}"
-          failed="${{ steps.test_summary.outputs.failed }}/${{ steps.test_summary.outputs.total }}"
-          skipped="${{ steps.test_summary.outputs.skipped }}/${{ steps.test_summary.outputs.total }}"
-          total="${{ steps.test_summary.outputs.total }}"
+          # Get test metrics from `test-summary` output
+          passed_count="${{ steps.summary.outputs.passed }}"
+          failed_count="${{ steps.summary.outputs.failed }}"
+          skipped_count="${{ steps.summary.outputs.skipped }}"
+          total_count="${{ steps.summary.outputs.total }}"
+          pass_percentage=$(awk "BEGIN {print ($passed_count/$total_count)*100}")
+          fail_percentage=$(awk "BEGIN {print ($failed_count/$total_count)*100}")
           
-          pass_percent=$(( 100 * passed / total ))
-          fail_percent=$(( 100 * failed / total ))
-          
-          content="🚀 **Test Summary** 🚀\n\n"
+          # Construct message with emojis and formatting for better readability
+          content="----------------------------------------\n\n"
           content="🚀 **JOB: ${{ github.job }}** 🚀\n\n"
-          content+="🎉 **Passed**: $passed\n"
-          content+="❌ **Failed**: $failed\n"
-          content+="⚠️ **Skipped**: $skipped\n"
-          content+="📊 **Total**: $total\n\n"
-          content+="✅ **Pass %**: $pass_percent%\n"
-          content+="❌ **Fail %**: $fail_percent%\n\n"
+          content="🚀 **User: ${{ github.actor }}** 🚀\n\n"
+          content+="🎉 **Passed**: ${passed_count}\n"
+          content+="❌ **Failed**: ${failed_count}\n"
+          content+="⚠️ **Skipped**: ${skipped_count}\n"
+          content+="📊 **Total**: ${total_count}\n\n"
+          content+="✅ **Pass %**: ${pass_percentage}%\n"
+          content+="❌ **Fail %**: ${fail_percentage}%\n\n"
+          content="----------------------------------------\n\n"
           curl --location "$DISCORD_WEBHOOK_URL" \
                --header 'Content-Type: application/json' \
                --data-raw "{
@@ -402,22 +418,25 @@ jobs:
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
-          passed="${{ steps.test_summary.outputs.passed }}/${{ steps.test_summary.outputs.total }}"
-          failed="${{ steps.test_summary.outputs.failed }}/${{ steps.test_summary.outputs.total }}"
-          skipped="${{ steps.test_summary.outputs.skipped }}/${{ steps.test_summary.outputs.total }}"
-          total="${{ steps.test_summary.outputs.total }}"
+          # Get test metrics from `test-summary` output
+          passed_count="${{ steps.summary.outputs.passed }}"
+          failed_count="${{ steps.summary.outputs.failed }}"
+          skipped_count="${{ steps.summary.outputs.skipped }}"
+          total_count="${{ steps.summary.outputs.total }}"
+          pass_percentage=$(awk "BEGIN {print ($passed_count/$total_count)*100}")
+          fail_percentage=$(awk "BEGIN {print ($failed_count/$total_count)*100}")
           
-          pass_percent=$(( 100 * passed / total ))
-          fail_percent=$(( 100 * failed / total ))
-          
-          content="🚀 **Test Summary** 🚀\n\n"
+          # Construct message with emojis and formatting for better readability
+          content="----------------------------------------\n\n"
           content="🚀 **JOB: ${{ github.job }}** 🚀\n\n"
-          content+="🎉 **Passed**: $passed\n"
-          content+="❌ **Failed**: $failed\n"
-          content+="⚠️ **Skipped**: $skipped\n"
-          content+="📊 **Total**: $total\n\n"
-          content+="✅ **Pass %**: $pass_percent%\n"
-          content+="❌ **Fail %**: $fail_percent%\n\n"
+          content="🚀 **User: ${{ github.actor }}** 🚀\n\n"
+          content+="🎉 **Passed**: ${passed_count}\n"
+          content+="❌ **Failed**: ${failed_count}\n"
+          content+="⚠️ **Skipped**: ${skipped_count}\n"
+          content+="📊 **Total**: ${total_count}\n\n"
+          content+="✅ **Pass %**: ${pass_percentage}%\n"
+          content+="❌ **Fail %**: ${fail_percentage}%\n\n"
+          content="----------------------------------------\n\n"
           curl --location "$DISCORD_WEBHOOK_URL" \
                --header 'Content-Type: application/json' \
                --data-raw "{
@@ -456,22 +475,25 @@ jobs:
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
-          passed="${{ steps.test_summary.outputs.passed }}/${{ steps.test_summary.outputs.total }}"
-          failed="${{ steps.test_summary.outputs.failed }}/${{ steps.test_summary.outputs.total }}"
-          skipped="${{ steps.test_summary.outputs.skipped }}/${{ steps.test_summary.outputs.total }}"
-          total="${{ steps.test_summary.outputs.total }}"
+          # Get test metrics from `test-summary` output
+          passed_count="${{ steps.summary.outputs.passed }}"
+          failed_count="${{ steps.summary.outputs.failed }}"
+          skipped_count="${{ steps.summary.outputs.skipped }}"
+          total_count="${{ steps.summary.outputs.total }}"
+          pass_percentage=$(awk "BEGIN {print ($passed_count/$total_count)*100}")
+          fail_percentage=$(awk "BEGIN {print ($failed_count/$total_count)*100}")
           
-          pass_percent=$(( 100 * passed / total ))
-          fail_percent=$(( 100 * failed / total ))
-          
-          content="🚀 **Test Summary** 🚀\n\n"
+          # Construct message with emojis and formatting for better readability
+          content="----------------------------------------\n\n"
           content="🚀 **JOB: ${{ github.job }}** 🚀\n\n"
-          content+="🎉 **Passed**: $passed\n"
-          content+="❌ **Failed**: $failed\n"
-          content+="⚠️ **Skipped**: $skipped\n"
-          content+="📊 **Total**: $total\n\n"
-          content+="✅ **Pass %**: $pass_percent%\n"
-          content+="❌ **Fail %**: $fail_percent%\n\n"
+          content="🚀 **User: ${{ github.actor }}** 🚀\n\n"
+          content+="🎉 **Passed**: ${passed_count}\n"
+          content+="❌ **Failed**: ${failed_count}\n"
+          content+="⚠️ **Skipped**: ${skipped_count}\n"
+          content+="📊 **Total**: ${total_count}\n\n"
+          content+="✅ **Pass %**: ${pass_percentage}%\n"
+          content+="❌ **Fail %**: ${fail_percentage}%\n\n"
+          content="----------------------------------------\n\n"
           curl --location "$DISCORD_WEBHOOK_URL" \
                --header 'Content-Type: application/json' \
                --data-raw "{
@@ -510,22 +532,25 @@ jobs:
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
-          passed="${{ steps.test_summary.outputs.passed }}/${{ steps.test_summary.outputs.total }}"
-          failed="${{ steps.test_summary.outputs.failed }}/${{ steps.test_summary.outputs.total }}"
-          skipped="${{ steps.test_summary.outputs.skipped }}/${{ steps.test_summary.outputs.total }}"
-          total="${{ steps.test_summary.outputs.total }}"
+          # Get test metrics from `test-summary` output
+          passed_count="${{ steps.summary.outputs.passed }}"
+          failed_count="${{ steps.summary.outputs.failed }}"
+          skipped_count="${{ steps.summary.outputs.skipped }}"
+          total_count="${{ steps.summary.outputs.total }}"
+          pass_percentage=$(awk "BEGIN {print ($passed_count/$total_count)*100}")
+          fail_percentage=$(awk "BEGIN {print ($failed_count/$total_count)*100}")
           
-          pass_percent=$(( 100 * passed / total ))
-          fail_percent=$(( 100 * failed / total ))
-          
-          content="🚀 **Test Summary** 🚀\n\n"
+          # Construct message with emojis and formatting for better readability
+          content="----------------------------------------\n\n"
           content="🚀 **JOB: ${{ github.job }}** 🚀\n\n"
-          content+="🎉 **Passed**: $passed\n"
-          content+="❌ **Failed**: $failed\n"
-          content+="⚠️ **Skipped**: $skipped\n"
-          content+="📊 **Total**: $total\n\n"
-          content+="✅ **Pass %**: $pass_percent%\n"
-          content+="❌ **Fail %**: $fail_percent%\n\n"
+          content="🚀 **User: ${{ github.actor }}** 🚀\n\n"
+          content+="🎉 **Passed**: ${passed_count}\n"
+          content+="❌ **Failed**: ${failed_count}\n"
+          content+="⚠️ **Skipped**: ${skipped_count}\n"
+          content+="📊 **Total**: ${total_count}\n\n"
+          content+="✅ **Pass %**: ${pass_percentage}%\n"
+          content+="❌ **Fail %**: ${fail_percentage}%\n\n"
+          content="----------------------------------------\n\n"
           curl --location "$DISCORD_WEBHOOK_URL" \
                --header 'Content-Type: application/json' \
                --data-raw "{
