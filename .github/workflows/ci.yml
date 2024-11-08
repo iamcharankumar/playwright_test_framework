@@ -98,15 +98,17 @@ jobs:
           pass_percentage=$(awk "BEGIN {print ($passed/$total)*100}")
           fail_percentage=$(awk "BEGIN {print ($failed/$total)*100}")
           
-          content="🚀 **Test Summary** 🚀\n\n"
+          content="-----------------------------------\n\n"
           content+="🛠️ **Job: ${{ github.job }}**\n"
           content+="👤 **User: ${{ github.actor }}**\n"
+          content+="🌎 **Browser: ${{ matrix.browser }}**\n"
           content+="🎉 **Passed**: ${passed}\n"
           content+="❌ **Failed**: ${failed}\n"
           content+="⚠️ **Skipped**: ${skipped}\n"
           content+="📊 **Total**: ${total}\n\n"
           content+="✅ **Pass %**: ${pass_percentage}%\n"
           content+="❌ **Fail %**: ${fail_percentage}%\n\n"
+          content+="-----------------------------------\n\n"
           curl --location "$DISCORD_WEBHOOK_URL" \
                --header 'Content-Type: application/json' \
                --data-raw "{
@@ -164,15 +166,17 @@ jobs:
           total="${{ steps.summary.outputs.total }}"
           pass_percentage=$(awk "BEGIN {print ($passed/$total)*100}")
           fail_percentage=$(awk "BEGIN {print ($failed/$total)*100}")
-          content="🚀 **Test Summary** 🚀\n\n"
+          content="-----------------------------------\n\n"
           content+="🛠️ **Job: ${{ github.job }}**\n"
           content+="👤 **User: ${{ github.actor }}**\n"
+          content+="🌎 **Browser: ${{ matrix.browser }}**\n"
           content+="🎉 **Passed**: ${passed}\n"
           content+="❌ **Failed**: ${failed}\n"
           content+="⚠️ **Skipped**: ${skipped}\n"
           content+="📊 **Total**: ${total}\n\n"
           content+="✅ **Pass %**: ${pass_percentage}%\n"
           content+="❌ **Fail %**: ${fail_percentage}%\n\n"
+          content+="-----------------------------------\n\n"
           curl --location "$DISCORD_WEBHOOK_URL" \
                --header 'Content-Type: application/json' \
                --data-raw "{
@@ -233,16 +237,17 @@ jobs:
           total="${{ steps.summary.outputs.total }}"
           pass_percentage=$(awk "BEGIN {print ($passed/$total)*100}")
           fail_percentage=$(awk "BEGIN {print ($failed/$total)*100}")
-
-          content="🚀 **Test Summary** 🚀\n\n"
+          content="-----------------------------------\n\n"
           content+="🛠️ **Job: ${{ github.job }}**\n"
           content+="👤 **User: ${{ github.actor }}**\n"
+          content+="🌎 **Browser: ${{ matrix.browser }}**\n"
           content+="🎉 **Passed**: ${passed}\n"
           content+="❌ **Failed**: ${failed}\n"
           content+="⚠️ **Skipped**: ${skipped}\n"
           content+="📊 **Total**: ${total}\n\n"
           content+="✅ **Pass %**: ${pass_percentage}%\n"
           content+="❌ **Fail %**: ${fail_percentage}%\n\n"
+          content+="-----------------------------------\n\n"
           curl --location "$DISCORD_WEBHOOK_URL" \
                --header 'Content-Type: application/json' \
                --data-raw "{
