@@ -77,7 +77,7 @@ jobs:
           RP_LAUNCH: ${{ secrets.RP_LAUNCH }}
           RP_PROJECT: ${{ secrets.RP_LAUNCH }}
         run: |
-          echo "Report Portal endpoint: ${{ secrets.RP_ENDPOINT }}"
+          echo "Report Portal endpoint: $RP_ENDPOINT"
           mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
                          -Dgroups=SWAG_LABS_SMOKE \
                          -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3 \
@@ -156,7 +156,7 @@ jobs:
           RP_LAUNCH: ${{ secrets.RP_LAUNCH }}
           RP_PROJECT: ${{ secrets.RP_LAUNCH }}
         run: |
-          echo "Report Portal endpoint: ${{ secrets.RP_ENDPOINT }}"
+          echo "Report Portal endpoint: $RP_ENDPOINT"
           mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
                          -Dgroups=SWAG_LABS_SMOKE \
                          -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3 \
@@ -237,7 +237,7 @@ jobs:
           RP_LAUNCH: ${{ secrets.RP_LAUNCH }}
           RP_PROJECT: ${{ secrets.RP_LAUNCH }}
         run: |
-          echo "Report Portal endpoint: ${{ secrets.RP_ENDPOINT }}"
+          echo "Report Portal endpoint: $RP_ENDPOINT"
           mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
                          -Dgroups=SWAG_LABS_SMOKE \
                          -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3 \
