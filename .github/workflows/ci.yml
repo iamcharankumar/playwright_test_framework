@@ -71,15 +71,20 @@ jobs:
           name: target
 
       - name: Run Tests for ${{ matrix.browser }}
+        env:
+          RP_ENDPOINT: ${{ secrets.RP_ENDPOINT }}
+          RP_API_KEY: ${{ secrets.RP_API_KEY }}
+          RP_LAUNCH: ${{ secrets.RP_LAUNCH }}
+          RP_PROJECT: ${{ secrets.RP_LAUNCH }}
         run: |
           echo "Report Portal endpoint: ${{ secrets.RP_ENDPOINT }}"
           mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
                          -Dgroups=SWAG_LABS_SMOKE \
                          -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3 \
-                         -Drp.endpoint="${{ secrets.RP_ENDPOINT }}" \
-                         -Drp.api.key="${{ secrets.RP_API_KEY }}" \
-                         -Drp.launch="${{ secrets.RP_LAUNCH }}" \
-                         -Drp.project="${{ secrets.RP_PROJECT }}" \
+                         -Drp.endpoint=$RP_ENDPOINT \
+                         -Drp.api.key=$RP_API_KEY \
+                         -Drp.launch=$RP_LAUNCH \
+                         -Drp.project=$RP_PROJECT \
 
       - name: Verify Report Directory
         run: ls target/surefire-reports || echo "Report directory not found"
@@ -145,15 +150,20 @@ jobs:
           name: target
 
       - name: Run Tests for ${{ matrix.browser }}
+        env:
+          RP_ENDPOINT: ${{ secrets.RP_ENDPOINT }}
+          RP_API_KEY: ${{ secrets.RP_API_KEY }}
+          RP_LAUNCH: ${{ secrets.RP_LAUNCH }}
+          RP_PROJECT: ${{ secrets.RP_LAUNCH }}
         run: |
           echo "Report Portal endpoint: ${{ secrets.RP_ENDPOINT }}"
           mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
-                         -Dgroups=SWAG_LABS_REGRESSION \
+                         -Dgroups=SWAG_LABS_SMOKE \
                          -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3 \
-                         -Drp.endpoint="${{ secrets.RP_ENDPOINT }}" \
-                         -Drp.api.key="${{ secrets.RP_API_KEY }}" \
-                         -Drp.launch="${{ secrets.RP_LAUNCH }}" \
-                         -Drp.project="${{ secrets.RP_PROJECT }}" \
+                         -Drp.endpoint=$RP_ENDPOINT \
+                         -Drp.api.key=$RP_API_KEY \
+                         -Drp.launch=$RP_LAUNCH \
+                         -Drp.project=$RP_PROJECT \
 
       - name: Verify Report Directory
         run: ls target/surefire-reports || echo "Report directory not found"
@@ -221,15 +231,20 @@ jobs:
           name: target
 
       - name: Run E2E Tests for ${{ matrix.browser }}
+        env:
+          RP_ENDPOINT: ${{ secrets.RP_ENDPOINT }}
+          RP_API_KEY: ${{ secrets.RP_API_KEY }}
+          RP_LAUNCH: ${{ secrets.RP_LAUNCH }}
+          RP_PROJECT: ${{ secrets.RP_LAUNCH }}
         run: |
           echo "Report Portal endpoint: ${{ secrets.RP_ENDPOINT }}"
           mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
-                         -Dgroups=SWAG_LABS_E2E \
+                         -Dgroups=SWAG_LABS_SMOKE \
                          -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3 \
-                         -Drp.endpoint="${{ secrets.RP_ENDPOINT }}" \
-                         -Drp.api.key="${{ secrets.RP_API_KEY }}" \
-                         -Drp.launch="${{ secrets.RP_LAUNCH }}" \
-                         -Drp.project="${{ secrets.RP_PROJECT }}" \
+                         -Drp.endpoint=$RP_ENDPOINT \
+                         -Drp.api.key=$RP_API_KEY \
+                         -Drp.launch=$RP_LAUNCH \
+                         -Drp.project=$RP_PROJECT \
 
       - name: Verify Report Directory
         run: ls target/surefire-reports || echo "Report directory not found"
