@@ -75,10 +75,10 @@ jobs:
           mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
                          -Dgroups=SWAG_LABS_SMOKE \
                          -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3 \
-                         -Drp.endpoint=${{ secrets.RP_ENDPOINT }} \
-                         -Drp.api.key=${{ secrets.RP_API_KEY }} \
-                         -Drp.launch=${{ secrets.RP_LAUNCH }} \
-                         -Drp.project=${{ secrets.RP_PROJECT }} \
+                         -Drp.endpoint="${{ secrets.RP_ENDPOINT }}" \
+                         -Drp.api.key="${{ secrets.RP_API_KEY }}" \
+                         -Drp.launch="${{ secrets.RP_LAUNCH }}" \
+                         -Drp.project="${{ secrets.RP_PROJECT }}" \
 
       - name: Verify Report Directory
         run: ls target/surefire-reports || echo "Report directory not found"
@@ -148,10 +148,10 @@ jobs:
           mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
                          -Dgroups=SWAG_LABS_REGRESSION \
                          -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3 \
-                         -Drp.endpoint=${{ secrets.RP_ENDPOINT }} \
-                         -Drp.api.key=${{ secrets.RP_API_KEY }} \
-                         -Drp.launch=${{ secrets.RP_LAUNCH }} \
-                         -Drp.project=${{ secrets.RP_PROJECT }} \
+                         -Drp.endpoint="${{ secrets.RP_ENDPOINT }}" \
+                         -Drp.api.key="${{ secrets.RP_API_KEY }}" \
+                         -Drp.launch="${{ secrets.RP_LAUNCH }}" \
+                         -Drp.project="${{ secrets.RP_PROJECT }}" \
 
       - name: Verify Report Directory
         run: ls target/surefire-reports || echo "Report directory not found"
@@ -223,10 +223,10 @@ jobs:
           mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
                          -Dgroups=SWAG_LABS_E2E \
                          -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3 \
-                         -Drp.endpoint=${{ secrets.RP_ENDPOINT }} \
-                         -Drp.api.key=${{ secrets.RP_API_KEY }} \
-                         -Drp.launch=${{ secrets.RP_LAUNCH }} \
-                         -Drp.project=${{ secrets.RP_PROJECT }} \
+                         -Drp.endpoint="${{ secrets.RP_ENDPOINT }}" \
+                         -Drp.api.key="${{ secrets.RP_API_KEY }}" \
+                         -Drp.launch="${{ secrets.RP_LAUNCH }}" \
+                         -Drp.project="${{ secrets.RP_PROJECT }}" \
 
       - name: Verify Report Directory
         run: ls target/surefire-reports || echo "Report directory not found"
