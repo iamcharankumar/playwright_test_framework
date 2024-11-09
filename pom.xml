@@ -45,6 +45,16 @@
             <version>2.0.6</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.epam.reportportal</groupId>
+            <artifactId>agent-java-testng</artifactId>
+            <version>5.4.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.epam.reportportal</groupId>
+            <artifactId>logger-java-logback</artifactId>
+            <version>5.2.2</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -62,7 +72,8 @@
                             <name>listener</name>
                             <value>
                                 io.swaglabs.portal.qa.listeners.WebTestListeners,
-                                io.swaglabs.portal.qa.listeners.WebAnnotationTransformer
+                                io.swaglabs.portal.qa.listeners.WebAnnotationTransformer,
+                                com.epam.reportportal.testng.ReportPortalTestNGListener
                             </value>
                         </property>
                     </properties>
