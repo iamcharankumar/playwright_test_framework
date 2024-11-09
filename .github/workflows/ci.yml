@@ -72,6 +72,7 @@ jobs:
 
       - name: Run Tests for ${{ matrix.browser }}
         run: |
+          echo "Report Portal endpoint: ${{ secrets.RP_ENDPOINT }}"
           mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
                          -Dgroups=SWAG_LABS_SMOKE \
                          -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3 \
@@ -145,6 +146,7 @@ jobs:
 
       - name: Run Tests for ${{ matrix.browser }}
         run: |
+          echo "Report Portal endpoint: ${{ secrets.RP_ENDPOINT }}"
           mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
                          -Dgroups=SWAG_LABS_REGRESSION \
                          -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3 \
@@ -220,6 +222,7 @@ jobs:
 
       - name: Run E2E Tests for ${{ matrix.browser }}
         run: |
+          echo "Report Portal endpoint: ${{ secrets.RP_ENDPOINT }}"
           mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
                          -Dgroups=SWAG_LABS_E2E \
                          -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3 \
