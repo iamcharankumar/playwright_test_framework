@@ -39,6 +39,16 @@ jobs:
       - name: Build Project
         run: mvn clean install -DskipTests
 
+      - name: Run Unit Tests and Generate Coverage Report
+        run: mvn clean verify -Drunmode=headless -Dbrowser=chrome -Dgroups=SWAG_LABS_UNIT -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3 jacoco:report
+
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: ${{ secrets.CODECOV_SLUG }}
+          verbose: true
+
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:

@@ -49,4 +49,12 @@ public class SwagLabsHomePageTest extends SwagLabsTestBase {
         Assert.assertEquals(shoppingCartSize, 6, "Shopping Cart Size Mismatched!");
         log.info("Verified the Shopping Cart Size: {}", shoppingCartSize);
     }
+
+    @Test(description = "To verify, the landing page as Home Page from Login Page.",
+            groups = {TestGroups.SWAG_LABS_UNIT})
+    public void testSuccessfulLogout() {
+        boolean isLogoutSuccessful = SWAG_LABS_PORTAL.get().HOME_PAGE.isLogoutSuccess();
+        Assert.assertTrue(isLogoutSuccessful, "Swag Labs Logout Failed!");
+        log.info("Verified the Swag Labs Successful Logout status: {}", isLogoutSuccessful);
+    }
 }

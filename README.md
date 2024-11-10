@@ -43,6 +43,12 @@ modular code. Perfect for those looking to speed up their test automation journe
 - In this framework, Discord has been integrated via Github actions. Refer final result in the image below.
   <img width="1657" alt="Discord_Report_Message" src="https://github.com/user-attachments/assets/0f808ece-bcb3-486a-9e70-620dcb7b0f95">
 
+# CODE COVERAGE [CODECOV TOOL]
+
+- The code coverage is leveraged via Github Actions integrating codecov tool.
+- The latest code coverage for this project is
+  available [here](https://app.codecov.io/gh/iamcharankumar/playwright_test_framework).
+
 # EXTRAS
 
 - Below is the maven commands combo that will help you to cover all the supported browsers and runmodes.

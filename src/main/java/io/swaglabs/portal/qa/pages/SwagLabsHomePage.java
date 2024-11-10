@@ -71,4 +71,14 @@ public class SwagLabsHomePage extends SwagLabsBasePage {
         product.click();
         return true;
     }
+
+    public boolean isLogoutSuccess() {
+        Locator openMenuButton = locators.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Open Menu"));
+        validateAction(openMenuButton.isVisible(), "Hamburger Menu Button not visible!");
+        openMenuButton.click();
+        Locator logoutButton = locators.getPageLocator("#logout_sidebar_link");
+        validateAction(logoutButton.isVisible() && logoutButton.isEnabled(), "Logout button is not visible & enabled!");
+        logoutButton.click();
+        return basePage.title().equalsIgnoreCase("Swag Labs");
+    }
 }

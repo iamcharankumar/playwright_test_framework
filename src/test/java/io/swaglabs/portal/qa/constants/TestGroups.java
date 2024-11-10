@@ -9,4 +9,5 @@ public final class TestGroups {
     public static final String SWAG_LABS_SMOKE = "SWAG_LABS_SMOKE";
     public static final String SWAG_LABS_REGRESSION = "SWAG_LABS_REGRESSION";
     public static final String SWAG_LABS_E2E = "SWAG_LABS_E2E";
+    public static final String SWAG_LABS_UNIT = "SWAG_LABS_UNIT";
 }

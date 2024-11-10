@@ -25,6 +25,14 @@ public class SwagLabsDataProvider {
         };
     }
 
+    @DataProvider(name = "purchase-one-product", parallel = true)
+    public Object[][] purchaseOneProduct() {
+        return new Object[][]{
+                {"Sauce Labs Backpack", "$29.99",
+                        "carry.allTheThings() with the sleek, streamlined Sly Pack that melds uncompromising style with unequaled laptop and tablet protection."}
+        };
+    }
+
     @DataProvider(name = "purchase-product", parallel = true)
     public Object[][] purchaseProduct() {
         return new Object[][]{
