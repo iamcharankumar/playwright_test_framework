@@ -38,8 +38,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - language: [ 'java' ]
+        language: [ 'java' ]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -61,5 +60,3 @@ jobs:
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
-        with:
-          category: "/language:${{matrix.language}}"
