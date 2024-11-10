@@ -54,7 +54,7 @@ public class SwagLabsLoginPageTest extends SwagLabsTestBase {
     }
 
     @Test(description = "To verify, the landing page as Home Page from Login Page.",
-            groups = {TestGroups.SWAG_LABS_SMOKE})
+            groups = {TestGroups.SWAG_LABS_SMOKE, TestGroups.SWAG_LABS_UNIT})
     public void testSuccessfulLogin() {
         boolean isLoginSuccessful = SWAG_LABS_PORTAL.get().LOGIN_PAGE.isLoginSuccess();
         Assert.assertTrue(isLoginSuccessful, "Swag Labs Login Failed!");

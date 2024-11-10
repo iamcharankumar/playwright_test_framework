@@ -39,8 +39,8 @@ jobs:
       - name: Build Project
         run: mvn clean install -DskipTests
 
-      - name: Run Tests and Generate Coverage Report
-        run: mvn clean verify -Drunmode=headless jacoco:report
+      - name: Run Unit Tests and Generate Coverage Report
+        run: mvn clean verify -Drunmode=headless -Dbrowser=chrome -Dgroups=SWAG_LABS_UNIT -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3 jacoco:report
 
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v4

@@ -9,6 +9,15 @@ import org.testng.annotations.Test;
 @Slf4j
 public class SwagLabsE2ETest extends SwagLabsTestBase {
 
+    @Test(description = "User Journey: To complete the purchase of one product.", dataProvider = "purchase-one-product",
+            dataProviderClass = SwagLabsDataProvider.class, groups = {TestGroups.SWAG_LABS_UNIT})
+    public void testOneProductPurchase(String productName, String price, String productDescription) {
+        verifyProductSelection(productName);
+        verifyProductDetails(productName, price, productDescription);
+        completePurchase();
+        log.info("Purchase of one products tested successfully!");
+    }
+
     @Test(description = "User Journey: To complete the purchase of all products.", dataProvider = "purchase-product",
             dataProviderClass = SwagLabsDataProvider.class, groups = {TestGroups.SWAG_LABS_E2E})
     public void testProductPurchase(String productName, String price, String productDescription) {
