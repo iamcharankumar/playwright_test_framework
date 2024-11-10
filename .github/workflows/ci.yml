@@ -40,13 +40,13 @@ jobs:
         run: mvn clean install -DskipTests
 
       - name: Run Tests and Generate Coverage Report
-        run: mvn test -Drunmode=headless jacoco:report
+        run: mvn clean verify -Drunmode=headless jacoco:report
 
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          slug: iamcharankumar/playwright_test_framework
+          slug: ${{ secrets.CODECOV_SLUG }}
           verbose: true
 
       - name: Upload Artifacts
