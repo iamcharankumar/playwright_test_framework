@@ -43,13 +43,10 @@ jobs:
         run: mvn test -Drunmode=headless jacoco:report
 
       - name: Upload Coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
-          files: target/site/jacoco/jacoco.xml
           token: ${{ secrets.CODECOV_TOKEN }}
-          version: "v0.1.15"
-          flags: unittests
-          fail_ci_if_error: true
+          slug: iamcharankumar/playwright_test_framework
           verbose: true
 
       - name: Upload Artifacts
