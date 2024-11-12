@@ -1,5 +1,6 @@
 [![UI test execution](https://github.com/iamcharankumar/playwright_test_framework/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/iamcharankumar/playwright_test_framework/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/iamcharankumar/playwright_test_framework/actions/workflows/codeql.yml/badge.svg)](https://github.com/iamcharankumar/playwright_test_framework/actions/workflows/codeql.yml)
+[![codecov](https://codecov.io/gh/iamcharankumar/playwright_test_framework/branch/master/graph/badge.svg?token=HT5GS0RC0C)](https://codecov.io/gh/iamcharankumar/playwright_test_framework)
 
 # ABOUT
 
@@ -48,6 +49,9 @@ modular code. Perfect for those looking to speed up their test automation journe
 - The code coverage is leveraged via Github Actions integrating codecov tool.
 - The latest code coverage for this project is
   available [here](https://app.codecov.io/gh/iamcharankumar/playwright_test_framework).
+- The code coverage grid: 
+![codecov](https://codecov.io/gh/iamcharankumar/playwright_test_framework/graphs/tree.svg?token=HT5GS0RC0C)
+
 
 # EXTRAS
 
