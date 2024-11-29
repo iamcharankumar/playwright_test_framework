@@ -49,9 +49,8 @@ modular code. Perfect for those looking to speed up their test automation journe
 - The code coverage is leveraged via Github Actions integrating codecov tool.
 - The latest code coverage for this project is
   available [here](https://app.codecov.io/gh/iamcharankumar/playwright_test_framework).
-- The code coverage grid: 
-![codecov](https://codecov.io/gh/iamcharankumar/playwright_test_framework/graphs/tree.svg?token=HT5GS0RC0C)
-
+- The code coverage grid:
+  ![codecov](https://codecov.io/gh/iamcharankumar/playwright_test_framework/graphs/tree.svg?token=HT5GS0RC0C)
 
 # EXTRAS
 
@@ -61,37 +60,28 @@ modular code. Perfect for those looking to speed up their test automation journe
 
 #### CHROME LOCAL & HEADLESS
 
-`mvn clean test -Drunmode=local -Dbrowser=chrome -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E
--Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3`
+`mvn clean test -Drunmode=local -Dbrowser=chrome -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`
 
-`mvn clean test -Drunmode=headless -Dbrowser=chrome -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E
--Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3`
+`mvn clean test -Drunmode=headless -Dbrowser=chrome -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`
 
 ### MS EDGE LOCAL & HEADLESS
 
-`mvn clean test -Drunmode=local -Dbrowser=msedge -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E
--Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3`
+`mvn clean test -Drunmode=local -Dbrowser=msedge -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`
 
-`mvn clean test -Drunmode=headless -Dbrowser=msedge -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E
--Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3`
+`mvn clean test -Drunmode=headless -Dbrowser=msedge -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`
 
 ### WEBKIT LOCAL & HEADLESS
 
-`mvn clean test -Drunmode=local -Dbrowser=webkit -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E 
--Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3`
+`mvn clean test -Drunmode=local -Dbrowser=webkit -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`
 
-`mvn clean test -Drunmode=headless -Dbrowser=webkit -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E 
--Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3`
+`mvn clean test -Drunmode=headless -Dbrowser=webkit -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`
 
 ### FIREFOX LOCAL & HEADLESS
 
-`mvn clean test -Drunmode=local -Dbrowser=firefox -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E
--Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3`
+`mvn clean test -Drunmode=local -Dbrowser=firefox -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`
 
-`mvn clean test -Drunmode=headless -Dbrowser=firefox -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E
--Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3`
+`mvn clean test -Drunmode=headless -Dbrowser=firefox -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`
 
 ### DEFAULT RUN
 
-`mvn clean test -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E
--Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3`
+`mvn clean test -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`
