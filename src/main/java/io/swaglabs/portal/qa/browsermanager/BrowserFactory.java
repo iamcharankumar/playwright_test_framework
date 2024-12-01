@@ -19,10 +19,8 @@ public class BrowserFactory {
     public Page createLocalBrowserSession(Playwright playwright) {
         return switch (BROWSER) {
             case FIREFOX -> getBrowserContext(playwright.firefox().launch(new BrowserType.LaunchOptions()
-                    .setChannel(BROWSER.getBrowserType())
                     .setHeadless(false).setArgs(Collections.singletonList(MAXIMIZE_WINDOW)))).newPage();
             case WEBKIT -> getBrowserContext(playwright.webkit().launch(new BrowserType.LaunchOptions()
-                    .setChannel(BROWSER.getBrowserType())
                     .setHeadless(false).setArgs(Collections.singletonList(MAXIMIZE_WINDOW)))).newPage();
             default -> getBrowserContext(playwright.chromium().launch(new BrowserType.LaunchOptions()
                     .setChannel(BROWSER.getBrowserType())
@@ -34,13 +32,11 @@ public class BrowserFactory {
         return switch (BROWSER) {
             case FIREFOX -> getBrowserContext(playwright.firefox().launch(new BrowserType.LaunchOptions()
                     .setArgs(Collections.singletonList(MAXIMIZE_WINDOW)))).newPage();
-            case MS_EDGE -> getBrowserContext(playwright.chromium().launch(new BrowserType.LaunchOptions()
-                    .setChannel(BROWSER.getBrowserType())
-                    .setHeadless(true).setArgs(Collections.singletonList(MAXIMIZE_WINDOW)))).newPage();
             case WEBKIT -> getBrowserContext(playwright.webkit().launch(new BrowserType.LaunchOptions()
                     .setArgs(Collections.singletonList(MAXIMIZE_WINDOW)))).newPage();
             default -> getBrowserContext(playwright.chromium().launch(new BrowserType.LaunchOptions()
-                    .setArgs(Collections.singletonList(MAXIMIZE_WINDOW)))).newPage();
+                    .setChannel(BROWSER.getBrowserType())
+                    .setHeadless(true).setArgs(Collections.singletonList(MAXIMIZE_WINDOW)))).newPage();
         };
     }
 

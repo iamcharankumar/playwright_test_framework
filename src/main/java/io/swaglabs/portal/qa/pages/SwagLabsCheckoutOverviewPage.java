@@ -12,8 +12,7 @@ public class SwagLabsCheckoutOverviewPage extends SwagLabsBasePage {
 
     public boolean isFinishButtonClicked() {
         Locator finishButton = locators.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Finish"));
-        validateAction(finishButton.isEnabled(), "Finish button not enabled!");
-        finishButton.click();
+        clickElement(finishButton, "Finish button not clicked!");
         return true;
     }
 }

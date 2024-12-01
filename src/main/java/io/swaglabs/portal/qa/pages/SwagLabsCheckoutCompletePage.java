@@ -24,8 +24,7 @@ public class SwagLabsCheckoutCompletePage extends SwagLabsBasePage {
 
     public boolean isBackHomeButtonClicked() {
         Locator backHomeButton = locators.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Back Home"));
-        validateAction(backHomeButton.isEnabled(), "Back Home Button not clicked!");
-        backHomeButton.click();
+        clickElement(backHomeButton, "Back Home Button not clicked!");
         return true;
     }
 }
