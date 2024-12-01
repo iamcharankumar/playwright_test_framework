@@ -33,8 +33,7 @@ public class SwagLabsHomePage extends SwagLabsBasePage {
 
     public String getAllItemsText() {
         Locator openMenuButton = locators.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Open Menu"));
-        validateAction(openMenuButton.isVisible(), "Hamburger Menu Button not visible!");
-        openMenuButton.click();
+        clickElement(openMenuButton, "Hamburger Menu Button not clicked!");
         String hamburgerMenuList = String.join("", locators.getPageLocator(".bm-menu").allTextContents());
         validateNonEmptyText(hamburgerMenuList, "Hamburger Menu List is empty!");
         return hamburgerMenuList;
@@ -47,8 +46,7 @@ public class SwagLabsHomePage extends SwagLabsBasePage {
                 "button[id='add-to-cart-test.allthethings()-t-shirt-(red)']");
         itemLocators.forEach(item -> {
             Locator shoppingItem = locators.getPageLocator(item);
-            validateAction(shoppingItem.isVisible(), "Shopping item: " + item + " not visible!");
-            shoppingItem.click();
+            clickElement(shoppingItem, "Shopping item: " + item + " not visible!");
         });
         Locator shoppingCartBadge = locators.getPageLocator(".shopping_cart_badge");
         validateAction(shoppingCartBadge.isVisible(), "Shopping Cart Badge is not visible!");
@@ -67,18 +65,15 @@ public class SwagLabsHomePage extends SwagLabsBasePage {
         Locator product = productNameList.stream()
                 .filter(productItem -> productItem.textContent().equalsIgnoreCase(productName))
                 .findFirst().orElseThrow(() -> new SwagLabsException("Product Name not found!"));
-        validateAction(product.isEnabled(), "Product is not enabled!");
-        product.click();
+        clickElement(product, "Product Name is not clicked!");
         return true;
     }
 
     public boolean isLogoutSuccess() {
         Locator openMenuButton = locators.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Open Menu"));
-        validateAction(openMenuButton.isVisible(), "Hamburger Menu Button not visible!");
-        openMenuButton.click();
+        clickElement(openMenuButton, "Hamburger Menu Button not visible!");
         Locator logoutButton = locators.getPageLocator("#logout_sidebar_link");
-        validateAction(logoutButton.isVisible() && logoutButton.isEnabled(), "Logout button is not visible & enabled!");
-        logoutButton.click();
+        clickElement(logoutButton, "Logout button is not clicked!");
         return basePage.title().equalsIgnoreCase("Swag Labs");
     }
 }

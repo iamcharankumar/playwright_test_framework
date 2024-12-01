@@ -1,5 +1,6 @@
 package io.swaglabs.portal.qa.commons;
 
+import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.swaglabs.portal.qa.exceptions.WebPageException;
 import io.swaglabs.portal.qa.locators.Locators;
@@ -22,5 +23,11 @@ public abstract class WebBasePage {
     protected void validateNonEmptyText(String text, String errorMessage) {
         if (text.isEmpty())
             throw new WebPageException(errorMessage);
+    }
+
+    protected void clickElement(Locator locator, String errorMessage) {
+        if (!locator.isVisible() || !locator.isEnabled())
+            throw new WebPageException(errorMessage);
+        locator.click();
     }
 }

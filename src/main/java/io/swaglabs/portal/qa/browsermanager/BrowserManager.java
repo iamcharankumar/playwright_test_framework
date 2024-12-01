@@ -5,6 +5,8 @@ import com.microsoft.playwright.Playwright;
 import io.swaglabs.portal.qa.constants.WebPortalConstants;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Objects;
+
 @Slf4j
 public class BrowserManager implements IBrowserManager<Page> {
 
@@ -20,9 +22,7 @@ public class BrowserManager implements IBrowserManager<Page> {
 
     @Override
     public void destroyBrowserPage(Page page) {
-        if (page != null)
-            page.close();
-        else
-            log.error("Playwright Browser is null!");
+        Objects.requireNonNull(page, "Playwright Browser is null!");
+        page.close();
     }
 }
