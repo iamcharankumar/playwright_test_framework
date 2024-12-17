@@ -1,10 +1,8 @@
 package io.swaglabs.portal.qa.browsermanager;
 
-import com.microsoft.playwright.Playwright;
-
 public interface IBrowserManager<T> {
 
-    T getBrowserPage(Playwright playwright);
+    T getBrowserPage();
 
     void destroyBrowserPage(T t);
 }

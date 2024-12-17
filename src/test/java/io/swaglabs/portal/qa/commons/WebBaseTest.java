@@ -1,8 +1,8 @@
 package io.swaglabs.portal.qa.commons;
 
 import com.microsoft.playwright.Page;
-import com.microsoft.playwright.Playwright;
 import io.swaglabs.portal.qa.browsermanager.BrowserManager;
+import io.swaglabs.portal.qa.browsermanager.ThreadSafeBrowserFactory;
 import io.swaglabs.portal.qa.utils.PerformanceUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.annotations.AfterMethod;
@@ -13,7 +13,6 @@ import org.testng.annotations.BeforeSuite;
 public abstract class WebBaseTest {
 
     protected static ThreadLocal<Page> page = new ThreadLocal<>();
-    protected static ThreadLocal<Playwright> playwright = new ThreadLocal<>();
     private static BrowserManager browserManager;
 
     @BeforeSuite(alwaysRun = true)
@@ -24,8 +23,7 @@ public abstract class WebBaseTest {
 
     @BeforeMethod(alwaysRun = true)
     public void init() {
-        playwright.set(Playwright.create());
-        page.set(browserManager.getBrowserPage(playwright.get()));
+        page.set(browserManager.getBrowserPage());
         log.info("Browser has been set.");
         PerformanceUtils.evaluatePageLoadTime(page.get());
         PerformanceUtils.evaluateDomContentLoadTime(page.get());
@@ -36,8 +34,7 @@ public abstract class WebBaseTest {
         browserManager.destroyBrowserPage(page.get());
         page.get().close();
         page.remove();
-        playwright.get().close();
-        playwright.remove();
+        ThreadSafeBrowserFactory.cleanup();
         log.info("Browser has been destroyed.");
     }
 }
