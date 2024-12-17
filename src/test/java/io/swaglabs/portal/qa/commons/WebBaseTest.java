@@ -22,7 +22,9 @@ public abstract class WebBaseTest {
     protected static ThreadLocal<Playwright> playwright = new ThreadLocal<>();
     private static BrowserManager browserManager;
     private static CdpSessionHandler cdpSessionHandler;
+    private final String CDP_REGEX = ".*\\.(svg|js|css|gif|woff2?|png)$";
     private final String BROWSER = System.getProperty(WebPortalConstants.BROWSER);
+
 
     @BeforeSuite(alwaysRun = true)
     public void setUp() {
@@ -46,7 +48,7 @@ public abstract class WebBaseTest {
                 int statusCode = Integer.parseInt(responseEvent.getAsJsonObject("response").get("status").getAsString());
                 String statusText = responseEvent.getAsJsonObject("response").get("statusText").getAsString();
                 String requestId = responseEvent.get("requestId").getAsString();
-                if (!responseUrl.matches("") && statusCode >= 400) {
+                if (!responseUrl.matches(CDP_REGEX) && statusCode >= 400) {
                     log.info("Response URL: {}, the Status code: {}, the Status Text: {} the for the given request ID: {}",
                             responseUrl, statusCode, statusText, requestId);
                 }
