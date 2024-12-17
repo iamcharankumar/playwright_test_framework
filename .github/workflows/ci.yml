@@ -34,7 +34,7 @@ jobs:
       - name: Install Browsers
         uses: browser-actions/setup-chrome@latest
       - uses: browser-actions/setup-firefox@latest
-      - uses: browser-actions/setup-edge@latest
+      - uses: browser-actions/setup-edge@v1
 
       - name: Build Project
         run: mvn clean install -DskipTests
