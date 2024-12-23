@@ -7,7 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum CdpCommands {
 
-    NETWORK_ENABLE("Network.enable");
+    NETWORK_ENABLE("Network.enable"),
+    CONSOLE_ENABLE("Console.enable");
 
     private final String description;
 }
