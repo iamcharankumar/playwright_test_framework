@@ -2,11 +2,13 @@ package io.swaglabs.portal.qa.browsermanager;
 
 import com.microsoft.playwright.*;
 import io.swaglabs.portal.qa.constants.BrowserName;
+import lombok.extern.slf4j.Slf4j;
 
+import java.awt.*;
 import java.util.Collections;
 import java.util.Objects;
 
-
+@Slf4j
 public class BrowserFactory {
 
     private final BrowserName BROWSER;
@@ -42,6 +44,10 @@ public class BrowserFactory {
 
     private BrowserContext getBrowserContext(Browser browser) {
         Objects.requireNonNull(browser, "Playwright Browser is null in Browser Factory!");
-        return browser.newContext(new Browser.NewContextOptions().setViewportSize(null));
+        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = (int) dimension.getWidth();
+        int height = (int) dimension.getHeight();
+        log.info("Screen size with Width: {} & Height {}", width, height);
+        return browser.newContext(new Browser.NewContextOptions().setViewportSize(width, height));
     }
 }
