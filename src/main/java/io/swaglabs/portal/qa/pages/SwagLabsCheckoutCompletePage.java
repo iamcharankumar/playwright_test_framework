@@ -11,15 +11,11 @@ public class SwagLabsCheckoutCompletePage extends SwagLabsBasePage {
     }
 
     public String getThankYouText() {
-        Locator thankYouLocator = locators.getPageLocator(".complete-header");
-        validateAction(thankYouLocator.isVisible(), "Thank you text not visible!");
-        return thankYouLocator.textContent();
+        return locators.getPageLocator(".complete-header").textContent();
     }
 
     public String getOrderCompleteText() {
-        Locator orderCompleteLocator = locators.getPageLocator(".complete-text");
-        validateAction(orderCompleteLocator.isVisible(), "Order Complete Text not visible!");
-        return orderCompleteLocator.textContent();
+        return locators.getPageLocator(".complete-text").textContent();
     }
 
     public boolean isBackHomeButtonClicked() {

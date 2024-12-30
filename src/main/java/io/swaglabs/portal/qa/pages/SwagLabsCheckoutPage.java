@@ -12,35 +12,24 @@ public class SwagLabsCheckoutPage extends SwagLabsBasePage {
 
     public boolean isFirstNameEntered(String firstName) {
         Locator firstNameInputBox = locators.getByPlaceholder("First Name");
-        if (!firstNameInputBox.isVisible())
-            return false;
-        firstNameInputBox.clear();
-        firstNameInputBox.fill(firstName);
+        fillText(firstNameInputBox, firstName);
         return true;
     }
 
     public boolean isLastNameEntered(String lastName) {
         Locator lastNameInputBox = locators.getByPlaceholder("Last Name");
-        if (!lastNameInputBox.isVisible())
-            return false;
-        lastNameInputBox.clear();
-        lastNameInputBox.fill(lastName);
+        fillText(lastNameInputBox, lastName);
         return true;
     }
 
     public boolean isPostalCodeEntered(String postalCode) {
         Locator postalCodeInputBox = locators.getByPlaceholder("Zip/Postal Code");
-        if (!postalCodeInputBox.isVisible())
-            return false;
-        postalCodeInputBox.clear();
-        postalCodeInputBox.fill(postalCode);
+        fillText(postalCodeInputBox, postalCode);
         return true;
     }
 
     public boolean isContinueButtonClicked() {
         Locator continueButton = locators.getByText("Continue");
-        if (!continueButton.isEnabled())
-            return false;
         continueButton.press(KeyboardEvents.ENTER.getDescription());
         return true;
     }

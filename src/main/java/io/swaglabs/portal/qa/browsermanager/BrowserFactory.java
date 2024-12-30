@@ -6,7 +6,6 @@ import io.swaglabs.portal.qa.constants.BrowserName;
 import java.util.Collections;
 import java.util.Objects;
 
-
 public class BrowserFactory {
 
     private final BrowserName BROWSER;

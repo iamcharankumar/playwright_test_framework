@@ -30,4 +30,11 @@ public abstract class WebBasePage {
             throw new WebPageException(errorMessage);
         locator.click();
     }
+
+    protected void fillText(Locator locator, String textContent) {
+        if (!locator.isVisible() || !locator.isEnabled())
+            throw new WebPageException("Text area not visible or enabled!");
+        locator.clear();
+        locator.fill(textContent);
+    }
 }
