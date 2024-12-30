@@ -15,9 +15,9 @@ import java.util.Properties;
 public class PropertiesUtils {
 
     public static Properties loadProperties(String fileName) {
+        log.info("Loading the Properties file....");
         InputStream fileInputStream;
         Properties properties;
-        log.info("Loading the Properties file....");
         try {
             fileInputStream = new FileInputStream(fileName);
             properties = new Properties();

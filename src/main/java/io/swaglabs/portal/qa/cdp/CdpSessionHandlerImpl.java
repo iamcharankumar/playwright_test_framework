@@ -19,14 +19,12 @@ public class CdpSessionHandlerImpl implements CdpSessionHandler {
     @Override
     public void enableSession() {
         CDP_SESSION.set(PAGE.context().newCDPSession(PAGE));
-        log.info("CDP Network session enabled.");
     }
 
     @Override
     public void sendCDPCommand(String cdpCommand) {
         Objects.requireNonNull(cdpCommand, "CDP session command cannot be null or empty!");
         CDP_SESSION.get().send(cdpCommand);
-        log.info("Sent CDP command: {}", cdpCommand);
     }
 
     @Override
@@ -42,6 +40,5 @@ public class CdpSessionHandlerImpl implements CdpSessionHandler {
     public void detachSession() {
         Objects.requireNonNull(CDP_SESSION.get(), "No CDP Session to detach.");
         CDP_SESSION.remove();
-        log.info("CDP Session detached and cleaned up.");
     }
 }

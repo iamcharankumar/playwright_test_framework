@@ -45,7 +45,7 @@ public class CdpUtils {
             String requestId = responseEvent.get("requestId").getAsString();
 
             if (!responseUrl.matches(RESOURCE_REGEX) && statusCode >= 400) {
-                log.info("Response URL: {}, the Status code: {}, the Status Text: {} the for the given request ID: {}",
+                log.error("Response URL: {}, the Status code: {}, the Status Text: {} the for the given request ID: {}",
                         responseUrl, statusCode, statusText, requestId);
             }
         });

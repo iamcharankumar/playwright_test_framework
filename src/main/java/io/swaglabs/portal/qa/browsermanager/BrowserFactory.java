@@ -2,12 +2,10 @@ package io.swaglabs.portal.qa.browsermanager;
 
 import com.microsoft.playwright.*;
 import io.swaglabs.portal.qa.constants.BrowserName;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collections;
 import java.util.Objects;
 
-@Slf4j
 public class BrowserFactory {
 
     private final BrowserName BROWSER;
