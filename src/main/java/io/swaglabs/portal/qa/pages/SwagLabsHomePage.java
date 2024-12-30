@@ -20,15 +20,11 @@ public class SwagLabsHomePage extends SwagLabsBasePage {
     }
 
     public boolean isShoppingCartButtonEnabled() {
-        Locator shoppingCartLink = locators.getPageLocator(".shopping_cart_link");
-        validateAction(shoppingCartLink.isEnabled(), "Shopping Cart Link is not enabled!");
-        return shoppingCartLink.isEnabled();
+        return locators.getPageLocator(".shopping_cart_link").isEnabled();
     }
 
     public boolean isHamburgerButtonEnabled() {
-        Locator hamburgerButton = locators.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Open Menu"));
-        validateAction(hamburgerButton.isEnabled(), "Hamburger Button is not enabled!");
-        return hamburgerButton.isEnabled();
+        return locators.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Open Menu")).isEnabled();
     }
 
     public String getAllItemsText() {
@@ -49,7 +45,6 @@ public class SwagLabsHomePage extends SwagLabsBasePage {
             clickElement(shoppingItem, "Shopping item: " + item + " not visible!");
         });
         Locator shoppingCartBadge = locators.getPageLocator(".shopping_cart_badge");
-        validateAction(shoppingCartBadge.isVisible(), "Shopping Cart Badge is not visible!");
         return validateAndParseShoppingCartBadge(shoppingCartBadge);
     }
 

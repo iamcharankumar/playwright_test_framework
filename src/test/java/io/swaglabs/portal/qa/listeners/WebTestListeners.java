@@ -66,7 +66,7 @@ public class WebTestListeners extends WebBaseTest implements ISuiteListener, ITe
             String failPrefix = "FAILED_";
             String failFilePath = screenshotsDirectory + failLocation + File.separator + browserName + "_"
                     + runMode + "_" + failPrefix + testResult.getName() + testData + "_" + new Date() + imageFormat;
-            page.get().screenshot(new Page.ScreenshotOptions().setPath(Paths.get(failFilePath)));
+            page.get().screenshot(new Page.ScreenshotOptions().setPath(Paths.get(failFilePath)).setFullPage(true));
         }
     }
 
