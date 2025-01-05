@@ -53,7 +53,7 @@ public class WebTestListeners extends WebBaseTest implements ISuiteListener, ITe
         String statusPrefix = testResult.isSuccess() ? "PASS_" : "FAIL_";
         String directory = testResult.isSuccess() ? "/passed_screenshots/" : "/failed_screenshots/";
         String testData = (testResult.getParameters().length > 0) ? String.valueOf(testResult.getParameters()[0]) : "No_Params";
-        String filePath = String.format("%s%s%s_%s_%s%s_%s_%s%s", "./target/screenshots",
+        String filePath = String.format("%s%s%s_%s_%s%s_%s_%s%s", "./src/test/resources/screenshots",
                 directory, System.getProperty(WebPortalConstants.BROWSER), System.getProperty(WebPortalConstants.RUN_MODE),
                 statusPrefix, testName, testData, new Date(), ".png").replaceAll(":", "\\:");
         page.get().screenshot(new Page.ScreenshotOptions().setPath(Paths.get(filePath)).setFullPage(true));
