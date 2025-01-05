@@ -6,7 +6,6 @@ import io.swaglabs.portal.qa.constants.WebPortalConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.*;
 
-import java.io.File;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
@@ -50,36 +49,26 @@ public class WebTestListeners extends WebBaseTest implements ISuiteListener, ITe
     }
 
     private void takeScreenshot(ITestResult testResult) {
-        String browserName = System.getProperty(WebPortalConstants.BROWSER);
-        String runMode = System.getProperty(WebPortalConstants.RUN_MODE);
+        String testName = testResult.getName();
+        String statusPrefix = testResult.isSuccess() ? "PASS_" : "FAIL_";
+        String directory = testResult.isSuccess() ? "/passed_screenshots/" : "/failed_screenshots/";
         String testData = (testResult.getParameters().length > 0) ? String.valueOf(testResult.getParameters()[0]) : "No_Params";
-        String screenshotsDirectory = "./src/test/resources/screenshots";
-        String imageFormat = ".png";
-        if (testResult.isSuccess()) {
-            String passLocation = "/passed_screenshots";
-            String passPrefix = "PASS_";
-            String passFilePath = screenshotsDirectory + passLocation + File.separator + browserName + "_"
-                    + runMode + "_" + passPrefix + testResult.getName() + "_" + testData + "_" + new Date() + imageFormat;
-            page.get().screenshot(new Page.ScreenshotOptions().setPath(Paths.get(passFilePath)));
-        } else {
-            String failLocation = "/failed_screenshots";
-            String failPrefix = "FAILED_";
-            String failFilePath = screenshotsDirectory + failLocation + File.separator + browserName + "_"
-                    + runMode + "_" + failPrefix + testResult.getName() + testData + "_" + new Date() + imageFormat;
-            page.get().screenshot(new Page.ScreenshotOptions().setPath(Paths.get(failFilePath)).setFullPage(true));
-        }
+        String filePath = String.format("%s%s%s_%s_%s%s_%s_%s%s", "./target/screenshots",
+                directory, System.getProperty(WebPortalConstants.BROWSER), System.getProperty(WebPortalConstants.RUN_MODE),
+                statusPrefix, testName, testData, new Date(), ".png");
+        page.get().screenshot(new Page.ScreenshotOptions().setPath(Paths.get(filePath)).setFullPage(true));
     }
 
     @Override
     public boolean retry(ITestResult result) {
         int maxRetry = 1;
         if (!result.isSuccess() && retryCount < maxRetry) {
-            log.info("Retrying test for {} time(s) for the test method {} with test status {}.", retryCount + 1,
-                    result.getName(), getTestStatusName(result.getStatus()));
+            log.error("Retrying test for {} time(s) for the test method {} with test status {}.",
+                    retryCount + 1, result.getName(), getTestStatusName(result.getStatus()));
             retryCount++;
             return true;
         }
-        log.info("Retrying for the test method {} is exhausted.", result.getName());
+        log.error("Retrying for the test method {} is exhausted.", result.getName());
         return false;
     }
 
