@@ -4,7 +4,7 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.swaglabs.portal.qa.constants.KeyboardEvents;
 
-public class SwagLabsCheckoutPage extends SwagLabsBasePage {
+public final class SwagLabsCheckoutPage extends SwagLabsBasePage {
 
     public SwagLabsCheckoutPage(Page basePage) {
         super(basePage);

@@ -11,7 +11,7 @@ import org.testng.annotations.Test;
 import java.lang.reflect.Method;
 
 @Slf4j
-public class SwagLabsLoginPageTest extends SwagLabsTestBase {
+public final class SwagLabsLoginPageTest extends SwagLabsTestBase {
 
     @Override
     @BeforeMethod(alwaysRun = true)

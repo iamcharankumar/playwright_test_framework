@@ -5,7 +5,7 @@ import com.microsoft.playwright.Page;
 import io.swaglabs.portal.qa.constants.KeyboardEvents;
 import io.swaglabs.portal.qa.constants.WebPortalConstants;
 
-public class SwagLabsLoginPage extends SwagLabsBasePage {
+public final class SwagLabsLoginPage extends SwagLabsBasePage {
 
     public SwagLabsLoginPage(Page basePage) {
         super(basePage);

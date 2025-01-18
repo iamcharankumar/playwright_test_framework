@@ -7,7 +7,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 @Slf4j
-public class SwagLabsE2ETest extends SwagLabsTestBase {
+public final class SwagLabsE2ETest extends SwagLabsTestBase {
 
     @Test(description = "User Journey: To complete the purchase of one product.", dataProvider = "purchase-one-product",
             dataProviderClass = SwagLabsDataProvider.class, groups = {TestGroups.SWAG_LABS_UNIT})

@@ -7,7 +7,7 @@ import io.swaglabs.portal.qa.exceptions.SwagLabsException;
 
 import java.util.List;
 
-public class SwagLabsHomePage extends SwagLabsBasePage {
+public final class SwagLabsHomePage extends SwagLabsBasePage {
 
     public SwagLabsHomePage(Page basePage) {
         super(basePage);
