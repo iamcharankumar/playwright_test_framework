@@ -7,7 +7,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 @Slf4j
-public class SwagLabsHomePageTest extends SwagLabsTestBase {
+public final class SwagLabsHomePageTest extends SwagLabsTestBase {
 
     @Test(description = "To verify, the home page products header text.",
             groups = {TestGroups.SWAG_LABS_SMOKE, TestGroups.SWAG_LABS_REGRESSION})

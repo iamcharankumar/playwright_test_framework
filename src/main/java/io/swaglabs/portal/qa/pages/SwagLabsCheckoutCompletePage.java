@@ -4,7 +4,7 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 
-public class SwagLabsCheckoutCompletePage extends SwagLabsBasePage {
+public final class SwagLabsCheckoutCompletePage extends SwagLabsBasePage {
 
     public SwagLabsCheckoutCompletePage(Page basePage) {
         super(basePage);

@@ -10,7 +10,7 @@ import org.testng.annotations.BeforeMethod;
 import java.lang.reflect.Method;
 
 @Slf4j
-public class SwagLabsTestBase extends WebBaseTest {
+public sealed class SwagLabsTestBase extends WebBaseTest permits SwagLabsE2ETest, SwagLabsHomePageTest, SwagLabsLoginPageTest {
 
     protected static final ThreadLocal<SwagLabsPortal> SWAG_LABS_PORTAL = new ThreadLocal<>();
 
