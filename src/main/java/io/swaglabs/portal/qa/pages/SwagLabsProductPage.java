@@ -30,13 +30,13 @@ public final class SwagLabsProductPage extends SwagLabsBasePage {
 
     public boolean isProductAddedToCart() {
         Locator addToCartButton = locators.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Add to cart"));
-        clickElement(addToCartButton, "Product is not added to the shopping cart!");
+        clickElement(addToCartButton);
         return true;
     }
 
     public boolean isShoppingCartClicked() {
         Locator shoppingCart = locators.getPageLocator(".shopping_cart_link");
-        clickElement(shoppingCart, "Shopping cart icon not clicked!");
+        clickElement(shoppingCart);
         shoppingCart.click();
         return true;
     }

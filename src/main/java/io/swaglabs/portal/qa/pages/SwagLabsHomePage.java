@@ -29,7 +29,7 @@ public final class SwagLabsHomePage extends SwagLabsBasePage {
 
     public String getAllItemsText() {
         Locator openMenuButton = locators.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Open Menu"));
-        clickElement(openMenuButton, "Hamburger Menu Button not clicked!");
+        clickElement(openMenuButton);
         String hamburgerMenuList = String.join("", locators.getPageLocator(".bm-menu").allTextContents());
         validateNonEmptyText(hamburgerMenuList, "Hamburger Menu List is empty!");
         return hamburgerMenuList;
@@ -42,7 +42,7 @@ public final class SwagLabsHomePage extends SwagLabsBasePage {
                 "button[id='add-to-cart-test.allthethings()-t-shirt-(red)']");
         itemLocators.forEach(item -> {
             Locator shoppingItem = locators.getPageLocator(item);
-            clickElement(shoppingItem, "Shopping item: " + item + " not visible!");
+            clickElement(shoppingItem);
         });
         Locator shoppingCartBadge = locators.getPageLocator(".shopping_cart_badge");
         return validateAndParseShoppingCartBadge(shoppingCartBadge);
@@ -60,15 +60,15 @@ public final class SwagLabsHomePage extends SwagLabsBasePage {
         Locator product = productNameList.stream()
                 .filter(productItem -> productItem.textContent().equalsIgnoreCase(productName))
                 .findFirst().orElseThrow(() -> new SwagLabsException("Product Name not found!"));
-        clickElement(product, "Product Name is not clicked!");
+        clickElement(product);
         return true;
     }
 
     public boolean isLogoutSuccess() {
         Locator openMenuButton = locators.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Open Menu"));
-        clickElement(openMenuButton, "Hamburger Menu Button not visible!");
+        clickElement(openMenuButton);
         Locator logoutButton = locators.getPageLocator("#logout_sidebar_link");
-        clickElement(logoutButton, "Logout button is not clicked!");
+        clickElement(logoutButton);
         return basePage.title().equalsIgnoreCase("Swag Labs");
     }
 }
