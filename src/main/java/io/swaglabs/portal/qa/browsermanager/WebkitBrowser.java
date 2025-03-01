@@ -12,9 +12,6 @@ public class WebkitBrowser implements IBrowser {
     public BrowserContext createSession(Playwright playwright, boolean isHeadless) {
         return playwright.webkit().launch(new BrowserType.LaunchOptions()
                         .setHeadless(isHeadless)
-                        .setArgs(isHeadless
-                                ? List.of(WebPortalConstants.NEW_HEADLESS, WebPortalConstants.MAXIMIZE_WINDOW)
-                                : List.of(WebPortalConstants.MAXIMIZE_WINDOW)))
-                .newContext();
+                        .setArgs(List.of(WebPortalConstants.MAXIMIZE_WINDOW))).newContext();
     }
 }
