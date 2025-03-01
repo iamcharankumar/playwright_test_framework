@@ -139,7 +139,7 @@ jobs:
     needs: build_and_test
     strategy:
       matrix:
-        browser: [ chrome, firefox, msedge ]
+        browser: [ chrome, firefox, msedge, webkit ]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
