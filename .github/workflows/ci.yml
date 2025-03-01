@@ -19,6 +19,9 @@ jobs:
   build_and_test:
     name: Build and Test
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        browser: [ chrome, firefox, msedge, webkit ]
 
     steps:
       - name: Checkout Repository
@@ -47,7 +50,7 @@ jobs:
         run: mvn clean install -DskipTests
 
       - name: Run Unit Tests and Generate Coverage Report
-        run: mvn clean verify -Drunmode=headless -Dbrowser=chrome -Dgroups=SWAG_LABS_UNIT -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3 jacoco:report
+        run: mvn clean verify -Drunmode=headless -Dbrowser=${{ matrix.browser }} -Dgroups=SWAG_LABS_UNIT -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3 jacoco:report
 
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v4
@@ -70,7 +73,7 @@ jobs:
     needs: build_and_test
     strategy:
       matrix:
-        browser: [ chrome, firefox, msedge ]
+        browser: [ chrome, firefox, msedge, webkit ]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
