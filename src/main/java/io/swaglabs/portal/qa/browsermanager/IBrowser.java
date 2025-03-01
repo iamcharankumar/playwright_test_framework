@@ -5,5 +5,5 @@ import com.microsoft.playwright.Playwright;
 
 public interface IBrowser {
 
-    BrowserContext createSession(Playwright playwright, boolean isHeadless);
+    BrowserContext createSession(Playwright playwright);
 }
