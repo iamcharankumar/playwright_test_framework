@@ -1,5 +1,6 @@
 package io.swaglabs.portal.qa.commons;
 
+import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import io.swaglabs.portal.qa.browsermanager.BrowserManager;
@@ -20,6 +21,7 @@ public abstract class WebBaseTest {
 
     protected static ThreadLocal<Page> page = new ThreadLocal<>();
     protected static ThreadLocal<Playwright> playwright = new ThreadLocal<>();
+    protected static ThreadLocal<Browser> browser = new ThreadLocal<>();
     private static BrowserManager browserManager;
 
 
@@ -33,6 +35,7 @@ public abstract class WebBaseTest {
     public void init(Method method) {
         playwright.set(Playwright.create());
         page.set(browserManager.getBrowserPage(playwright.get()));
+        browser.set(page.get().context().browser());
         log.info("Browser has been set.");
         if (isChromiumBrowser()) {
             CdpUtils.initializeCdpSession(page.get());
@@ -51,16 +54,18 @@ public abstract class WebBaseTest {
         if (isChromiumBrowser()) {
             CdpUtils.destroyCdpSession();
         }
-        browserManager.destroyBrowserPage(page.get());
+        browserManager.destroyBrowserPage(page.get(), browser.get());
         page.get().close();
         page.remove();
+        browser.get().close();
+        browser.remove();
         playwright.get().close();
         playwright.remove();
         log.info("Browser has been destroyed.");
     }
 
     private boolean isChromiumBrowser() {
-        String browser = System.getProperty(WebPortalConstants.BROWSER);
-        return (browser.equalsIgnoreCase(BrowserName.CHROME.getBrowserType()) || browser.equalsIgnoreCase(BrowserName.MS_EDGE.getBrowserType()));
+        String browserName = System.getProperty(WebPortalConstants.BROWSER);
+        return (browserName.equalsIgnoreCase(BrowserName.CHROME.getBrowserType()) || browserName.equalsIgnoreCase(BrowserName.MS_EDGE.getBrowserType()));
     }
 }

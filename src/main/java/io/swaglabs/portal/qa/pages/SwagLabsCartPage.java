@@ -12,7 +12,7 @@ public final class SwagLabsCartPage extends SwagLabsBasePage {
 
     public boolean isCheckoutButtonClicked() {
         Locator checkoutButton = locators.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Checkout"));
-        clickElement(checkoutButton, "Checkout Button not clicked!");
+        clickElement(checkoutButton);
         return true;
     }
 }
