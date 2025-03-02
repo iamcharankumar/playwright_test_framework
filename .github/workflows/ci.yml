@@ -51,9 +51,7 @@ jobs:
 
       - name: Run Unit Tests and Generate Coverage Report
         run: |
-          mvn clean verify -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
-                           -Dgroups=SWAG_LABS_UNIT \ 
-                           -Dthreads=3 -Ddataproviderthreadcount=3 jacoco:report
+          mvn clean verify -Drunmode=headless -Dbrowser=${{ matrix.browser }} -Dgroups=SWAG_LABS_UNIT -Dthreads=3 -Ddataproviderthreadcount=3 jacoco:report
 
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v4
