@@ -18,4 +18,5 @@ public final class WebPortalConstants {
     public static final String BROWSER = "browser";
 
     public static final String MAXIMIZE_WINDOW = "--start-maximized";
+    public static final String NEW_HEADLESS = "--headless=new";
 }

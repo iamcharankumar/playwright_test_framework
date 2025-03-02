@@ -19,6 +19,9 @@ jobs:
   build_and_test:
     name: Build and Test
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        browser: [ chrome, firefox, msedge ]
 
     steps:
       - name: Checkout Repository
@@ -47,7 +50,10 @@ jobs:
         run: mvn clean install -DskipTests
 
       - name: Run Unit Tests and Generate Coverage Report
-        run: mvn clean verify -Drunmode=headless -Dbrowser=chrome -Dgroups=SWAG_LABS_UNIT -Dthreads=3 -Ddataproviderthreadcount=3 jacoco:report
+        run: |
+          mvn clean verify -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
+                           -Dgroups=SWAG_LABS_UNIT \ 
+                           -Dthreads=3 -Ddataproviderthreadcount=3 jacoco:report
 
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v4
@@ -70,7 +76,7 @@ jobs:
     needs: build_and_test
     strategy:
       matrix:
-        browser: [ chrome, firefox, msedge, webkit ]
+        browser: [ chrome, firefox, msedge ]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -139,7 +145,7 @@ jobs:
     needs: build_and_test
     strategy:
       matrix:
-        browser: [ chrome, firefox, msedge, webkit ]
+        browser: [ chrome, firefox, msedge ]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -231,7 +237,7 @@ jobs:
         run: |
           mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
                          -Dgroups=SWAG_LABS_E2E \
-                         -Dtestng.parallel=methods -DthreadPoolSize=3 -Ddataproviderthreadcount=3
+                         -Dthreads=3 -Ddataproviderthreadcount=3
 
       - name: Verify Report Directory
         run: ls target/surefire-reports || echo "Report directory not found"

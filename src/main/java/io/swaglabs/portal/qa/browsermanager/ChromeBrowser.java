@@ -10,9 +10,11 @@ import java.util.List;
 public class ChromeBrowser implements IBrowser {
 
     @Override
-    public BrowserContext createSession(Playwright playwright) {
+    public BrowserContext createSession(Playwright playwright, boolean isHeadless) {
         return playwright.chromium().launch(new BrowserType.LaunchOptions()
-                .setHeadless(true)
-                .setArgs(List.of("--headless=new", WebPortalConstants.MAXIMIZE_WINDOW))).newContext();
+                .setHeadless(isHeadless)
+                .setArgs(isHeadless
+                        ? List.of(WebPortalConstants.NEW_HEADLESS, WebPortalConstants.MAXIMIZE_WINDOW)
+                        : List.of(WebPortalConstants.MAXIMIZE_WINDOW))).newContext();
     }
 }

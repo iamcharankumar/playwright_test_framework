@@ -12,7 +12,9 @@ public class BrowserManager implements IBrowserManager<Page> {
     @Override
     public Page getBrowserPage(Playwright playwright) {
         String browserName = System.getProperty(WebPortalConstants.BROWSER);
-        return new BrowserFactory().createBrowser(browserName).createSession(playwright).newPage();
+        String runMode = System.getProperty(WebPortalConstants.RUN_MODE);
+        boolean isHeadless = runMode.equals("headless");
+        return new BrowserFactory().createBrowser(browserName).createSession(playwright, isHeadless).newPage();
     }
 
     @Override
