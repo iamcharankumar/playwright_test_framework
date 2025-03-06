@@ -85,3 +85,8 @@ modular code. Perfect for those looking to speed up their test automation journe
 ### DEFAULT RUN
 
 `mvn clean test -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`
+
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=iamcharankumar/playwright_test_framework&type=Date)](https://star-history.com/#iamcharankumar/playwright_test_framework&Date)
