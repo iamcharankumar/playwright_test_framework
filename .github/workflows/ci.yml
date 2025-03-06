@@ -62,10 +62,10 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: target
+          name: target-${{ matrix.browser }} # Unique artifact name
           path: |
-            ${{ github.workspace }}/target-${{ matrix.browser }}
-            ${{ github.workspace }}/reports-${{ matrix.browser }}
+            ${{ github.workspace }}/target
+            ${{ github.workspace }}/reports
 
   smoke_tests:
     name: Run Smoke Tests
@@ -88,7 +88,7 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: target-${{ matrix.browser }}
+          name: target-${{ matrix.browser }} # Match the unique artifact name
 
       - name: Run Tests for ${{ matrix.browser }}
         run: |
@@ -157,7 +157,7 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: target-${{ matrix.browser }}
+          name: target-${{ matrix.browser }} # Match the unique artifact name
 
       - name: Run Tests for ${{ matrix.browser }}
         run: |
@@ -228,9 +228,9 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: target-${{ matrix.browser }}
+          name: target-${{ matrix.browser }} # Match the unique artifact name
 
-      - name: Run E2E Tests for ${{ matrix.browser }}
+      - name: Run Tests for ${{ matrix.browser }}
         run: |
           mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
                          -Dgroups=SWAG_LABS_E2E \
