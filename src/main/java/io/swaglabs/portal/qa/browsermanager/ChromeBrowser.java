@@ -1,5 +1,6 @@
 package io.swaglabs.portal.qa.browsermanager;
 
+import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Playwright;
@@ -15,6 +16,6 @@ public class ChromeBrowser implements IBrowser {
                 .setHeadless(isHeadless)
                 .setArgs(isHeadless
                         ? List.of(WebPortalConstants.NEW_HEADLESS, WebPortalConstants.MAXIMIZE_WINDOW)
-                        : List.of(WebPortalConstants.MAXIMIZE_WINDOW))).newContext();
+                        : List.of(WebPortalConstants.MAXIMIZE_WINDOW))).newContext(new Browser.NewContextOptions().setViewportSize(null));
     }
 }

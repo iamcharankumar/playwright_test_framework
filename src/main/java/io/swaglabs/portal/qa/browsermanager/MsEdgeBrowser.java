@@ -1,5 +1,6 @@
 package io.swaglabs.portal.qa.browsermanager;
 
+import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Playwright;
@@ -16,6 +17,6 @@ public class MsEdgeBrowser implements IBrowser {
                 .setArgs(isHeadless
                         ? List.of(WebPortalConstants.NEW_HEADLESS, WebPortalConstants.MAXIMIZE_WINDOW)
                         : List.of(WebPortalConstants.MAXIMIZE_WINDOW))
-                .setChannel(BrowserName.MS_EDGE.getBrowserType())).newContext();
+                .setChannel(BrowserName.MS_EDGE.getBrowserType())).newContext(new Browser.NewContextOptions().setViewportSize(null));
     }
 }

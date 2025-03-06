@@ -55,9 +55,7 @@ public abstract class WebBaseTest {
             CdpUtils.destroyCdpSession();
         }
         browserManager.destroyBrowserPage(page.get(), browser.get());
-        page.get().close();
         page.remove();
-        browser.get().close();
         browser.remove();
         playwright.get().close();
         playwright.remove();

@@ -19,6 +19,9 @@ jobs:
   build_and_test:
     name: Build and Test
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        browser: [ chrome, firefox, msedge ]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -47,7 +50,7 @@ jobs:
 
       - name: Run Unit Tests and Generate Coverage Report
         run: |
-          mvn clean verify -Drunmode=headless -Dbrowser=chrome -Dgroups=SWAG_LABS_UNIT -Dthreads=3 -Ddataproviderthreadcount=3 jacoco:report
+          mvn clean verify -Drunmode=headless -Dbrowser=${{ matrix.browser }} -Dgroups=SWAG_LABS_UNIT -Dthreads=3 -Ddataproviderthreadcount=3 jacoco:report
 
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v4
@@ -59,7 +62,7 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: target
+          name: target-${{ matrix.browser }} # Unique artifact name
           path: |
             ${{ github.workspace }}/target
             ${{ github.workspace }}/reports
@@ -85,7 +88,7 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: target
+          name: target-${{ matrix.browser }} # Match the unique artifact name
 
       - name: Run Tests for ${{ matrix.browser }}
         run: |
@@ -154,7 +157,7 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: target
+          name: target-${{ matrix.browser }} # Match the unique artifact name
 
       - name: Run Tests for ${{ matrix.browser }}
         run: |
@@ -225,9 +228,9 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: target
+          name: target-${{ matrix.browser }} # Match the unique artifact name
 
-      - name: Run E2E Tests for ${{ matrix.browser }}
+      - name: Run Tests for ${{ matrix.browser }}
         run: |
           mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
                          -Dgroups=SWAG_LABS_E2E \
