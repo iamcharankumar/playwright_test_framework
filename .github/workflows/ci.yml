@@ -88,7 +88,7 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: target
+          name: target-${{ matrix.browser }}
 
       - name: Run Tests for ${{ matrix.browser }}
         run: |
@@ -157,7 +157,7 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: target
+          name: target-${{ matrix.browser }}
 
       - name: Run Tests for ${{ matrix.browser }}
         run: |
@@ -228,7 +228,7 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: target
+          name: target-${{ matrix.browser }}
 
       - name: Run E2E Tests for ${{ matrix.browser }}
         run: |
