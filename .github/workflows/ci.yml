@@ -45,6 +45,10 @@ jobs:
           sudo apt update
           sudo apt install microsoft-edge-stable
 
+      - name: Install Playwright
+        run: |
+          sudo mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install-deps"
+
       - name: Build Project
         run: mvn clean install -DskipTests
 
@@ -84,6 +88,10 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
           cache: maven
+
+      - name: Install Playwright
+        run: |
+          sudo mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install-deps"
 
       - name: Download Artifacts
         uses: actions/download-artifact@v4
@@ -153,6 +161,10 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
           cache: maven
+
+      - name: Install Playwright
+        run: |
+          sudo mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install-deps"
 
       - name: Download Artifacts
         uses: actions/download-artifact@v4
@@ -224,6 +236,10 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
           cache: maven
+
+      - name: Install Playwright
+        run: |
+          sudo mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install-deps"
 
       - name: Download Artifacts
         uses: actions/download-artifact@v4
