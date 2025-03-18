@@ -16,51 +16,12 @@ on:
     - cron: '0 0 * * *'
 
 jobs:
-  setup_environment:
-    name: Setup Environment
-    runs-on: ubuntu-latest
-    outputs:
-      cache-key: ${{ steps.cache-maven.outputs.cache-primary-key }}
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Java and Maven
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'adopt'
-          cache: maven
-
-      - name: Cache Maven Dependencies
-        id: cache-maven
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.m2/repository
-            target
-          key: maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            maven-
-
-      - name: Install Browsers
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y wget gnupg
-          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-          sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
-          sudo sh -c 'echo "deb [arch=amd64] http://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge.list'
-          sudo apt-get update
-          sudo apt-get install -y google-chrome-stable microsoft-edge-stable firefox
-
   build_and_test:
     name: Build and Test
     runs-on: ubuntu-latest
-    needs: setup_environment
     strategy:
       matrix:
         browser: [ chrome, firefox, msedge ]
-        shard: [ 1, 2, 3 ]  # Run tests in parallel shards
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -72,13 +33,10 @@ jobs:
           distribution: 'adopt'
           cache: maven
 
-      - name: Restore Maven Cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.m2/repository
-            target
-          key: ${{ needs.setup_environment.outputs.cache-key }}
+      - name: Install Browsers
+        uses: browser-actions/setup-chrome@latest
+      - uses: browser-actions/setup-firefox@latest
+      - uses: browser-actions/setup-edge@v1
 
       - name: Build Project
         run: |
@@ -86,10 +44,7 @@ jobs:
 
       - name: Run Unit Tests and Generate Coverage Report
         run: |
-          mvn clean verify -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
-                           -Dgroups=SWAG_LABS_UNIT \
-                           -Dthreads=3 -Ddataproviderthreadcount=3 jacoco:report \
-                           -Dshard=${{ matrix.shard }}
+          mvn clean verify -Drunmode=headless -Dbrowser=${{ matrix.browser }} -Dgroups=SWAG_LABS_UNIT -Dthreads=3 -Ddataproviderthreadcount=3 jacoco:report
 
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v4
@@ -101,7 +56,7 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: target-${{ matrix.browser }}-${{ matrix.shard }} # Unique artifact name
+          name: target-${{ matrix.browser }} # Unique artifact name
           path: |
             ${{ github.workspace }}/target
             ${{ github.workspace }}/reports
@@ -113,22 +68,30 @@ jobs:
     strategy:
       matrix:
         browser: [ chrome, firefox, msedge ]
-        shard: [ 1, 2, 3 ]  # Run tests in parallel shards
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Setup Java and Maven
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          cache: maven
+
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: target-${{ matrix.browser }}-${{ matrix.shard }} # Match the unique artifact name
+          name: target-${{ matrix.browser }} # Match the unique artifact name
 
       - name: Run Tests for ${{ matrix.browser }}
         run: |
           mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
                          -Dgroups=SWAG_LABS_SMOKE \
-                         -Dthreads=3 -Ddataproviderthreadcount=3 \
-                         -Dshard=${{ matrix.shard }}
+                         -Dthreads=3 -Ddataproviderthreadcount=3
+
+      - name: Verify Report Directory
+        run: ls target/surefire-reports || echo "Report directory not found"
 
       - name: Generate Test Summary
         uses: test-summary/action@v2
@@ -174,22 +137,30 @@ jobs:
     strategy:
       matrix:
         browser: [ chrome, firefox, msedge ]
-        shard: [ 1, 2, 3 ]  # Run tests in parallel shards
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Setup Java and Maven
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          cache: maven
+
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: target-${{ matrix.browser }}-${{ matrix.shard }} # Match the unique artifact name
+          name: target-${{ matrix.browser }} # Match the unique artifact name
 
       - name: Run Tests for ${{ matrix.browser }}
         run: |
           mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
                          -Dgroups=SWAG_LABS_REGRESSION \
-                         -Dthreads=3 -Ddataproviderthreadcount=3 \
-                         -Dshard=${{ matrix.shard }}
+                         -Dthreads=3 -Ddataproviderthreadcount=3
+
+      - name: Verify Report Directory
+        run: ls target/surefire-reports || echo "Report directory not found"
 
       - name: Generate Test Summary
         uses: test-summary/action@v2
@@ -237,22 +208,30 @@ jobs:
     strategy:
       matrix:
         browser: [ chrome, firefox, msedge ]
-        shard: [ 1, 2, 3 ]  # Run tests in parallel shards
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Setup Java and Maven
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          cache: maven
+
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: target-${{ matrix.browser }}-${{ matrix.shard }} # Match the unique artifact name
+          name: target-${{ matrix.browser }} # Match the unique artifact name
 
       - name: Run Tests for ${{ matrix.browser }}
         run: |
           mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
                          -Dgroups=SWAG_LABS_E2E \
-                         -Dthreads=3 -Ddataproviderthreadcount=3 \
-                         -Dshard=${{ matrix.shard }}
+                         -Dthreads=3 -Ddataproviderthreadcount=3
+
+      - name: Verify Report Directory
+        run: ls target/surefire-reports || echo "Report directory not found"
 
       - name: Generate Test Summary
         uses: test-summary/action@v2
