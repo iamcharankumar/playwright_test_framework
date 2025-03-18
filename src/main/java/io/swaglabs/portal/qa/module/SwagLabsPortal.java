@@ -7,7 +7,6 @@ import io.swaglabs.portal.qa.pages.*;
 public class SwagLabsPortal {
 
     private final Page PAGE;
-    private final String SWAG_LABS_URL;
     public final SwagLabsLoginPage LOGIN_PAGE;
     public final SwagLabsHomePage HOME_PAGE;
     public final SwagLabsProductPage PRODUCT_PAGE;
@@ -18,7 +17,6 @@ public class SwagLabsPortal {
 
     public SwagLabsPortal(Page page) {
         this.PAGE = page;
-        SWAG_LABS_URL = WebPortalConstants.SWAG_LABS_URL;
         LOGIN_PAGE = new SwagLabsLoginPage(page);
         HOME_PAGE = new SwagLabsHomePage(page);
         PRODUCT_PAGE = new SwagLabsProductPage(page);
@@ -29,6 +27,6 @@ public class SwagLabsPortal {
     }
 
     public void visit() {
-        PAGE.navigate(SWAG_LABS_URL);
+        PAGE.navigate(WebPortalConstants.SWAG_LABS_URL);
     }
 }

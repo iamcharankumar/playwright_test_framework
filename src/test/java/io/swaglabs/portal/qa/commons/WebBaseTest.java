@@ -5,7 +5,7 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import io.swaglabs.portal.qa.browsermanager.BrowserManager;
 import io.swaglabs.portal.qa.cdp.CdpCommands;
-import io.swaglabs.portal.qa.constants.BrowserName;
+import io.swaglabs.portal.qa.browsermanager.BrowserName;
 import io.swaglabs.portal.qa.constants.WebPortalConstants;
 import io.swaglabs.portal.qa.utils.CdpUtils;
 import io.swaglabs.portal.qa.utils.PerformanceUtils;
