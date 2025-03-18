@@ -47,20 +47,7 @@ jobs:
 
       - name: Install Playwright Dependencies
         run: |
-          sudo apt-get install libwoff1\
-                               libvpx7\                                                                                     
-                               libevent-2.1-7t64\                                                                           
-                               libopus0\                                                                                    
-                               libgstreamer-plugins-base1.0-0\                                                              
-                               libgstreamer-gl1.0-0\                                                                        
-                               libgstreamer-plugins-bad1.0-0\                                                               
-                               libharfbuzz-icu0\                                                                            
-                               libsecret-1-0\                                                                               
-                               libhyphen0\                                                                                  
-                               libmanette-0.2-0\                                                                            
-                               libflite1\                                                                                   
-                               libgles2\                                                                                    
-                               gstreamer1.0-libav
+          sudo mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install-deps"
 
       - name: Build Project
         run: mvn clean install -DskipTests
@@ -104,20 +91,7 @@ jobs:
 
       - name: Install Playwright Dependencies
         run: |
-          sudo apt-get install libwoff1\
-                               libvpx7\                                                                                     
-                               libevent-2.1-7t64\                                                                           
-                               libopus0\                                                                                    
-                               libgstreamer-plugins-base1.0-0\                                                              
-                               libgstreamer-gl1.0-0\                                                                        
-                               libgstreamer-plugins-bad1.0-0\                                                               
-                               libharfbuzz-icu0\                                                                            
-                               libsecret-1-0\                                                                               
-                               libhyphen0\                                                                                  
-                               libmanette-0.2-0\                                                                            
-                               libflite1\                                                                                   
-                               libgles2\                                                                                    
-                               gstreamer1.0-libav
+          sudo mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install-deps"
 
       - name: Download Artifacts
         uses: actions/download-artifact@v4
@@ -190,20 +164,7 @@ jobs:
 
       - name: Install Playwright Dependencies
         run: |
-          sudo apt-get install libwoff1\
-                               libvpx7\                                                                                     
-                               libevent-2.1-7t64\                                                                           
-                               libopus0\                                                                                    
-                               libgstreamer-plugins-base1.0-0\                                                              
-                               libgstreamer-gl1.0-0\                                                                        
-                               libgstreamer-plugins-bad1.0-0\                                                               
-                               libharfbuzz-icu0\                                                                            
-                               libsecret-1-0\                                                                               
-                               libhyphen0\                                                                                  
-                               libmanette-0.2-0\                                                                            
-                               libflite1\                                                                                   
-                               libgles2\                                                                                    
-                               gstreamer1.0-libav
+          sudo mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install-deps"
 
       - name: Download Artifacts
         uses: actions/download-artifact@v4
@@ -278,20 +239,7 @@ jobs:
 
       - name: Install Playwright Dependencies
         run: |
-          sudo apt-get install libwoff1\
-                               libvpx7\                                                                                     
-                               libevent-2.1-7t64\                                                                           
-                               libopus0\                                                                                    
-                               libgstreamer-plugins-base1.0-0\                                                              
-                               libgstreamer-gl1.0-0\                                                                        
-                               libgstreamer-plugins-bad1.0-0\                                                               
-                               libharfbuzz-icu0\                                                                            
-                               libsecret-1-0\                                                                               
-                               libhyphen0\                                                                                  
-                               libmanette-0.2-0\                                                                            
-                               libflite1\                                                                                   
-                               libgles2\                                                                                    
-                               gstreamer1.0-libav
+          sudo mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install-deps"
 
       - name: Download Artifacts
         uses: actions/download-artifact@v4
