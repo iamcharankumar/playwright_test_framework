@@ -34,9 +34,15 @@ jobs:
           distribution: 'adopt'
           cache: maven
 
-      - name: Install Playwright Dependencies
-        run: |
-          sudo mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install-deps"
+      - name: Cache Maven Dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.m2/repository
+            target
+          key: maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            maven-
 
       - name: Build Project
         run: |
@@ -44,7 +50,10 @@ jobs:
 
       - name: Run Unit Tests and Generate Coverage Report
         run: |
-          mvn clean verify -Drunmode=headless -Dbrowser=${{ matrix.browser }} -Dgroups=SWAG_LABS_UNIT -Dthreads=3 -Ddataproviderthreadcount=3 jacoco:report
+          mvn clean verify -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
+                           -Dgroups=SWAG_LABS_UNIT \
+                           -Dthreads=3 -Ddataproviderthreadcount=3 jacoco:report \
+                           -Dshard=${{ matrix.shard }}
 
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v4
