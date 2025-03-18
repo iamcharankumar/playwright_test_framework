@@ -22,6 +22,7 @@ jobs:
     strategy:
       matrix:
         browser: [ chrome, firefox, msedge ]
+        shard: [ 1, 2, 3 ]  # Run tests in parallel shards
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -34,14 +35,16 @@ jobs:
           cache: maven
 
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps chromium firefox msedge
+        run: |
+          npx playwright install --with-deps chromium firefox msedge
 
       - name: Install Playwright Dependencies
         run: |
           sudo mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install-deps"
 
       - name: Build Project
-        run: mvn clean install -DskipTests
+        run: |
+          mvn install -DskipTests -T 2C
 
       - name: Run Unit Tests and Generate Coverage Report
         run: |
@@ -69,6 +72,7 @@ jobs:
     strategy:
       matrix:
         browser: [ chrome, firefox, msedge ]
+        shard: [ 1, 2, 3 ]  # Run tests in parallel shards
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -93,7 +97,8 @@ jobs:
         run: |
           mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
                          -Dgroups=SWAG_LABS_SMOKE \
-                         -Dthreads=3 -Ddataproviderthreadcount=3
+                         -Dthreads=3 -Ddataproviderthreadcount=3 \
+                         -Dshard=${{ matrix.shard }}
 
       - name: Verify Report Directory
         run: ls target/surefire-reports || echo "Report directory not found"
@@ -142,6 +147,7 @@ jobs:
     strategy:
       matrix:
         browser: [ chrome, firefox, msedge ]
+        shard: [ 1, 2, 3 ]  # Run tests in parallel shards
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -166,7 +172,8 @@ jobs:
         run: |
           mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
                          -Dgroups=SWAG_LABS_REGRESSION \
-                         -Dthreads=3 -Ddataproviderthreadcount=3
+                         -Dthreads=3 -Ddataproviderthreadcount=3 \
+                         -Dshard=${{ matrix.shard }}
 
       - name: Verify Report Directory
         run: ls target/surefire-reports || echo "Report directory not found"
@@ -217,6 +224,7 @@ jobs:
     strategy:
       matrix:
         browser: [ chrome, firefox, msedge ]
+        shard: [ 1, 2, 3 ]  # Run tests in parallel shards
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -241,7 +249,8 @@ jobs:
         run: |
           mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
                          -Dgroups=SWAG_LABS_E2E \
-                         -Dthreads=3 -Ddataproviderthreadcount=3
+                         -Dthreads=3 -Ddataproviderthreadcount=3 \
+                         -Dshard=${{ matrix.shard }}
 
       - name: Verify Report Directory
         run: ls target/surefire-reports || echo "Report directory not found"
