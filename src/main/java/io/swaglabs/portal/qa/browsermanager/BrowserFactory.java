@@ -1,7 +1,5 @@
 package io.swaglabs.portal.qa.browsermanager;
 
-import io.swaglabs.portal.qa.constants.BrowserName;
-
 public class BrowserFactory {
 
     public IBrowser createBrowser(String browserName) {

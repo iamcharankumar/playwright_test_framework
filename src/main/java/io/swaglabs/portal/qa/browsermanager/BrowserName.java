@@ -1,4 +1,4 @@
-package io.swaglabs.portal.qa.constants;
+package io.swaglabs.portal.qa.browsermanager;
 
 import io.swaglabs.portal.qa.exceptions.UtilsException;
 import lombok.AllArgsConstructor;
