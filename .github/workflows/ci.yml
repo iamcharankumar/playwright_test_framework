@@ -79,8 +79,6 @@ jobs:
             ~/.m2/repository
             target
           key: ${{ needs.setup_environment.outputs.cache-key }}
-          restore-keys: |
-            maven-
 
       - name: Build Project
         run: |
