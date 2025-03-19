@@ -34,17 +34,24 @@ jobs:
           cache: maven
 
       - name: Install Browsers
-        uses: browser-actions/setup-chrome@latest
-      - uses: browser-actions/setup-firefox@latest
-      - uses: browser-actions/setup-edge@v1
+        run: |
+          npx @browser-actions/setup-chrome@latest
+          npx @browser-actions/setup-firefox@latest
+          npx @browser-actions/setup-edge@v1
 
       - name: Build Project
         run: |
-          mvn install -DskipTests -T 2C
+          mvn install -DskipTests -T 4C
 
-      - name: Run Unit Tests and Generate Coverage Report
+      - name: Run Unit Tests
         run: |
-          mvn clean verify -Drunmode=headless -Dbrowser=${{ matrix.browser }} -Dgroups=SWAG_LABS_UNIT -Dthreads=3 -Ddataproviderthreadcount=3 jacoco:report
+          mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
+                         -Dgroups=SWAG_LABS_UNIT \
+                         -Dthreads=3 -Ddataproviderthreadcount=3
+
+      - name: Generate Coverage Report
+        run: |
+          mvn jacoco:report
 
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v4
