@@ -34,10 +34,9 @@ jobs:
           cache: maven
 
       - name: Install Browsers
-        run: |
-          npx @browser-actions/setup-chrome@latest
-          npx @browser-actions/setup-firefox@latest
-          npx @browser-actions/setup-edge@v1
+      - uses: browser-actions/setup-chrome@latest
+      - uses: browser-actions/setup-firefox@latest
+      - uses: browser-actions/setup-edge@v1
 
       - name: Build Project
         run: |
