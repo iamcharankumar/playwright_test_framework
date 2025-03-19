@@ -34,10 +34,12 @@ jobs:
           cache: maven
 
       - name: Install Browsers
-      - uses: browser-actions/setup-chrome@latest
-      - uses: browser-actions/setup-firefox@latest
-      - uses: browser-actions/setup-edge@v1
-
+        uses: browser-actions/setup-chrome@latest
+      - name: Install Firefox
+        uses: browser-actions/setup-firefox@latest
+      - name: Install Edge
+        uses: browser-actions/setup-edge@v1
+      
       - name: Build Project
         run: |
           mvn install -DskipTests -T 4C
