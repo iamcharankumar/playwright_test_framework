@@ -11,21 +11,15 @@ public final class SwagLabsProductPage extends SwagLabsBasePage {
     }
 
     public String getProductNameText() {
-        String productNameText = locators.getPageLocator(".inventory_details_name.large_size").textContent();
-        validateNonEmptyText(productNameText, "Product Name text is empty!");
-        return productNameText;
+        return getTextContent(locators.getPageLocator(".inventory_details_name.large_size"));
     }
 
     public String getProductPriceText() {
-        String productPriceText = locators.getPageLocator(".inventory_details_price").textContent();
-        validateNonEmptyText(productPriceText, "Product Price Text is empty!");
-        return productPriceText;
+        return getTextContent(locators.getPageLocator(".inventory_details_price"));
     }
 
     public String getProductDescription(String productDescription) {
-        String productDescText = locators.getByText(productDescription).textContent();
-        validateNonEmptyText(productDescText, "Product Description Text is empty!");
-        return productDescText;
+        return getTextContent(locators.getByText(productDescription));
     }
 
     public boolean isProductAddedToCart() {
@@ -37,7 +31,6 @@ public final class SwagLabsProductPage extends SwagLabsBasePage {
     public boolean isShoppingCartClicked() {
         Locator shoppingCart = locators.getPageLocator(".shopping_cart_link");
         clickElement(shoppingCart);
-        shoppingCart.click();
         return true;
     }
 }

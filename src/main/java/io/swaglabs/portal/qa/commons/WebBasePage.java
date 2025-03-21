@@ -33,4 +33,18 @@ public abstract class WebBasePage {
         locator.clear();
         locator.fill(textContent);
     }
+
+    protected String getTextContent(String selector) {
+        return extractText(locators.getPageLocator(selector), "Text content is empty for the locator: " + selector);
+    }
+
+    protected String getTextContent(Locator locator) {
+        return extractText(locator, "Text content is empty for the locator: " + locator);
+    }
+
+    private String extractText(Locator locator, String errorMessage) {
+        String textContent = locator.textContent().trim();
+        validateNonEmptyText(textContent, errorMessage);
+        return textContent;
+    }
 }

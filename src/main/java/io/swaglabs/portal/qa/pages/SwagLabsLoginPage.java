@@ -18,9 +18,7 @@ public final class SwagLabsLoginPage extends SwagLabsBasePage {
     }
 
     public String getSwagLabsLogoText() {
-        String logoText = locators.getByText("Swag Labs").textContent();
-        validateNonEmptyText(logoText, "Logo Text is Empty on the Swag Labs Login Page!");
-        return logoText;
+        return getTextContent(locators.getByText("Swag Labs"));
     }
 
     public String getAcceptedUserNames() {
@@ -48,8 +46,7 @@ public final class SwagLabsLoginPage extends SwagLabsBasePage {
     }
 
     public boolean isHomePageLanded() {
-        Locator appLogo = locators.getPageLocator(".app_logo");
-        return appLogo.textContent().equalsIgnoreCase("Swag Labs");
+        return getTextContent(".app_logo").equalsIgnoreCase("Swag Labs");
     }
 
     public boolean isLoginSuccess() {
