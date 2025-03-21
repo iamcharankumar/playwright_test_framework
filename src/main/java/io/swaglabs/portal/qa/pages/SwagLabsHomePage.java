@@ -14,9 +14,7 @@ public final class SwagLabsHomePage extends SwagLabsBasePage {
     }
 
     public String getProductHeaderText() {
-        String productHeaderText = locators.getByText("Products").textContent();
-        validateNonEmptyText(productHeaderText, "Products Text not found in Home Page!");
-        return productHeaderText;
+        return getTextContent(locators.getByText("Products"));
     }
 
     public boolean isShoppingCartButtonEnabled() {
@@ -49,8 +47,7 @@ public final class SwagLabsHomePage extends SwagLabsBasePage {
     }
 
     private int validateAndParseShoppingCartBadge(Locator shoppingCartBadge) {
-        String shoppingCartBadgeText = shoppingCartBadge.textContent();
-        validateNonEmptyText(shoppingCartBadgeText, "Shopping Cart Badge text is empty!");
+        String shoppingCartBadgeText = getTextContent(shoppingCartBadge);
         validateAction(Character.isDigit(shoppingCartBadgeText.charAt(0)), "Shopping Cart Badge text is not a number!");
         return Integer.parseInt(shoppingCartBadgeText);
     }
@@ -58,7 +55,7 @@ public final class SwagLabsHomePage extends SwagLabsBasePage {
     public boolean isProductSelected(String productName) {
         List<Locator> productNameList = locators.getPageLocator(".inventory_item_name").all();
         Locator product = productNameList.stream()
-                .filter(productItem -> productItem.textContent().equalsIgnoreCase(productName))
+                .filter(productItem -> getTextContent(productItem).equalsIgnoreCase(productName))
                 .findFirst().orElseThrow(() -> new SwagLabsException("Product Name not found!"));
         clickElement(product);
         return true;

@@ -11,11 +11,11 @@ public final class SwagLabsCheckoutCompletePage extends SwagLabsBasePage {
     }
 
     public String getThankYouText() {
-        return locators.getPageLocator(".complete-header").textContent();
+        return getTextContent(".complete-header");
     }
 
     public String getOrderCompleteText() {
-        return locators.getPageLocator(".complete-text").textContent();
+        return getTextContent(".complete-text");
     }
 
     public boolean isBackHomeButtonClicked() {
