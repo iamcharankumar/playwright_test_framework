@@ -15,6 +15,7 @@ public class ChromeBrowser implements IBrowser {
         return playwright.chromium().launch(new BrowserType.LaunchOptions()
                         .setHeadless(isHeadless)
                         .setArgs(Collections.singletonList(WebPortalConstants.MAXIMIZE_WINDOW)))
-                .newContext(new Browser.NewContextOptions().setViewportSize(null));
+                .newContext(new Browser.NewContextOptions()
+                        .setViewportSize(WebPortalConstants.SCREEN_WIDTH, WebPortalConstants.SCREEN_HEIGHT));
     }
 }

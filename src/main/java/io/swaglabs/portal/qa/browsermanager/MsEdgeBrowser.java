@@ -17,6 +17,7 @@ public class MsEdgeBrowser implements IBrowser {
                                 ? List.of("--headless=new", WebPortalConstants.MAXIMIZE_WINDOW)
                                 : List.of(WebPortalConstants.MAXIMIZE_WINDOW))
                         .setChannel(BrowserName.MS_EDGE.getBrowserType()))
-                .newContext(new Browser.NewContextOptions().setViewportSize(null));
+                .newContext(new Browser.NewContextOptions()
+                        .setViewportSize(WebPortalConstants.SCREEN_WIDTH, WebPortalConstants.SCREEN_HEIGHT));
     }
 }
