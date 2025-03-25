@@ -3,7 +3,7 @@ package io.swaglabs.portal.qa.pages;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
-import io.swaglabs.portal.qa.exceptions.SwagLabsException;
+import io.swaglabs.portal.qa.exceptions.WebPageException;
 
 import java.util.List;
 
@@ -56,7 +56,7 @@ public final class SwagLabsHomePage extends SwagLabsBasePage {
         List<Locator> productNameList = locators.getPageLocator(".inventory_item_name").all();
         Locator product = productNameList.stream()
                 .filter(productItem -> getTextContent(productItem).equalsIgnoreCase(productName))
-                .findFirst().orElseThrow(() -> new SwagLabsException("Product Name not found!"));
+                .findFirst().orElseThrow(() -> new WebPageException("Product Name not found!"));
         clickElement(product);
         return true;
     }

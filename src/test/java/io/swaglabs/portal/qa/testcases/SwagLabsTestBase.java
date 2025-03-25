@@ -1,7 +1,7 @@
 package io.swaglabs.portal.qa.testcases;
 
 import io.swaglabs.portal.qa.commons.WebBaseTest;
-import io.swaglabs.portal.qa.exceptions.SwagLabsException;
+import io.swaglabs.portal.qa.exceptions.WebPageException;
 import io.swaglabs.portal.qa.module.SwagLabsPortal;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.annotations.AfterMethod;
@@ -21,7 +21,7 @@ public sealed class SwagLabsTestBase extends WebBaseTest permits SwagLabsE2ETest
         SWAG_LABS_PORTAL.get().visit();
         boolean isLoggedIn = SWAG_LABS_PORTAL.get().LOGIN_PAGE.isLoginSuccess();
         if (!isLoggedIn)
-            throw new SwagLabsException("Swags Labs Portal Not Logged In!");
+            throw new WebPageException("Swags Labs Portal Not Logged In!");
     }
 
     @AfterMethod(alwaysRun = true)

@@ -5,12 +5,10 @@ on:
   pull_request:
     branches:
       - master
-      - issue-*
       - fb_*
   push:
     branches:
       - master
-      - issue-*
       - fb_*
   schedule:
     - cron: '0 0 * * *'
@@ -33,7 +31,7 @@ jobs:
           distribution: 'adopt'
           cache: maven
 
-      - name: Install Browsers
+      - name: Install Chrome
         uses: browser-actions/setup-chrome@latest
       - name: Install Firefox
         uses: browser-actions/setup-firefox@latest
