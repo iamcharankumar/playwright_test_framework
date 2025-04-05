@@ -44,6 +44,9 @@ public abstract class WebBaseTest {
             CdpUtils.logErrorResponses();
             CdpUtils.sendCommand(CdpCommands.CONSOLE_ENABLE.getDescription());
             CdpUtils.logConsoleErrors();
+            CdpUtils.sendCommand(CdpCommands.PAGE_ENABLE.getDescription());
+            CdpUtils.logPageLoadCompletion();
+            CdpUtils.logPageNavigatedWithinDocument();
         }
         PerformanceUtils.evaluatePageLoadTime(page.get(), method.getName());
         PerformanceUtils.evaluateDomContentLoadTime(page.get(), method.getName());
