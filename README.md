@@ -1,3 +1,6 @@
+![Playwright](https://img.shields.io/badge/-playwright-%232EAD33?style=for-the-badge&logo=playwright&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
+
 [![UI test execution](https://github.com/iamcharankumar/playwright_test_framework/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/iamcharankumar/playwright_test_framework/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/iamcharankumar/playwright_test_framework/actions/workflows/codeql.yml/badge.svg)](https://github.com/iamcharankumar/playwright_test_framework/actions/workflows/codeql.yml)
 [![codecov](https://codecov.io/gh/iamcharankumar/playwright_test_framework/branch/master/graph/badge.svg?token=HT5GS0RC0C)](https://codecov.io/gh/iamcharankumar/playwright_test_framework)
