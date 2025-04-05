@@ -8,7 +8,8 @@ import lombok.Getter;
 public enum CdpCommands {
 
     NETWORK_ENABLE("Network.enable"),
-    CONSOLE_ENABLE("Console.enable");
+    CONSOLE_ENABLE("Console.enable"),
+    PAGE_ENABLE("Page.enable");
 
     private final String description;
 }
