@@ -20,8 +20,7 @@ modular code. Perfect for those looking to speed up their test automation journe
 1. `git clone https://github.com/iamcharankumar/playwright_test_framework.git`
 2. `cd playwright_test_framework`
 3. `git pull`
-4. `mvn clean test -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dtestng.parallel=methods
-   -DthreadPoolSize=3 -Ddataproviderthreadcount=3`
+4. `mvn clean test -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`
 
 **SUPPORTED BROWSERS**
 
@@ -65,34 +64,22 @@ modular code. Perfect for those looking to speed up their test automation journe
 - These maven commands (no testng.xml required) are executed with the respective groups and thread counts.
   The listeners [screenshot, retry, etc] are configured in "pom.xml" under "< property >" tag.
 
-#### CHROME LOCAL & HEADLESS
+#### BROWSERS & RUN MODES
 
-`mvn clean test -Drunmode=local -Dbrowser=chrome -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`
+| Sl.No | Browser Name | Run Mode | mvn command                                                                                                                                               |
+|-------|--------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1     | Chrome       | Local    | `mvn clean test -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`                                      |
+| 2     | Chrome       | Headless | `mvn clean test -Drunmode=headless -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`                   |
+| 3     | Chrome       | Remote   | `mvn clean test -Drunmode=remote -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`                     |
+| 4     | Firefox      | Local    | `mvn clean test -Dbrowser=firefox -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`                    |
+| 5     | Firefox      | Headless | `mvn clean test -Drunmode=headless -Dbrowser=firefox -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3` |
+| 6     | Firefox      | Remote   | `mvn clean test -Drunmode=remote -Dbrowser=firefox -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`   |
+| 7     | Edge         | Local    | `mvn clean test -Dbrowser=edge -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`                       |
+| 8     | Edge         | Headless | `mvn clean test -Drunmode=headless -Dbrowser=edge -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`    |
 
-`mvn clean test -Drunmode=headless -Dbrowser=chrome -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`
-
-### MS EDGE LOCAL & HEADLESS
-
-`mvn clean test -Drunmode=local -Dbrowser=msedge -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`
-
-`mvn clean test -Drunmode=headless -Dbrowser=msedge -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`
-
-### WEBKIT LOCAL & HEADLESS
-
-`mvn clean test -Drunmode=local -Dbrowser=webkit -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`
-
-`mvn clean test -Drunmode=headless -Dbrowser=webkit -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`
-
-### FIREFOX LOCAL & HEADLESS
-
-`mvn clean test -Drunmode=local -Dbrowser=firefox -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`
-
-`mvn clean test -Drunmode=headless -Dbrowser=firefox -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`
-
-### DEFAULT RUN
-
-`mvn clean test -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`
-
+**NOTE**: These above commands (no testng.xml required) will run the tests in parallel with the specified thread count
+and with the respective groups and thread counts.
+The screenshot listeners are configured in "pom.xml" under "< property >" tag.
 
 ## Star History
 
