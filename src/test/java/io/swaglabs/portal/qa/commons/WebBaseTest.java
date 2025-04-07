@@ -7,6 +7,7 @@ import io.swaglabs.portal.qa.browsermanager.BrowserManager;
 import io.swaglabs.portal.qa.browsermanager.BrowserName;
 import io.swaglabs.portal.qa.cdp.CdpCommands;
 import io.swaglabs.portal.qa.constants.WebPortalConstants;
+import io.swaglabs.portal.qa.listeners.WebTestListeners;
 import io.swaglabs.portal.qa.utils.CdpUtils;
 import io.swaglabs.portal.qa.utils.PerformanceUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +38,7 @@ public abstract class WebBaseTest {
         page.set(browserManager.getBrowserPage(PLAYWRIGHT.get()));
         BROWSER.set(page.get().context().browser());
         log.info("Browser has been set.");
+        WebTestListeners.setPage(page.get());
         if (isChromiumBrowser()) {
             CdpUtils.initializeCdpSession(page.get());
             CdpUtils.enableCdpSession();
