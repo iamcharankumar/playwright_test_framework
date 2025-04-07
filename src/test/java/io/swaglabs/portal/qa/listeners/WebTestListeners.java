@@ -1,7 +1,6 @@
 package io.swaglabs.portal.qa.listeners;
 
 import com.microsoft.playwright.Page;
-import io.swaglabs.portal.qa.commons.WebBaseTest;
 import io.swaglabs.portal.qa.constants.WebPortalConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.*;
@@ -12,10 +11,16 @@ import java.time.Instant;
 import java.util.Date;
 
 @Slf4j
-public class WebTestListeners extends WebBaseTest implements ISuiteListener, ITestListener, IRetryAnalyzer {
+public class WebTestListeners implements ISuiteListener, ITestListener, IRetryAnalyzer {
 
     private int retryCount = 0;
     private Instant startDate;
+
+    private static final ThreadLocal<Page> PAGE = new ThreadLocal<>();
+
+    public static void setPage(Page page) {
+        PAGE.set(page);
+    }
 
     @Override
     public void onStart(ISuite suite) {
@@ -49,6 +54,11 @@ public class WebTestListeners extends WebBaseTest implements ISuiteListener, ITe
     }
 
     private void takeScreenshot(ITestResult testResult) {
+        Page currentPage = PAGE.get();
+        if (currentPage == null || currentPage.isClosed()) {
+            log.error("Page object is null or already closed. Cannot take screenshot.");
+            return;
+        }
         String testName = testResult.getName();
         String statusPrefix = testResult.isSuccess() ? "PASS_" : "FAIL_";
         String directory = testResult.isSuccess() ? "/passed_screenshots/" : "/failed_screenshots/";
@@ -56,7 +66,11 @@ public class WebTestListeners extends WebBaseTest implements ISuiteListener, ITe
         String filePath = String.format("%s%s%s_%s_%s%s_%s_%s%s", "./src/test/resources/screenshots",
                 directory, System.getProperty(WebPortalConstants.BROWSER), System.getProperty(WebPortalConstants.RUN_MODE),
                 statusPrefix, testName, testData, new Date(), ".png").replaceAll(":", "\\:");
-        page.get().screenshot(new Page.ScreenshotOptions().setPath(Paths.get(filePath)).setFullPage(true));
+        try {
+            currentPage.screenshot(new Page.ScreenshotOptions().setPath(Paths.get(filePath)).setFullPage(true));
+        } catch (Exception e) {
+            log.error("Failed to take screenshot for test method {}. Error: {}", testName, e.getMessage());
+        }
     }
 
     @Override

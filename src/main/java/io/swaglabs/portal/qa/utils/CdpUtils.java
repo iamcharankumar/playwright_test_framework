@@ -18,6 +18,7 @@ public class CdpUtils {
     private static final ThreadLocal<CdpSessionHandler> CDP_SESSION_HANDLER = new ThreadLocal<>();
     private static final String CDP_ERROR_MESSAGE = "CDP Session cannot be null or empty!";
     private static final String RESOURCE_REGEX = ".*\\.(svg|js|css|gif|woff2?|png)$";
+    private static final double MILLIS_PER_SECOND = 1000.0;
 
     public static void initializeCdpSession(Page page) {
         if (CDP_SESSION_HANDLER.get() != null)
@@ -66,16 +67,14 @@ public class CdpUtils {
 
     public static void logPageLoadCompletion() {
         Objects.requireNonNull(CDP_SESSION_HANDLER, CDP_ERROR_MESSAGE);
-        CDP_SESSION_HANDLER.get().attachEventListener(CdpEvents.PAGE_LOAD_EVENT_FIRED.getDescription(), event -> {
-            log.info("Page Load Completed in: {}s.", Math.round(event.get("timestamp").getAsDouble() / 1000.0));
-        });
+        CDP_SESSION_HANDLER.get().attachEventListener(CdpEvents.PAGE_LOAD_EVENT_FIRED.getDescription(),
+                event -> log.info("Page Load Completed in: {}s.", Math.round(event.get("timestamp").getAsDouble() / MILLIS_PER_SECOND)));
     }
 
     public static void logPageNavigatedWithinDocument() {
         Objects.requireNonNull(CDP_SESSION_HANDLER, CDP_ERROR_MESSAGE);
-        CDP_SESSION_HANDLER.get().attachEventListener(CdpEvents.PAGE_NAVIGATED_WITHIN_DOCUMENT.getDescription(), event -> {
-            log.info("Page Navigated Within Document to the URL: {}", event.get("url").getAsString());
-        });
+        CDP_SESSION_HANDLER.get().attachEventListener(CdpEvents.PAGE_NAVIGATED_WITHIN_DOCUMENT.getDescription(),
+                event -> log.info("Page Navigated Within Document to the URL: {}", event.get("url").getAsString()));
     }
 
     public static void destroyCdpSession() {
