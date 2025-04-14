@@ -1,6 +1,5 @@
 package io.swaglabs.portal.qa.commons;
 
-import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import io.swaglabs.portal.qa.browsermanager.BrowserManager;
@@ -16,13 +15,13 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
 import java.lang.reflect.Method;
+import java.util.Objects;
 
 @Slf4j
 public abstract class WebBaseTest {
 
     protected static ThreadLocal<Page> page = new ThreadLocal<>();
     private static final ThreadLocal<Playwright> PLAYWRIGHT = new ThreadLocal<>();
-    private static final ThreadLocal<Browser> BROWSER = new ThreadLocal<>();
     private static BrowserManager browserManager;
 
 
@@ -36,7 +35,6 @@ public abstract class WebBaseTest {
     public void init(Method method) {
         PLAYWRIGHT.set(Playwright.create());
         page.set(browserManager.getBrowserPage(PLAYWRIGHT.get()));
-        BROWSER.set(page.get().context().browser());
         log.info("Browser has been set.");
         WebTestListeners.setPage(page.get());
         if (isChromiumBrowser()) {
@@ -59,9 +57,9 @@ public abstract class WebBaseTest {
         if (isChromiumBrowser()) {
             CdpUtils.destroyCdpSession();
         }
-        browserManager.destroyBrowserPage(page.get(), BROWSER.get());
+        browserManager.destroyBrowserPage(page.get());
         page.remove();
-        BROWSER.remove();
+        Objects.requireNonNull(PLAYWRIGHT.get(), "Playwright is null!");
         PLAYWRIGHT.get().close();
         PLAYWRIGHT.remove();
         log.info("Browser has been destroyed.");
