@@ -37,9 +37,9 @@ jobs:
           path: |
             ~/.m2/repository
             target
-            key: maven-${{ hashFiles('**/pom.xml') }}
-            restore-keys: |
-            maven-
+          key: maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            maven-      
 
       - name: Build Project
         run: |
