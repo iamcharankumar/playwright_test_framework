@@ -1,4 +1,4 @@
-name: Playwright Test Framework (Turbo Mode)
+name: Playwright Test Framework
 
 on:
   workflow_dispatch:
@@ -105,7 +105,7 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: target-${{ matrix.browser }}-shard-*  # Download all shards
+          name: target-${{ matrix.browser }}-shard-${{ matrix.shard }}  # Download all shards
           path: ${{ github.workspace }}/target
 
       - name: Run Smoke Tests (Shard ${{ matrix.shard }})
@@ -178,7 +178,7 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: target-${{ matrix.browser }}-shard-*
+          name: target-${{ matrix.browser }}-shard-${{ matrix.shard }}
           path: ${{ github.workspace }}/target
 
       - name: Run Regression Tests (Shard ${{ matrix.shard }})
@@ -253,7 +253,7 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: target-${{ matrix.browser }}-shard-*
+          name: target-${{ matrix.browser }}-shard-${{ matrix.shard }}
           path: ${{ github.workspace }}/target
 
       - name: Run E2E Tests (Shard ${{ matrix.shard }})
