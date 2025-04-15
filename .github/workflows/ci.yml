@@ -1,4 +1,4 @@
-name: Playwright Test Framework
+name: Playwright Test Framework (Turbo Mode)
 
 on:
   workflow_dispatch:
@@ -20,6 +20,9 @@ jobs:
     strategy:
       matrix:
         browser: [ chrome, firefox, msedge ]
+        shard: [ 1, 2, 3, 4 ]  # Split tests into 4 shards
+      fail-fast: false
+      max-parallel: 12  # Run up to 12 jobs in parallel
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -28,22 +31,35 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '17'
-          distribution: 'adopt'
-          cache: maven
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Cache Maven
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.m2/repository
+            target
+          key: maven-${{ hashFiles('**/pom.xml') }}-${{ matrix.shard }}
+          restore-keys: |
+            maven-
 
       - name: Build Project
         run: |
-          mvn -B install -DskipTests --no-transfer-progress    
+          mvn -B install -DskipTests --no-transfer-progress -T 4C
 
       - name: Install Browsers
         run: |
           mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install --with-deps"
 
-      - name: Run Unit Tests
+      - name: Run Unit Tests (Shard ${{ matrix.shard }})
         run: |
           mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
                          -Dgroups=SWAG_LABS_UNIT \
-                         -Dthreads=3 -Ddataproviderthreadcount=3
+                         -Dtestng.parallel=classes \
+                         -Dthreads=4 -Ddataproviderthreadcount=4 \
+                         -Dshard=${{ matrix.shard }}/4 \
+                         -Dmaven.test.failure.ignore=true
 
       - name: Generate Coverage Report
         run: |
@@ -59,10 +75,11 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: target-${{ matrix.browser }} # Unique artifact name
+          name: target-${{ matrix.browser }}-shard-${{ matrix.shard }}
           path: |
             ${{ github.workspace }}/target
             ${{ github.workspace }}/reports
+          compression-level: 0  # Fastest compression
 
   smoke_tests:
     name: Run Smoke Tests
@@ -71,6 +88,9 @@ jobs:
     strategy:
       matrix:
         browser: [ chrome, firefox, msedge ]
+        shard: [ 1, 2, 3 ]  # Split smoke tests into 3 shards
+      fail-fast: false
+      max-parallel: 9
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -79,22 +99,22 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '17'
-          distribution: 'adopt'
-          cache: maven
+          distribution: 'temurin'
+          cache: 'maven'
 
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: target-${{ matrix.browser }} # Match the unique artifact name
+          name: target-${{ matrix.browser }}-shard-*  # Download all shards
+          path: ${{ github.workspace }}/target
 
-      - name: Run Tests for ${{ matrix.browser }}
+      - name: Run Smoke Tests (Shard ${{ matrix.shard }})
         run: |
           mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
                          -Dgroups=SWAG_LABS_SMOKE \
-                         -Dthreads=3 -Ddataproviderthreadcount=3
-
-      - name: Verify Report Directory
-        run: ls target/surefire-reports || echo "Report directory not found"
+                         -Dtestng.parallel=methods \
+                         -Dthreads=4 -Ddataproviderthreadcount=4 \
+                         -Dshard=${{ matrix.shard }}/3
 
       - name: Generate Test Summary
         uses: test-summary/action@v2
@@ -119,6 +139,7 @@ jobs:
           content+="🛠️ **Job: ${{ github.job }}**\n"
           content+="👤 **User: ${{ github.actor }}**\n"
           content+="🌎 **Browser: ${{ matrix.browser }}**\n"
+          content+="🔢 **Shard: ${{ matrix.shard }}/3**\n"
           content+="🎉 **Passed**: ${passed}\n"
           content+="❌ **Failed**: ${failed}\n"
           content+="⚠️ **Skipped**: ${skipped}\n"
@@ -140,6 +161,9 @@ jobs:
     strategy:
       matrix:
         browser: [ chrome, firefox, msedge ]
+        shard: [ 1, 2, 3, 4, 5 ]  # Split regression tests into 5 shards
+      fail-fast: false
+      max-parallel: 15
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -148,22 +172,22 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '17'
-          distribution: 'adopt'
-          cache: maven
+          distribution: 'temurin'
+          cache: 'maven'
 
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: target-${{ matrix.browser }} # Match the unique artifact name
+          name: target-${{ matrix.browser }}-shard-*
+          path: ${{ github.workspace }}/target
 
-      - name: Run Tests for ${{ matrix.browser }}
+      - name: Run Regression Tests (Shard ${{ matrix.shard }})
         run: |
           mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
                          -Dgroups=SWAG_LABS_REGRESSION \
-                         -Dthreads=3 -Ddataproviderthreadcount=3
-
-      - name: Verify Report Directory
-        run: ls target/surefire-reports || echo "Report directory not found"
+                         -Dtestng.parallel=classes \
+                         -Dthreads=4 -Ddataproviderthreadcount=4 \
+                         -Dshard=${{ matrix.shard }}/5
 
       - name: Generate Test Summary
         uses: test-summary/action@v2
@@ -187,6 +211,7 @@ jobs:
           content+="🛠️ **Job: ${{ github.job }}**\n"
           content+="👤 **User: ${{ github.actor }}**\n"
           content+="🌎 **Browser: ${{ matrix.browser }}**\n"
+          content+="🔢 **Shard: ${{ matrix.shard }}/5**\n"
           content+="🎉 **Passed**: ${passed}\n"
           content+="❌ **Failed**: ${failed}\n"
           content+="⚠️ **Skipped**: ${skipped}\n"
@@ -211,6 +236,9 @@ jobs:
     strategy:
       matrix:
         browser: [ chrome, firefox, msedge ]
+        shard: [ 1, 2 ]  # Split E2E tests into 2 shards
+      fail-fast: false
+      max-parallel: 6
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -219,22 +247,22 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '17'
-          distribution: 'adopt'
-          cache: maven
+          distribution: 'temurin'
+          cache: 'maven'
 
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: target-${{ matrix.browser }} # Match the unique artifact name
+          name: target-${{ matrix.browser }}-shard-*
+          path: ${{ github.workspace }}/target
 
-      - name: Run Tests for ${{ matrix.browser }}
+      - name: Run E2E Tests (Shard ${{ matrix.shard }})
         run: |
           mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
                          -Dgroups=SWAG_LABS_E2E \
-                         -Dthreads=3 -Ddataproviderthreadcount=3
-
-      - name: Verify Report Directory
-        run: ls target/surefire-reports || echo "Report directory not found"
+                         -Dtestng.parallel=methods \
+                         -Dthreads=4 -Ddataproviderthreadcount=4 \
+                         -Dshard=${{ matrix.shard }}/2
 
       - name: Generate Test Summary
         uses: test-summary/action@v2
@@ -258,6 +286,7 @@ jobs:
           content+="🛠️ **Job: ${{ github.job }}**\n"
           content+="👤 **User: ${{ github.actor }}**\n"
           content+="🌎 **Browser: ${{ matrix.browser }}**\n"
+          content+="🔢 **Shard: ${{ matrix.shard }}/2**\n"
           content+="🎉 **Passed**: ${passed}\n"
           content+="❌ **Failed**: ${failed}\n"
           content+="⚠️ **Skipped**: ${skipped}\n"
