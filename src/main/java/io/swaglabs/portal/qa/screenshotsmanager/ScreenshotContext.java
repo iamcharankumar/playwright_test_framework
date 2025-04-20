@@ -2,11 +2,9 @@ package io.swaglabs.portal.qa.screenshotsmanager;
 
 import com.microsoft.playwright.Page;
 import lombok.AllArgsConstructor;
-import lombok.Setter;
 
 import java.util.Objects;
 
-@Setter
 @AllArgsConstructor
 public class ScreenshotContext {
 
