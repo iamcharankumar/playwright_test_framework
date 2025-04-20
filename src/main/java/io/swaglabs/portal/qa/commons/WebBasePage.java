@@ -2,10 +2,16 @@ package io.swaglabs.portal.qa.commons;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import io.swaglabs.portal.qa.constants.WebPortalConstants;
 import io.swaglabs.portal.qa.exceptions.WebPageException;
 import io.swaglabs.portal.qa.locators.Locators;
+import io.swaglabs.portal.qa.screenshotsmanager.ElementScreenshotStrategy;
+import io.swaglabs.portal.qa.screenshotsmanager.ScreenshotContext;
 
 public abstract class WebBasePage {
+
+    private static final String ELEMENT_SCREENSHOT_FILE_LOCATION = "./src/test/resources/screenshots/"
+            + System.getProperty(WebPortalConstants.BROWSER) + "_" + System.getProperty(WebPortalConstants.RUN_MODE) + "_Element_";
 
     protected Page basePage;
     protected Locators locators;
@@ -46,5 +52,10 @@ public abstract class WebBasePage {
         String textContent = locator.textContent().trim();
         validateNonEmptyText(textContent, errorMessage);
         return textContent;
+    }
+
+    protected void takeElementScreenshot(Locator locator, String fileName) {
+        ScreenshotContext screenshotContext = new ScreenshotContext(new ElementScreenshotStrategy(locator));
+        screenshotContext.captureScreenshot(basePage, ELEMENT_SCREENSHOT_FILE_LOCATION + fileName);
     }
 }

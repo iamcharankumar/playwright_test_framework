@@ -24,12 +24,14 @@ public final class SwagLabsProductPage extends SwagLabsBasePage {
 
     public boolean isProductAddedToCart() {
         Locator addToCartButton = locators.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Add to cart"));
+        takeElementScreenshot(addToCartButton, "addToCartButton.png");
         clickElement(addToCartButton);
         return true;
     }
 
     public boolean isShoppingCartClicked() {
         Locator shoppingCart = locators.getPageLocator(".shopping_cart_link");
+        takeElementScreenshot(shoppingCart, "shoppingCart.png");
         clickElement(shoppingCart);
         return true;
     }

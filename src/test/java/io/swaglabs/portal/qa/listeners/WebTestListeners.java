@@ -2,10 +2,11 @@ package io.swaglabs.portal.qa.listeners;
 
 import com.microsoft.playwright.Page;
 import io.swaglabs.portal.qa.constants.WebPortalConstants;
+import io.swaglabs.portal.qa.screenshotsmanager.FullPageScreenshotStrategy;
+import io.swaglabs.portal.qa.screenshotsmanager.ScreenshotContext;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.*;
 
-import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
@@ -66,11 +67,8 @@ public class WebTestListeners implements ISuiteListener, ITestListener, IRetryAn
         String filePath = String.format("%s%s%s_%s_%s%s_%s_%s%s", "./src/test/resources/screenshots",
                 directory, System.getProperty(WebPortalConstants.BROWSER), System.getProperty(WebPortalConstants.RUN_MODE),
                 statusPrefix, testName, testData, new Date(), ".png").replaceAll(":", "\\:");
-        try {
-            currentPage.screenshot(new Page.ScreenshotOptions().setPath(Paths.get(filePath)).setFullPage(true));
-        } catch (Exception e) {
-            log.error("Failed to take screenshot for test method {}. Error: {}", testName, e.getMessage());
-        }
+        ScreenshotContext screenshotContext = new ScreenshotContext(new FullPageScreenshotStrategy());
+        screenshotContext.captureScreenshot(currentPage, filePath);
     }
 
     @Override
