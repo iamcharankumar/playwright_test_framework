@@ -33,6 +33,29 @@ modular code. Perfect for those looking to speed up their test automation journe
 - local `-Drunmode=local` (default value is `local`)
 - headless `-Drunmode=headless`
 
+# CHROME DEVTOOLS PROTOCOL IMPLEMENTATION EXPLAINED
+**1. Initialize the CDP Session**
+  #### What Happens?
+    - You (the test) ask CdpUtils to start monitoring.
+    - CdpUtils tells CDPSessionHandlerImpl to set things up.
+    - Playwright provides the tools (CDPSession).
+
+![Initialize_the_CDP_Session](https://github.com/user-attachments/assets/b5016da0-1126-4ca4-ad3f-5dd11ff14779)
+
+**2. Listen for Network Errors**
+  #### What Happens?
+    - You ask to log errors (e.g., HTTP 404/500).
+    - The CDPSessionHandlerImpl sets up a listener in the browser.
+
+![Listen_for_Network_Errors](https://github.com/user-attachments/assets/9406c6cd-d4e5-4cfd-b2b8-789922dbc4e1)
+    
+**3. Browser Fires an Event**
+  #### What Happens?
+    - The browser detects a failed request → notifies CDPSessionHandlerImpl.
+    - The error details are passed back to your test (e.g., to log or retry).
+
+![ Browser_Fires_an_Event](https://github.com/user-attachments/assets/65193194-ffa1-4775-92f9-52ed8be1f34f)
+
 # REPORTPORTAL INTEGRATION
 
 - To integrate your test reports with the open source tool - [**Reportportal**](https://reportportal.io/docs/), please
