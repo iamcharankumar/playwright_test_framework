@@ -10,9 +10,8 @@ import io.swaglabs.portal.qa.screenshotsmanager.ScreenshotContext;
 
 public abstract class WebBasePage {
 
-    private static final String ELEMENT_SCREENSHOT_FILE_LOCATION = "./src/test/resources/screenshots/"
+    private static final String ELEMENT_SCREENSHOT_FILE_LOCATION = WebPortalConstants.SCREENSHOT_FILE_LOCATION + "/elements/"
             + System.getProperty(WebPortalConstants.BROWSER) + "_" + System.getProperty(WebPortalConstants.RUN_MODE) + "_Element_";
-
     protected Page basePage;
     protected Locators locators;
 
@@ -56,6 +55,6 @@ public abstract class WebBasePage {
 
     protected void takeElementScreenshot(Locator locator, String fileName) {
         ScreenshotContext screenshotContext = new ScreenshotContext(new ElementScreenshotStrategy(locator));
-        screenshotContext.captureScreenshot(basePage, ELEMENT_SCREENSHOT_FILE_LOCATION + fileName);
+        screenshotContext.captureScreenshot(basePage, ELEMENT_SCREENSHOT_FILE_LOCATION + fileName + WebPortalConstants.IMAGE_FORMAT);
     }
 }
