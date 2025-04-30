@@ -7,6 +7,10 @@ import io.swaglabs.portal.qa.screenshotsmanager.ScreenshotContext;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.*;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
@@ -16,7 +20,6 @@ public class WebTestListeners implements ISuiteListener, ITestListener, IRetryAn
 
     private int retryCount = 0;
     private Instant startDate;
-
     private static final ThreadLocal<Page> PAGE = new ThreadLocal<>();
 
     public static void setPage(Page page) {
@@ -61,14 +64,36 @@ public class WebTestListeners implements ISuiteListener, ITestListener, IRetryAn
             return;
         }
         String testName = testResult.getName();
-        String statusPrefix = testResult.isSuccess() ? "PASS_" : "FAIL_";
-        String directory = testResult.isSuccess() ? "/passed_screenshots/" : "/failed_screenshots/";
-        String testData = (testResult.getParameters().length > 0) ? String.valueOf(testResult.getParameters()[0]) : "No_Params";
-        String filePath = String.format("%s%s%s_%s_%s%s_%s_%s%s", "./src/test/resources/screenshots",
-                directory, System.getProperty(WebPortalConstants.BROWSER), System.getProperty(WebPortalConstants.RUN_MODE),
-                statusPrefix, testName, testData, new Date(), ".png").replaceAll(":", "\\:");
-        ScreenshotContext screenshotContext = new ScreenshotContext(new FullPageScreenshotStrategy());
-        screenshotContext.captureScreenshot(currentPage, filePath);
+        String statusPrefix = testResult.isSuccess() ? "PASS" : "FAILED";
+        String directory = testResult.isSuccess() ? "passed_screenshots" : "failed_screenshots";
+        String timestamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(new Date());
+        String parameter = extractSafeParameter(testResult);
+        String fileName = formatScreenshotFileName(statusPrefix, testName, parameter, timestamp);
+        String dirPath = Paths.get(WebPortalConstants.SCREENSHOT_FILE_LOCATION + "/pages/", directory).toString();
+        String filePath = Paths.get(dirPath, fileName).toString();
+        try {
+            Files.createDirectories(Paths.get(dirPath));
+            ScreenshotContext screenshotContext = new ScreenshotContext(new FullPageScreenshotStrategy());
+            screenshotContext.captureScreenshot(currentPage, filePath);
+        } catch (IOException e) {
+            log.error("Screenshot failed for {}: {}", testName, e.getMessage());
+        }
+    }
+
+    private String extractSafeParameter(ITestResult result) {
+        int maxParamLength = 30;
+        if (result.getParameters().length == 0 || result.getParameters()[0] == null) {
+            return "NoParams";
+        }
+        String parameter = result.getParameters()[0].toString().replaceAll("[^a-zA-Z0-9-_]", "_"); // Sanitize
+        return parameter.length() > maxParamLength ? parameter.substring(0, maxParamLength) : parameter;
+    }
+
+    private String formatScreenshotFileName(String prefix, String testName, String param, String timestamp) {
+        int maxFileNameLength = 200;
+        String fileName = String.format("%s_%s_%s_%s_%s_%s%s", System.getProperty(WebPortalConstants.BROWSER),
+                System.getProperty(WebPortalConstants.RUN_MODE), prefix, testName, param, timestamp, WebPortalConstants.IMAGE_FORMAT);
+        return fileName.length() > maxFileNameLength ? fileName.substring(0, maxFileNameLength) + WebPortalConstants.IMAGE_FORMAT : fileName;
     }
 
     @Override

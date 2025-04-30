@@ -15,7 +15,10 @@ public final class SwagLabsProductPage extends SwagLabsBasePage {
     }
 
     public String getProductPriceText() {
-        return getTextContent(locators.getPageLocator(".inventory_details_price"));
+        Locator productPrice = locators.getPageLocator(".inventory_details_price");
+        String productPriceText = getTextContent(productPrice);
+        takeElementScreenshot(productPrice, productPriceText);
+        return productPriceText;
     }
 
     public String getProductDescription(String productDescription) {
@@ -23,15 +26,13 @@ public final class SwagLabsProductPage extends SwagLabsBasePage {
     }
 
     public boolean isProductAddedToCart() {
-        Locator addToCartButton = locators.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Add to cart"));
-        takeElementScreenshot(addToCartButton, "addToCartButton.png");
-        clickElement(addToCartButton);
+        clickElement(locators.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Add to cart")));
         return true;
     }
 
     public boolean isShoppingCartClicked() {
         Locator shoppingCart = locators.getPageLocator(".shopping_cart_link");
-        takeElementScreenshot(shoppingCart, "shoppingCart.png");
+        takeElementScreenshot(shoppingCart, "shoppingCart");
         clickElement(shoppingCart);
         return true;
     }

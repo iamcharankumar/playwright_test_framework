@@ -20,4 +20,7 @@ public final class WebPortalConstants {
     public static final String MAXIMIZE_WINDOW = "--start-maximized";
     public static final int SCREEN_WIDTH = 1920;
     public static final int SCREEN_HEIGHT = 1080;
+
+    public static final String SCREENSHOT_FILE_LOCATION = "./src/test/resources/screenshots/";
+    public static final String IMAGE_FORMAT = ".png";
 }
