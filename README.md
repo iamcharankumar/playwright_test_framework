@@ -126,7 +126,11 @@ The screenshot listeners are configured in "pom.xml" under "< property >" tag.
 
 **Before the Decluttering**
 
+<img width="921" alt="Before" src="https://github.com/user-attachments/assets/6478675f-bc73-4ae8-8d0f-6a45a30cf7b1" />
+
 **After the Decluttering**
+
+<img width="1728" alt="After" src="https://github.com/user-attachments/assets/66dee2f2-87be-4f46-a6f5-011967f6a9ff" />
 
 ## Star History
 
