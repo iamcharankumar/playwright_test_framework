@@ -34,8 +34,11 @@ modular code. Perfect for those looking to speed up their test automation journe
 - headless `-Drunmode=headless`
 
 # CHROME DEVTOOLS PROTOCOL IMPLEMENTATION EXPLAINED
+
 **1. Initialize the CDP Session**
-  #### What Happens?
+
+#### What Happens?
+
     - You (the test) ask CdpUtils to start monitoring.
     - CdpUtils tells CDPSessionHandlerImpl to set things up.
     - Playwright provides the tools (CDPSession).
@@ -43,14 +46,18 @@ modular code. Perfect for those looking to speed up their test automation journe
 ![Initialize_the_CDP_Session](https://github.com/user-attachments/assets/b5016da0-1126-4ca4-ad3f-5dd11ff14779)
 
 **2. Listen for Network Errors**
-  #### What Happens?
+
+#### What Happens?
+
     - You ask to log errors (e.g., HTTP 404/500).
     - The CDPSessionHandlerImpl sets up a listener in the browser.
 
 ![Listen_for_Network_Errors](https://github.com/user-attachments/assets/9406c6cd-d4e5-4cfd-b2b8-789922dbc4e1)
-    
+
 **3. Browser Fires an Event**
-  #### What Happens?
+
+#### What Happens?
+
     - The browser detects a failed request → notifies CDPSessionHandlerImpl.
     - The error details are passed back to your test (e.g., to log or retry).
 
@@ -101,6 +108,25 @@ modular code. Perfect for those looking to speed up their test automation journe
 **NOTE**: These above commands (no testng.xml required) will run the tests in parallel with the specified thread count
 and with the respective groups and thread counts.
 The screenshot listeners are configured in "pom.xml" under "< property >" tag.
+
+#### DECLUTTERING MAVEN OUTPUT
+
+- Maven usually floods the console with logs during test execution, making it hard to spot what's important.
+  A clean, minimal, Node.js-style output for a Java project felt impossible—until I
+  found this [maven dependency](https://mvnrepository.com/artifact/me.fabriciorby/maven-surefire-junit5-tree-reporter).
+- Its purpose is simple: **"What happened to my test cases?"** That’s exactly what it shows—straight to the point, no
+  clutter.
+- By following this [post](https://medium.com/wearewaes/my-journey-to-a-clear-test-output-in-maven-df82fe272249)
+  by [Fabricio](https://github.com/fabriciorby),
+  I was able to configure it easily and get the clean output shown below.
+- The output works locally and in GitHub Actions as well.
+- Huge respect and thanks to the author for this
+  brilliant [work](https://github.com/fabriciorby/maven-surefire-junit5-tree-reporter?tab=readme-ov-file)!
+  ❤️
+
+**Before the Decluttering**
+
+**After the Decluttering**
 
 ## Star History
 
