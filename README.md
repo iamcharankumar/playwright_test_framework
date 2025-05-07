@@ -33,6 +33,18 @@ modular code. Perfect for those looking to speed up their test automation journe
 - local `-Drunmode=local` (default value is `local`)
 - headless `-Drunmode=headless`
 
+# BROWSER CREATION FLOW
+
+- A client requests a browser page from `BrowserManager.getBrowserPage()`
+- `BrowserManager` reads system properties to determine browser type and headless mode
+- `BrowserFactory` creates the appropriate browser implementation based on the browser name
+- The browser implementation creates a session with the required configuration
+- `BrowserManager` creates and returns a new page from the browser context
+- When finished, the client calls `destroyBrowserPage()` to clean up resources.
+
+<img width="1697" alt="Browser_Creation_Flow" src="https://github.com/user-attachments/assets/34f8530d-33a7-4612-9346-2fc5958f41da" />
+
+
 # CHROME DEVTOOLS PROTOCOL IMPLEMENTATION EXPLAINED
 
 **1. Initialize the CDP Session**
