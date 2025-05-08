@@ -66,7 +66,7 @@ public abstract class WebBaseTest {
     }
 
     private boolean isChromiumBrowser() {
-        String browserName = System.getProperty(WebPortalConstants.BROWSER);
+        String browserName = WebPortalConstants.BROWSER;
         return (browserName.equalsIgnoreCase(BrowserName.CHROME.getBrowserType()) || browserName.equalsIgnoreCase(BrowserName.MS_EDGE.getBrowserType()));
     }
 }
