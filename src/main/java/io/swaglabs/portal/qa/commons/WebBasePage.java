@@ -11,7 +11,7 @@ import io.swaglabs.portal.qa.screenshotsmanager.ScreenshotContext;
 public abstract class WebBasePage {
 
     private static final String ELEMENT_SCREENSHOT_FILE_LOCATION = WebPortalConstants.SCREENSHOT_FILE_LOCATION + "/elements/"
-            + System.getProperty(WebPortalConstants.BROWSER) + "_" + System.getProperty(WebPortalConstants.RUN_MODE) + "_Element_";
+            + WebPortalConstants.BROWSER + "_" + WebPortalConstants.RUN_MODE + "_Element_";
     protected Page basePage;
     protected Locators locators;
 

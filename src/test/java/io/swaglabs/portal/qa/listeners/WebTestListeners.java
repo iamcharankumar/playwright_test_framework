@@ -28,8 +28,8 @@ public class WebTestListeners implements ISuiteListener, ITestListener, IRetryAn
 
     @Override
     public void onStart(ISuite suite) {
-        String browserName = System.getProperty(WebPortalConstants.BROWSER);
-        String runMode = System.getProperty(WebPortalConstants.RUN_MODE);
+        String browserName = WebPortalConstants.BROWSER;
+        String runMode = WebPortalConstants.RUN_MODE;
         startDate = Instant.now();
         log.info("Web Test Suite {} started executing at {}.", suite.getName(), startDate);
         log.info("Browser: {} | Run Mode: {}", browserName, runMode);
@@ -91,8 +91,8 @@ public class WebTestListeners implements ISuiteListener, ITestListener, IRetryAn
 
     private String formatScreenshotFileName(String prefix, String testName, String param, String timestamp) {
         int maxFileNameLength = 200;
-        String fileName = String.format("%s_%s_%s_%s_%s_%s%s", System.getProperty(WebPortalConstants.BROWSER),
-                System.getProperty(WebPortalConstants.RUN_MODE), prefix, testName, param, timestamp, WebPortalConstants.IMAGE_FORMAT);
+        String fileName = String.format("%s_%s_%s_%s_%s_%s%s", WebPortalConstants.BROWSER, WebPortalConstants.RUN_MODE,
+                prefix, testName, param, timestamp, WebPortalConstants.IMAGE_FORMAT);
         return fileName.length() > maxFileNameLength ? fileName.substring(0, maxFileNameLength) + WebPortalConstants.IMAGE_FORMAT : fileName;
     }
 
