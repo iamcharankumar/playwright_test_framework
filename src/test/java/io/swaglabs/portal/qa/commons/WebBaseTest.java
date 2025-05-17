@@ -44,6 +44,9 @@ public abstract class WebBaseTest {
             CdpUtils.logErrorResponses();
             CdpUtils.sendCommand(CdpCommands.CONSOLE_ENABLE.getDescription());
             CdpUtils.logConsoleErrors();
+            CdpUtils.sendCommand(CdpCommands.RUNTIME_ENABLE.getDescription());
+            CdpUtils.logUncaughtJavascriptErrors();
+            CdpUtils.logUncaughtConsoleErrors();
             CdpUtils.sendCommand(CdpCommands.PAGE_ENABLE.getDescription());
             CdpUtils.logPageLoadCompletion();
             CdpUtils.logPageNavigatedWithinDocument();
