@@ -38,12 +38,12 @@ public class CdpUtils {
 
     public static void logErrorResponses() {
         Objects.requireNonNull(CDP_SESSION_HANDLER, CDP_ERROR_MESSAGE);
-        CDP_SESSION_HANDLER.get().attachEventListener(CdpEvents.NETWORK_RESPONSE_RECEIVED.getDescription(), responseEvent -> {
-            JsonObject responseJsonObject = responseEvent.getAsJsonObject("response");
+        CDP_SESSION_HANDLER.get().attachEventListener(CdpEvents.NETWORK_RESPONSE_RECEIVED.getDescription(), event -> {
+            JsonObject responseJsonObject = event.getAsJsonObject("response");
             String responseUrl = responseJsonObject.get("url").getAsString();
             int statusCode = Integer.parseInt(responseJsonObject.get("status").getAsString());
             String statusText = responseJsonObject.get("statusText").getAsString();
-            String requestId = responseEvent.get("requestId").getAsString();
+            String requestId = event.get("requestId").getAsString();
 
             if (!responseUrl.matches(RESOURCE_REGEX) && statusCode >= 400) {
                 log.error("Response URL: {}, the Status code: {}, the Status Text: {} the for the given request ID: {}",
@@ -54,13 +54,51 @@ public class CdpUtils {
 
     public static void logConsoleErrors() {
         Objects.requireNonNull(CDP_SESSION_HANDLER, CDP_ERROR_MESSAGE);
-        CDP_SESSION_HANDLER.get().attachEventListener(CdpEvents.CONSOLE_MESSAGE_ADDED.getDescription(), message -> {
-            JsonObject messageObject = message.getAsJsonObject("message");
+        CDP_SESSION_HANDLER.get().attachEventListener(CdpEvents.CONSOLE_MESSAGE_ADDED.getDescription(), event -> {
+            JsonObject messageObject = event.getAsJsonObject("message");
             String logLevel = messageObject.get("level").getAsString();
             String logText = messageObject.get("text").getAsString();
-
             if ("error".equalsIgnoreCase(logLevel)) {
                 log.error("Console Error: {}", logText);
+            }
+        });
+    }
+
+    //Captures Javascript runtime exceptions.
+    public static void logUncaughtJavascriptErrors() {
+        String exceptionDetailsText = "exception";
+        Objects.requireNonNull(CDP_SESSION_HANDLER, CDP_ERROR_MESSAGE);
+        CDP_SESSION_HANDLER.get().attachEventListener(CdpEvents.RUNTIME_EXCEPTION_THROWN.getDescription(), event -> {
+            JsonObject exceptionDetails = event.getAsJsonObject("exceptionDetails");
+            String text = exceptionDetails.has("text") ? exceptionDetails.get("text").getAsString() : "No text";
+            JsonObject exception = exceptionDetails.has(exceptionDetailsText) && exceptionDetails.get(exceptionDetailsText).isJsonObject()
+                    ? exceptionDetails.getAsJsonObject(exceptionDetailsText) : null;
+            String message = exception != null && exception.has("description")
+                    ? exception.get("description").getAsString() : "No description available";
+            log.error("Uncaught JavaScript Error - Text: {}, Message: {}", text, message);
+        });
+    }
+
+    // Listen for uncaught promise rejections through console API
+    public static void logUncaughtConsoleErrors() {
+        Objects.requireNonNull(CDP_SESSION_HANDLER, CDP_ERROR_MESSAGE);
+        CDP_SESSION_HANDLER.get().attachEventListener(CdpEvents.RUNTIME_CONSOLE_API_CALLED.getDescription(), event -> {
+            String type = event.get("type").getAsString();
+            if ("error".equalsIgnoreCase(type)) {
+                StringBuilder fullMessage = new StringBuilder();
+                try {
+                    event.getAsJsonArray("args").forEach(jsonElement -> {
+                        JsonObject arg = jsonElement.getAsJsonObject();
+                        if (arg.has("description")) {
+                            fullMessage.append(arg.get("description").getAsString()).append(" ");
+                        } else if (arg.has("value")) {
+                            fullMessage.append(arg.get("value").getAsString()).append(" ");
+                        }
+                    });
+                    log.error("Uncaught Console Error: {}", fullMessage.toString().trim());
+                } catch (Exception e) {
+                    log.error("Failed to parse multiple console.error arguments: {}", e.getMessage());
+                }
             }
         });
     }
