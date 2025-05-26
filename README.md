@@ -15,6 +15,12 @@ Automated end-to-end testing framework built with Playwright and Java, tailored 
 for scalability and maintainability, this framework covers critical test scenarios with robust assertions and clean,
 modular code. Perfect for those looking to speed up their test automation journey or enhance their Playwright skills!
 
+Thanks to [The Pocket](https://github.com/The-Pocket/PocketFlow-Tutorial-Codebase-Knowledge) for beautifully generating an entire easy-to-understand tutorial for this GitHub Repo.
+Massive respect for creating such a wonderful tool. Simply Brilliant! ❤️
+
+You can read the entire tutorial [here](https://code2tutorial.com/tutorial/81c3753d-35c2-41fd-941c-34a1c851e80c/08_ci_workflow__github_actions__.md).
+If the link doesn't work, please continue to read below.
+
 # TEST ARCHITECTURE
 
 ![UI_Playwright_Java_Architecture](https://github.com/user-attachments/assets/e31f233b-2974-4e82-babc-19789fa06c31)
