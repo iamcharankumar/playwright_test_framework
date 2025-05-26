@@ -15,6 +15,10 @@ Automated end-to-end testing framework built with Playwright and Java, tailored 
 for scalability and maintainability, this framework covers critical test scenarios with robust assertions and clean,
 modular code. Perfect for those looking to speed up their test automation journey or enhance their Playwright skills!
 
+# TEST ARCHITECTURE
+
+![UI_Playwright_Java_Architecture](https://github.com/user-attachments/assets/e31f233b-2974-4e82-babc-19789fa06c31)
+
 # STEPS FOR THE TEST EXECUTION IN LOCAL
 
 1. `git clone https://github.com/iamcharankumar/playwright_test_framework.git`
