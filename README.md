@@ -18,7 +18,7 @@ modular code. Perfect for those looking to speed up their test automation journe
 Thanks to [The Pocket](https://github.com/The-Pocket/PocketFlow-Tutorial-Codebase-Knowledge) for beautifully generating an entire easy-to-understand tutorial for this GitHub Repo.
 Massive respect for creating such a wonderful tool. Simply Brilliant! ❤️
 
-You can read the entire tutorial [here](https://code2tutorial.com/tutorial/81c3753d-35c2-41fd-941c-34a1c851e80c/08_ci_workflow__github_actions__.md).
+You can read the entire tutorial [here](https://code2tutorial.com/tutorial/81c3753d-35c2-41fd-941c-34a1c851e80c/index.md).
 If the link doesn't work, please continue to read below.
 
 # TEST ARCHITECTURE
