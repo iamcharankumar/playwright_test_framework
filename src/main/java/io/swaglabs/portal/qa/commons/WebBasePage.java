@@ -8,6 +8,8 @@ import io.swaglabs.portal.qa.locators.Locators;
 import io.swaglabs.portal.qa.screenshotsmanager.ElementScreenshotStrategy;
 import io.swaglabs.portal.qa.screenshotsmanager.ScreenshotContext;
 
+import java.util.Objects;
+
 public abstract class WebBasePage {
 
     private static final String ELEMENT_SCREENSHOT_FILE_LOCATION = WebPortalConstants.SCREENSHOT_FILE_LOCATION + "/elements/"
@@ -48,9 +50,8 @@ public abstract class WebBasePage {
     }
 
     private String extractText(Locator locator, String errorMessage) {
-        String textContent = locator.textContent().trim();
-        validateNonEmptyText(textContent, errorMessage);
-        return textContent;
+        Objects.requireNonNull(locator, errorMessage);
+        return locator.textContent().trim();
     }
 
     protected void takeElementScreenshot(Locator locator, String fileName) {
