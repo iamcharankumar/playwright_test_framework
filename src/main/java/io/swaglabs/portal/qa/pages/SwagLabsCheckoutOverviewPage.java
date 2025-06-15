@@ -1,6 +1,5 @@
 package io.swaglabs.portal.qa.pages;
 
-import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 
@@ -11,8 +10,7 @@ public final class SwagLabsCheckoutOverviewPage extends SwagLabsBasePage {
     }
 
     public boolean isFinishButtonClicked() {
-        Locator finishButton = locators.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Finish"));
-        clickElement(finishButton);
+        clickElement(locators.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Finish")));
         return true;
     }
 }
