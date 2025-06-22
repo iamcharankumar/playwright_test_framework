@@ -46,6 +46,7 @@ public class PerformanceUtils {
         log.info("DOM Content Loaded Time for the method: {} is: {} ms.", methodName, domContentLoadTime);
     }
 
+    @SuppressWarnings("unchecked")
     private static Map<String, Object> getPerformanceMetrics(Page page) {
         Objects.requireNonNull(page, "Page cannot be null!");
         return (Map<String, Object>) page.evaluate(PERFORMANCE_JS_SCRIPT);
