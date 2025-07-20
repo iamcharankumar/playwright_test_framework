@@ -16,10 +16,11 @@ public final class WebPortalConstants {
     // DYNAMIC BROWSER & ENVIRONMENT CHOICE
     public static final String RUN_MODE = System.getProperty("runmode");
     public static final String BROWSER = System.getProperty("browser");
+    public static final String TIME_ZONE = "Asia/Kolkata";
 
     public static final int SCREEN_WIDTH = 1920;
     public static final int SCREEN_HEIGHT = 1080;
 
-    public static final String SCREENSHOT_FILE_LOCATION = "./src/test/resources/screenshots/";
+    public static final String SCREENSHOT_FILE_LOCATION = "./target/screenshots/";
     public static final String IMAGE_FORMAT = ".png";
 }

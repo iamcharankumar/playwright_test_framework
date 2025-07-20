@@ -1,4 +1,6 @@
 name: Playwright Test Framework
+env:
+  TZ: Asia/Kolkata
 
 on:
   workflow_dispatch:

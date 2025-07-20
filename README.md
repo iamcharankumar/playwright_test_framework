@@ -15,10 +15,12 @@ Automated end-to-end testing framework built with Playwright and Java, tailored 
 for scalability and maintainability, this framework covers critical test scenarios with robust assertions and clean,
 modular code. Perfect for those looking to speed up their test automation journey or enhance their Playwright skills!
 
-Thanks to [The Pocket](https://github.com/The-Pocket/PocketFlow-Tutorial-Codebase-Knowledge) for beautifully generating an entire easy-to-understand tutorial for this GitHub Repo.
+Thanks to [The Pocket](https://github.com/The-Pocket/PocketFlow-Tutorial-Codebase-Knowledge) for beautifully generating
+an entire easy-to-understand tutorial for this GitHub Repo.
 Massive respect for creating such a wonderful tool. Simply Brilliant! ❤️
 
-You can read the entire tutorial [here](https://code2tutorial.com/tutorial/81c3753d-35c2-41fd-941c-34a1c851e80c/index.md).
+You can read the entire
+tutorial [here](https://code2tutorial.com/tutorial/81c3753d-35c2-41fd-941c-34a1c851e80c/index.md).
 
 # TEST ARCHITECTURE
 
@@ -52,7 +54,6 @@ You can read the entire tutorial [here](https://code2tutorial.com/tutorial/81c37
 - When finished, the client calls `destroyBrowserPage()` to clean up resources.
 
 <img width="1697" alt="Browser_Creation_Flow" src="https://github.com/user-attachments/assets/34f8530d-33a7-4612-9346-2fc5958f41da" />
-
 
 # CHROME DEVTOOLS PROTOCOL IMPLEMENTATION EXPLAINED
 
@@ -125,6 +126,8 @@ You can read the entire tutorial [here](https://code2tutorial.com/tutorial/81c37
 | 4     | Firefox      | Headless | `mvn clean test -Drunmode=headless -Dbrowser=firefox -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3` |
 | 5     | Edge         | Local    | `mvn clean test -Dbrowser=msedge -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`                     |
 | 6     | Edge         | Headless | `mvn clean test -Drunmode=headless -Dbrowser=msedge -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`  |
+| 7     | WebKit       | Local    | `mvn clean test -Dbrowser=webkit -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`                     |
+| 8     | WebKit       | Headless | `mvn clean test -Drunmode=headless -Dbrowser=webkit -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`  |
 
 **NOTE**: These above commands (no testng.xml required) will run the tests in parallel with the specified thread count
 and with the respective groups and thread counts.

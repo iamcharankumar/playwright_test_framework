@@ -68,7 +68,7 @@ public class WebTestListeners implements ISuiteListener, ITestListener, IRetryAn
         String directory = testResult.isSuccess() ? "passed_screenshots" : "failed_screenshots";
         String timestamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(new Date());
         String parameter = extractSafeParameter(testResult);
-        String fileName = formatScreenshotFileName(statusPrefix, testName, parameter, timestamp);
+        String fileName = formatScreenshotFileName(statusPrefix, testName, parameter, timestamp).replaceAll(":", "_");
         String dirPath = Paths.get(WebPortalConstants.SCREENSHOT_FILE_LOCATION + "/pages/", directory).toString();
         String filePath = Paths.get(dirPath, fileName).toString();
         try {
