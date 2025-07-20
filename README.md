@@ -126,8 +126,8 @@ tutorial [here](https://code2tutorial.com/tutorial/81c3753d-35c2-41fd-941c-34a1c
 | 4     | Firefox      | Headless | `mvn clean test -Drunmode=headless -Dbrowser=firefox -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3` |
 | 5     | Edge         | Local    | `mvn clean test -Dbrowser=msedge -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`                     |
 | 6     | Edge         | Headless | `mvn clean test -Drunmode=headless -Dbrowser=msedge -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`  |
-| 7     | WebKit       | Local    | `mvn clean test -Dbrowser=msedge -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`                     |
-| 8     | WebKit       | Headless | `mvn clean test -Drunmode=headless -Dbrowser=msedge -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`  |
+| 7     | WebKit       | Local    | `mvn clean test -Dbrowser=webkit -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`                     |
+| 8     | WebKit       | Headless | `mvn clean test -Drunmode=headless -Dbrowser=webkit -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`  |
 
 **NOTE**: These above commands (no testng.xml required) will run the tests in parallel with the specified thread count
 and with the respective groups and thread counts.
