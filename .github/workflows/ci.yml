@@ -118,6 +118,7 @@ jobs:
 
       - name: Send Results to Discord
         env:
+          TZ: 'Asia/Kolkata'
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
           # Gather metrics from test-summary output
@@ -187,6 +188,7 @@ jobs:
 
       - name: Send Results to Discord
         env:
+          TZ: 'Asia/Kolkata'
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
           # Gather metrics from test-summary output
@@ -258,6 +260,7 @@ jobs:
 
       - name: Send Results to Discord
         env:
+          TZ: 'Asia/Kolkata'
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
           # Gather metrics from test-summary output

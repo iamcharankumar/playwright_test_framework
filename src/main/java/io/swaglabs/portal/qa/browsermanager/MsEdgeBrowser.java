@@ -12,6 +12,7 @@ public class MsEdgeBrowser implements IBrowser {
         return playwright.chromium().launch(new BrowserType.LaunchOptions()
                         .setHeadless(isHeadless).setChannel(BrowserName.MS_EDGE.getBrowserType()))
                 .newContext(new Browser.NewContextOptions()
-                        .setViewportSize(WebPortalConstants.SCREEN_WIDTH, WebPortalConstants.SCREEN_HEIGHT));
+                        .setViewportSize(WebPortalConstants.SCREEN_WIDTH, WebPortalConstants.SCREEN_HEIGHT)
+                        .setTimezoneId(WebPortalConstants.TIME_ZONE));
     }
 }

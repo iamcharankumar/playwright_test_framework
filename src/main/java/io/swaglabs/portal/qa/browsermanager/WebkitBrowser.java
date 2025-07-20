@@ -12,6 +12,7 @@ public class WebkitBrowser implements IBrowser {
         return playwright.webkit().launch(new BrowserType.LaunchOptions()
                         .setHeadless(isHeadless))
                 .newContext(new Browser.NewContextOptions()
-                        .setViewportSize(WebPortalConstants.SCREEN_WIDTH, WebPortalConstants.SCREEN_HEIGHT));
+                        .setViewportSize(WebPortalConstants.SCREEN_WIDTH, WebPortalConstants.SCREEN_HEIGHT)
+                        .setTimezoneId(WebPortalConstants.TIME_ZONE));
     }
 }

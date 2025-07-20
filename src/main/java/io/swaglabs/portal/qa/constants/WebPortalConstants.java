@@ -16,6 +16,7 @@ public final class WebPortalConstants {
     // DYNAMIC BROWSER & ENVIRONMENT CHOICE
     public static final String RUN_MODE = System.getProperty("runmode");
     public static final String BROWSER = System.getProperty("browser");
+    public static final String TIME_ZONE = "Asia/Kolkata";
 
     public static final int SCREEN_WIDTH = 1920;
     public static final int SCREEN_HEIGHT = 1080;
