@@ -1,6 +1,6 @@
 package io.swaglabs.portal.qa.utils;
 
-import io.swaglabs.portal.qa.exceptions.UtilsException;
+import io.swaglabs.portal.qa.exceptions.WebUtilsException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ public class PropertiesUtils {
             properties = new Properties();
             properties.load(fileInputStream);
         } catch (IOException e) {
-            throw new UtilsException("Properties File failed loading..." + e.getMessage());
+            throw new WebUtilsException("Properties File failed loading..." + e.getMessage());
         }
         return properties;
     }

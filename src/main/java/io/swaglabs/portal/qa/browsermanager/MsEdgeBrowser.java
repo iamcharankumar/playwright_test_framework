@@ -9,10 +9,11 @@ import io.swaglabs.portal.qa.constants.WebPortalConstants;
 public class MsEdgeBrowser implements IBrowser {
     @Override
     public BrowserContext createSession(Playwright playwright, boolean isHeadless) {
-        return playwright.chromium().launch(new BrowserType.LaunchOptions()
-                        .setHeadless(isHeadless).setChannel(BrowserName.MS_EDGE.getBrowserType()))
-                .newContext(new Browser.NewContextOptions()
-                        .setViewportSize(WebPortalConstants.SCREEN_WIDTH, WebPortalConstants.SCREEN_HEIGHT)
-                        .setTimezoneId(WebPortalConstants.TIME_ZONE));
+        BrowserType.LaunchOptions msedgeLaunchOptions = WebPortalConstants.BROWSER_LAUNCH_OPTIONS
+                .setHeadless(isHeadless)
+                .setChannel(BrowserName.MS_EDGE.getBrowserType());
+        return playwright.chromium().launch(msedgeLaunchOptions).newContext(new Browser.NewContextOptions()
+                .setViewportSize(WebPortalConstants.SCREEN_WIDTH, WebPortalConstants.SCREEN_HEIGHT)
+                .setTimezoneId(WebPortalConstants.TIME_ZONE));
     }
 }

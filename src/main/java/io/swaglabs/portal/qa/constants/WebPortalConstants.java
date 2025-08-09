@@ -1,8 +1,13 @@
 package io.swaglabs.portal.qa.constants;
 
+import com.microsoft.playwright.BrowserType;
+import io.swaglabs.portal.qa.screenshotsmanager.ScreenshotContext;
+import io.swaglabs.portal.qa.screenshotsmanager.ScreenshotsUtils;
 import io.swaglabs.portal.qa.utils.WebConfigLoader;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class WebPortalConstants {
@@ -18,9 +23,18 @@ public final class WebPortalConstants {
     public static final String BROWSER = System.getProperty("browser");
     public static final String TIME_ZONE = "Asia/Kolkata";
 
+    // Web Browser resolution
     public static final int SCREEN_WIDTH = 1920;
     public static final int SCREEN_HEIGHT = 1080;
 
     public static final String SCREENSHOT_FILE_LOCATION = "./target/screenshots/";
     public static final String IMAGE_FORMAT = ".png";
+
+    // Browser Type Launch Options Config
+    public static final BrowserType.LaunchOptions BROWSER_LAUNCH_OPTIONS = new BrowserType.LaunchOptions()
+            .setArgs(List.of("--window-position=0,0"));
+
+    // SCREENSHOT STRATEGIES
+    public static final ScreenshotsUtils SCREENSHOTS_UTILS = ScreenshotsUtils.getInstance();
+    public static final ScreenshotContext FULL_PAGE_SCREENSHOT = SCREENSHOTS_UTILS.getFullPageScreenshotContext();
 }

@@ -9,10 +9,9 @@ import io.swaglabs.portal.qa.constants.WebPortalConstants;
 public class FirefoxBrowser implements IBrowser {
     @Override
     public BrowserContext createSession(Playwright playwright, boolean isHeadless) {
-        return playwright.firefox().launch(new BrowserType.LaunchOptions()
-                        .setHeadless(isHeadless))
-                .newContext(new Browser.NewContextOptions()
-                        .setViewportSize(WebPortalConstants.SCREEN_WIDTH, WebPortalConstants.SCREEN_HEIGHT)
-                        .setTimezoneId(WebPortalConstants.TIME_ZONE));
+        BrowserType.LaunchOptions firefoxLaunchOptions = WebPortalConstants.BROWSER_LAUNCH_OPTIONS.setHeadless(isHeadless);
+        return playwright.firefox().launch(firefoxLaunchOptions).newContext(new Browser.NewContextOptions()
+                .setViewportSize(WebPortalConstants.SCREEN_WIDTH, WebPortalConstants.SCREEN_HEIGHT)
+                .setTimezoneId(WebPortalConstants.TIME_ZONE));
     }
 }
