@@ -8,10 +8,10 @@ import java.nio.file.Paths;
 @RequiredArgsConstructor
 public class ElementScreenshotStrategy implements ScreenshotStrategy {
 
-    private final Locator locator;
+    private final Locator LOCATOR;
 
     @Override
     public void capture(String filePath) {
-        locator.screenshot(new Locator.ScreenshotOptions().setPath(Paths.get(filePath)));
+        LOCATOR.screenshot(new Locator.ScreenshotOptions().setPath(Paths.get(filePath)));
     }
 }
