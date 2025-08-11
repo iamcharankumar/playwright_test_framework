@@ -6,8 +6,6 @@ import io.swaglabs.portal.qa.utils.WebConfigLoader;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class WebPortalConstants {
 
@@ -25,6 +23,7 @@ public final class WebPortalConstants {
     // Web Browser resolution
     public static final int SCREEN_WIDTH = 1920;
     public static final int SCREEN_HEIGHT = 1080;
+    public static final String WINDOW_POSITION = "--window-position=0,0";
 
     public static final String SCREENSHOT_FILE_LOCATION = "./target/screenshots/";
     public static final String IMAGE_FORMAT = ".png";
