@@ -6,12 +6,15 @@ import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Playwright;
 import io.swaglabs.portal.qa.constants.WebPortalConstants;
 
+import java.util.List;
+
 public class MsEdgeBrowser implements IBrowser {
     @Override
     public BrowserContext createSession(Playwright playwright, boolean isHeadless) {
         BrowserType.LaunchOptions msedgeLaunchOptions = WebPortalConstants.BROWSER_LAUNCH_OPTIONS
                 .setHeadless(isHeadless)
-                .setChannel(BrowserName.MS_EDGE.getBrowserType());
+                .setChannel(BrowserName.MS_EDGE.getBrowserType())
+                .setArgs(List.of("--window-position=0,0"));
         return playwright.chromium().launch(msedgeLaunchOptions).newContext(new Browser.NewContextOptions()
                 .setViewportSize(WebPortalConstants.SCREEN_WIDTH, WebPortalConstants.SCREEN_HEIGHT)
                 .setTimezoneId(WebPortalConstants.TIME_ZONE));

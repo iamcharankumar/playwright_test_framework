@@ -18,7 +18,7 @@ public final class SwagLabsProductPage extends SwagLabsBasePage {
     public String getProductPriceText() {
         Locator productPrice = locators.getPageLocator(".inventory_details_price");
         String productPriceText = getTextContent(productPrice);
-        WebPortalConstants.SCREENSHOTS_UTILS.takeElementScreenshot(basePage, productPrice, productPriceText);
+        WebPortalConstants.SCREENSHOTS_UTILS.takeElementScreenshot(productPrice, productPriceText);
         return productPriceText;
     }
 
@@ -33,7 +33,7 @@ public final class SwagLabsProductPage extends SwagLabsBasePage {
 
     public boolean isShoppingCartClicked() {
         Locator shoppingCart = locators.getPageLocator(".shopping_cart_link");
-        WebPortalConstants.SCREENSHOTS_UTILS.takeElementScreenshot(basePage, shoppingCart, "shoppingCart");
+        WebPortalConstants.SCREENSHOTS_UTILS.takeElementScreenshot(shoppingCart, "shoppingCart");
         clickElement(shoppingCart);
         return true;
     }

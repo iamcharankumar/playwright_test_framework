@@ -1,8 +1,7 @@
 package io.swaglabs.portal.qa.constants;
 
 import com.microsoft.playwright.BrowserType;
-import io.swaglabs.portal.qa.screenshotsmanager.ScreenshotContext;
-import io.swaglabs.portal.qa.screenshotsmanager.ScreenshotsUtils;
+import io.swaglabs.portal.qa.utils.ScreenshotsUtils;
 import io.swaglabs.portal.qa.utils.WebConfigLoader;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -31,10 +30,8 @@ public final class WebPortalConstants {
     public static final String IMAGE_FORMAT = ".png";
 
     // Browser Type Launch Options Config
-    public static final BrowserType.LaunchOptions BROWSER_LAUNCH_OPTIONS = new BrowserType.LaunchOptions()
-            .setArgs(List.of("--window-position=0,0"));
+    public static final BrowserType.LaunchOptions BROWSER_LAUNCH_OPTIONS = new BrowserType.LaunchOptions();
 
     // SCREENSHOT STRATEGIES
     public static final ScreenshotsUtils SCREENSHOTS_UTILS = ScreenshotsUtils.getInstance();
-    public static final ScreenshotContext FULL_PAGE_SCREENSHOT = SCREENSHOTS_UTILS.getFullPageScreenshotContext();
 }
