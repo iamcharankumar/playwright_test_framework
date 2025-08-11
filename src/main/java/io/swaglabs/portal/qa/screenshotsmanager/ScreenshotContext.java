@@ -1,17 +1,13 @@
 package io.swaglabs.portal.qa.screenshotsmanager;
 
-import com.microsoft.playwright.Page;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
-import java.util.Objects;
-
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ScreenshotContext {
 
-    private ScreenshotStrategy screenshotStrategy;
+    private final ScreenshotStrategy screenshotStrategy;
 
-    public void captureScreenshot(Page page, String filePath) {
-        Objects.requireNonNull(screenshotStrategy, "Screenshot strategy is not set.");
-        screenshotStrategy.capture(page, filePath);
+    public void captureScreenshot(String filePath) {
+        screenshotStrategy.capture(filePath);
     }
 }

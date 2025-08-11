@@ -3,6 +3,7 @@ package io.swaglabs.portal.qa.pages;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
+import io.swaglabs.portal.qa.constants.WebPortalConstants;
 
 public final class SwagLabsProductPage extends SwagLabsBasePage {
 
@@ -17,7 +18,7 @@ public final class SwagLabsProductPage extends SwagLabsBasePage {
     public String getProductPriceText() {
         Locator productPrice = locators.getPageLocator(".inventory_details_price");
         String productPriceText = getTextContent(productPrice);
-        takeElementScreenshot(productPrice, productPriceText);
+        WebPortalConstants.SCREENSHOTS_UTILS.takeElementScreenshot(productPrice, productPriceText);
         return productPriceText;
     }
 
@@ -32,7 +33,7 @@ public final class SwagLabsProductPage extends SwagLabsBasePage {
 
     public boolean isShoppingCartClicked() {
         Locator shoppingCart = locators.getPageLocator(".shopping_cart_link");
-        takeElementScreenshot(shoppingCart, "shoppingCart");
+        WebPortalConstants.SCREENSHOTS_UTILS.takeElementScreenshot(shoppingCart, "shoppingCart");
         clickElement(shoppingCart);
         return true;
     }

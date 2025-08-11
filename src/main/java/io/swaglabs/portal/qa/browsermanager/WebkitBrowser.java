@@ -9,10 +9,9 @@ import io.swaglabs.portal.qa.constants.WebPortalConstants;
 public class WebkitBrowser implements IBrowser {
     @Override
     public BrowserContext createSession(Playwright playwright, boolean isHeadless) {
-        return playwright.webkit().launch(new BrowserType.LaunchOptions()
-                        .setHeadless(isHeadless))
-                .newContext(new Browser.NewContextOptions()
-                        .setViewportSize(WebPortalConstants.SCREEN_WIDTH, WebPortalConstants.SCREEN_HEIGHT)
-                        .setTimezoneId(WebPortalConstants.TIME_ZONE));
+        BrowserType.LaunchOptions webkitLaunchOptions = new BrowserType.LaunchOptions().setHeadless(isHeadless);
+        return playwright.webkit().launch(webkitLaunchOptions).newContext(new Browser.NewContextOptions()
+                .setViewportSize(WebPortalConstants.SCREEN_WIDTH, WebPortalConstants.SCREEN_HEIGHT)
+                .setTimezoneId(WebPortalConstants.TIME_ZONE));
     }
 }

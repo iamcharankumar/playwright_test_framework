@@ -1,6 +1,6 @@
 package io.swaglabs.portal.qa.browsermanager;
 
-import io.swaglabs.portal.qa.exceptions.UtilsException;
+import io.swaglabs.portal.qa.exceptions.WebUtilsException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -20,6 +20,6 @@ public enum BrowserName {
     public static BrowserName fromString(String browserName) {
         return Arrays.stream(BrowserName.values())
                 .filter(browserType -> browserType.getBrowserType().equalsIgnoreCase(browserName))
-                .findFirst().orElseThrow(() -> new UtilsException("Unknown browser: " + browserName));
+                .findFirst().orElseThrow(() -> new WebUtilsException("Unknown browser: " + browserName));
     }
 }

@@ -24,7 +24,6 @@ public abstract class WebBaseTest {
     private static final ThreadLocal<Playwright> PLAYWRIGHT = new ThreadLocal<>();
     private static BrowserManager browserManager;
 
-
     @BeforeSuite(alwaysRun = true)
     public void setUp() {
         browserManager = new BrowserManager();
@@ -37,6 +36,13 @@ public abstract class WebBaseTest {
         page.set(browserManager.getBrowserPage(PLAYWRIGHT.get()));
         log.info("Browser has been set.");
         WebTestListeners.setPage(page.get());
+        if (isChromiumBrowser()) {
+            initializeCdpSession();
+        }
+        trackPerformanceMetrics(method.getName());
+    }
+
+    private void initializeCdpSession() {
         if (isChromiumBrowser()) {
             CdpUtils.initializeCdpSession(page.get());
             CdpUtils.enableCdpSession();
@@ -51,8 +57,11 @@ public abstract class WebBaseTest {
             CdpUtils.logPageLoadCompletion();
             CdpUtils.logPageNavigatedWithinDocument();
         }
-        PerformanceUtils.evaluatePageLoadTime(page.get(), method.getName());
-        PerformanceUtils.evaluateDomContentLoadTime(page.get(), method.getName());
+    }
+
+    private void trackPerformanceMetrics(String methodName) {
+        PerformanceUtils.evaluatePageLoadTime(page.get(), methodName);
+        PerformanceUtils.evaluateDomContentLoadTime(page.get(), methodName);
     }
 
     @AfterMethod(alwaysRun = true)
