@@ -6,6 +6,7 @@ import io.swaglabs.portal.qa.constants.WebPortalConstants;
 import io.swaglabs.portal.qa.screenshotsmanager.ElementScreenshotStrategy;
 import io.swaglabs.portal.qa.screenshotsmanager.FullPageScreenshotStrategy;
 import io.swaglabs.portal.qa.screenshotsmanager.ScreenshotContext;
+import io.swaglabs.portal.qa.screenshotsmanager.ViewportScreenshotStrategy;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -29,8 +30,14 @@ public class ScreenshotsUtils {
         return instance;
     }
 
-    public ScreenshotContext getFullPageScreenshotContext(Page page) {
+    public ScreenshotContext takeFullPageScreenshotContext(Page page) {
+        Objects.requireNonNull(page, "Page cannot be null.");
         return new ScreenshotContext(new FullPageScreenshotStrategy(page));
+    }
+
+    public ScreenshotContext takeViewportScreenshotContext(Page page) {
+        Objects.requireNonNull(page, "Page cannot be null.");
+        return new ScreenshotContext(new ViewportScreenshotStrategy(page));
     }
 
     public void takeElementScreenshot(Locator locator, String fileName) {
