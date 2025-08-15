@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 @Getter
 @AllArgsConstructor
@@ -17,7 +18,8 @@ public enum BrowserName {
 
     private final String browserType;
 
-    public static BrowserName fromString(String browserName) {
+    public static BrowserName fromConfigValue(String browserName) {
+        Objects.requireNonNull(browserName, "Browser name cannot be null");
         return Arrays.stream(BrowserName.values())
                 .filter(browserType -> browserType.getBrowserType().equalsIgnoreCase(browserName))
                 .findFirst().orElseThrow(() -> new WebUtilsException("Unknown browser: " + browserName));

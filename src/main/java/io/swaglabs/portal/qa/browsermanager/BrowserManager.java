@@ -11,6 +11,7 @@ public class BrowserManager implements IBrowserManager<Page> {
 
     @Override
     public Page getBrowserPage(Playwright playwright) {
+        Objects.requireNonNull(playwright, "Playwright instance is null in Browser Manager!");
         boolean isHeadless = "headless".equals(WebPortalConstants.RUN_MODE);
         BrowserContext browserContext = new BrowserFactory().createBrowser().createSession(playwright, isHeadless);
         Objects.requireNonNull(browserContext, "Playwright Browser Context is null!");
