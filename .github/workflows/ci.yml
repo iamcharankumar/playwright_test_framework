@@ -55,6 +55,11 @@ jobs:
         uses: browser-actions/setup-edge@v1
 
       - name: Run Unit Tests
+        env:
+          # Inject secret as environment variable
+          SWAGLABS_URL: ${{ secrets.SWAGLABS_URL }}
+          SWAGLABS_USERNAME: ${{ secrets.SWAGLABS_USERNAME }}
+          SWAGLABS_PASSWORD: ${{ secrets.SWAGLABS_PASSWORD }}
         run: |
           mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
                          -Dgroups=SWAG_LABS_UNIT \
@@ -103,6 +108,10 @@ jobs:
           name: target-${{ matrix.browser }} # Match the unique artifact name
 
       - name: Run Tests for ${{ matrix.browser }}
+        env:
+          SWAGLABS_URL: ${{ secrets.SWAGLABS_URL }}
+          SWAGLABS_USERNAME: ${{ secrets.SWAGLABS_USERNAME }}
+          SWAGLABS_PASSWORD: ${{ secrets.SWAGLABS_PASSWORD }}
         run: |
           mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
                          -Dgroups=SWAG_LABS_SMOKE \
@@ -172,6 +181,10 @@ jobs:
           name: target-${{ matrix.browser }} # Match the unique artifact name
 
       - name: Run Tests for ${{ matrix.browser }}
+        env:
+          SWAGLABS_URL: ${{ secrets.SWAGLABS_URL }}
+          SWAGLABS_USERNAME: ${{ secrets.SWAGLABS_USERNAME }}
+          SWAGLABS_PASSWORD: ${{ secrets.SWAGLABS_PASSWORD }}
         run: |
           mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
                          -Dgroups=SWAG_LABS_REGRESSION \
@@ -243,6 +256,10 @@ jobs:
           name: target-${{ matrix.browser }} # Match the unique artifact name
 
       - name: Run Tests for ${{ matrix.browser }}
+        env:
+          SWAGLABS_URL: ${{ secrets.SWAGLABS_URL }}
+          SWAGLABS_USERNAME: ${{ secrets.SWAGLABS_USERNAME }}
+          SWAGLABS_PASSWORD: ${{ secrets.SWAGLABS_PASSWORD }}
         run: |
           mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
                          -Dgroups=SWAG_LABS_E2E \
