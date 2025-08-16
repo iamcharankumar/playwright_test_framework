@@ -7,6 +7,32 @@ env:
   SWAGLABS_USERNAME: ${{ secrets.SWAGLABS_USERNAME }}
   SWAGLABS_PASSWORD: ${{ secrets.SWAGLABS_PASSWORD }}
   DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+  DISCORD_SCRIPT: |
+    passed="${{ steps.summary.outputs.passed }}"
+    failed="${{ steps.summary.outputs.failed }}"
+    skipped="${{ steps.summary.outputs.skipped }}"
+    total="${{ steps.summary.outputs.total }}"
+    pass_percentage=$(awk "BEGIN {print ($passed/$total)*100}")
+    fail_percentage=$(awk "BEGIN {print ($failed/$total)*100}")
+
+    content="-----------------------------------\n\n"
+    content+="🛠️ **Job: ${{ github.job }}**\n"
+    content+="👤 **User: ${{ github.actor }}**\n"
+    content+="🌎 **Browser: ${{ matrix.browser }}**\n"
+    content+="🎉 **Passed**: ${passed}\n"
+    content+="❌ **Failed**: ${failed}\n"
+    content+="⚠️ **Skipped**: ${skipped}\n"
+    content+="📊 **Total**: ${total}\n\n"
+    content+="✅ **Pass %**: ${pass_percentage}%\n"
+    content+="❌ **Fail %**: ${fail_percentage}%\n\n"
+    content+="-----------------------------------\n\n"
+
+    curl --location "$DISCORD_WEBHOOK_URL" \
+         --header 'Content-Type: application/json' \
+         --data-raw "{
+           \"content\": \"$content\",
+           \"username\": \"TestBot\"
+         }"
 
 on:
   workflow_dispatch:
@@ -142,32 +168,8 @@ jobs:
         if: always()
 
       - name: Send Results to Discord
-        run: |
-          passed="${{ steps.summary.outputs.passed }}"
-          failed="${{ steps.summary.outputs.failed }}"
-          skipped="${{ steps.summary.outputs.skipped }}"
-          total="${{ steps.summary.outputs.total }}"
-          pass_percentage=$(awk "BEGIN {print ($passed/$total)*100}")
-          fail_percentage=$(awk "BEGIN {print ($failed/$total)*100}")
-          
-          content="-----------------------------------\n\n"
-          content+="🛠️ **Job: ${{ github.job }}**\n"
-          content+="👤 **User: ${{ github.actor }}**\n"
-          content+="🌎 **Browser: ${{ matrix.browser }}**\n"
-          content+="🎉 **Passed**: ${passed}\n"
-          content+="❌ **Failed**: ${failed}\n"
-          content+="⚠️ **Skipped**: ${skipped}\n"
-          content+="📊 **Total**: ${total}\n\n"
-          content+="✅ **Pass %**: ${pass_percentage}%\n"
-          content+="❌ **Fail %**: ${fail_percentage}%\n\n"
-          content+="-----------------------------------\n\n"
-          
-          curl --location "$DISCORD_WEBHOOK_URL" \
-               --header 'Content-Type: application/json' \
-               --data-raw "{
-                 \"content\": \"$content\",
-                 \"username\": \"TestBot\"
-               }"
+        run: $DISCORD_SCRIPT
+
   regression_tests:
     name: Run Regression Tests
     runs-on: ubuntu-latest
@@ -213,32 +215,7 @@ jobs:
         if: always()
 
       - name: Send Results to Discord
-        run: |
-          passed="${{ steps.summary.outputs.passed }}"
-          failed="${{ steps.summary.outputs.failed }}"
-          skipped="${{ steps.summary.outputs.skipped }}"
-          total="${{ steps.summary.outputs.total }}"
-          pass_percentage=$(awk "BEGIN {print ($passed/$total)*100}")
-          fail_percentage=$(awk "BEGIN {print ($failed/$total)*100}")
-          
-          content="-----------------------------------\n\n"
-          content+="🛠️ **Job: ${{ github.job }}**\n"
-          content+="👤 **User: ${{ github.actor }}**\n"
-          content+="🌎 **Browser: ${{ matrix.browser }}**\n"
-          content+="🎉 **Passed**: ${passed}\n"
-          content+="❌ **Failed**: ${failed}\n"
-          content+="⚠️ **Skipped**: ${skipped}\n"
-          content+="📊 **Total**: ${total}\n\n"
-          content+="✅ **Pass %**: ${pass_percentage}%\n"
-          content+="❌ **Fail %**: ${fail_percentage}%\n\n"
-          content+="-----------------------------------\n\n"
-          
-          curl --location "$DISCORD_WEBHOOK_URL" \
-               --header 'Content-Type: application/json' \
-               --data-raw "{
-                 \"content\": \"$content\",
-                 \"username\": \"TestBot\"
-               }"
+        run: $DISCORD_SCRIPT
 
   e2e_tests:
     name: Run E2E Tests
@@ -289,29 +266,4 @@ jobs:
         if: always()
 
       - name: Send Results to Discord
-        run: |
-          passed="${{ steps.summary.outputs.passed }}"
-          failed="${{ steps.summary.outputs.failed }}"
-          skipped="${{ steps.summary.outputs.skipped }}"
-          total="${{ steps.summary.outputs.total }}"
-          pass_percentage=$(awk "BEGIN {print ($passed/$total)*100}")
-          fail_percentage=$(awk "BEGIN {print ($failed/$total)*100}")
-
-          content="-----------------------------------\n\n"
-          content+="🛠️ **Job: ${{ github.job }}**\n"
-          content+="👤 **User: ${{ github.actor }}**\n"
-          content+="🌎 **Browser: ${{ matrix.browser }}**\n"
-          content+="🎉 **Passed**: ${passed}\n"
-          content+="❌ **Failed**: ${failed}\n"
-          content+="⚠️ **Skipped**: ${skipped}\n"
-          content+="📊 **Total**: ${total}\n\n"
-          content+="✅ **Pass %**: ${pass_percentage}%\n"
-          content+="❌ **Fail %**: ${fail_percentage}%\n\n"
-          content+="-----------------------------------\n\n"
-
-          curl --location "$DISCORD_WEBHOOK_URL" \
-               --header 'Content-Type: application/json' \
-               --data-raw "{
-                 \"content\": \"$content\",
-                 \"username\": \"TestBot\"
-               }"
+        run: $DISCORD_SCRIPT
