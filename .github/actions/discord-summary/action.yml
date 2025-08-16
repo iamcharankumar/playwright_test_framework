@@ -1,0 +1,40 @@
+name: "Send Test Summary to Discord"
+description: "Send formatted test summary to Discord"
+inputs:
+  passed:
+    required: true
+  failed:
+    required: true
+  skipped:
+    required: true
+  total:
+    required: true
+  browser:
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Build and Send Discord Message
+      shell: bash
+      run: |
+        pass_percentage=$(awk "BEGIN {print (${{ inputs.passed }}/${{ inputs.total }})*100}")
+        fail_percentage=$(awk "BEGIN {print (${{ inputs.failed }}/${{ inputs.total }})*100}")
+
+        content="-----------------------------------\n\n"
+        content+="🛠️ **Job: ${{ github.job }}**\n"
+        content+="👤 **User: ${{ github.actor }}**\n"
+        content+="🌎 **Browser: ${{ inputs.browser }}**\n"
+        content+="🎉 **Passed**: ${{ inputs.passed }}\n"
+        content+="❌ **Failed**: ${{ inputs.failed }}\n"
+        content+="⚠️ **Skipped**: ${{ inputs.skipped }}\n"
+        content+="📊 **Total**: ${{ inputs.total }}\n\n"
+        content+="✅ **Pass %**: ${pass_percentage}%\n"
+        content+="❌ **Fail %**: ${fail_percentage}%\n\n"
+        content+="-----------------------------------\n\n"
+
+        curl --location "$DISCORD_WEBHOOK_URL" \
+             --header 'Content-Type: application/json' \
+             --data-raw "{
+               \"content\": \"$content\",
+               \"username\": \"TestBot\"
+             }"
