@@ -1,6 +1,4 @@
 name: Playwright Test Framework
-env:
-  TZ: Asia/Kolkata
 
 on:
   workflow_dispatch:
@@ -14,6 +12,15 @@ on:
       - fb_*
   schedule:
     - cron: '0 0 * * *'
+
+env:
+  TZ: Asia/Kolkata
+  SWAGLABS_URL: ${{ secrets.SWAGLABS_URL }}
+  SWAGLABS_USERNAME: ${{ secrets.SWAGLABS_USERNAME }}
+  SWAGLABS_PASSWORD: ${{ secrets.SWAGLABS_PASSWORD }}
+  DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+  CODECOV_SLUG: ${{ secrets.CODECOV_SLUG }}
 
 jobs:
   build_and_test:
@@ -55,11 +62,6 @@ jobs:
         uses: browser-actions/setup-edge@v1
 
       - name: Run Unit Tests
-        env:
-          # Inject secret as environment variable
-          SWAGLABS_URL: ${{ secrets.SWAGLABS_URL }}
-          SWAGLABS_USERNAME: ${{ secrets.SWAGLABS_USERNAME }}
-          SWAGLABS_PASSWORD: ${{ secrets.SWAGLABS_PASSWORD }}
         run: |
           mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
                          -Dgroups=SWAG_LABS_UNIT \
@@ -72,8 +74,8 @@ jobs:
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          slug: ${{ secrets.CODECOV_SLUG }}
+          token: $CODECOV_TOKEN
+          slug: $CODECOV_SLUG
           verbose: true
 
       - name: Upload Artifacts
@@ -108,10 +110,6 @@ jobs:
           name: target-${{ matrix.browser }} # Match the unique artifact name
 
       - name: Run Tests for ${{ matrix.browser }}
-        env:
-          SWAGLABS_URL: ${{ secrets.SWAGLABS_URL }}
-          SWAGLABS_USERNAME: ${{ secrets.SWAGLABS_USERNAME }}
-          SWAGLABS_PASSWORD: ${{ secrets.SWAGLABS_PASSWORD }}
         run: |
           mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
                          -Dgroups=SWAG_LABS_SMOKE \
@@ -128,8 +126,6 @@ jobs:
         if: always()
 
       - name: Send Results to Discord
-        env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
           # Gather metrics from test-summary output
           passed="${{ steps.summary.outputs.passed }}"
@@ -181,10 +177,6 @@ jobs:
           name: target-${{ matrix.browser }} # Match the unique artifact name
 
       - name: Run Tests for ${{ matrix.browser }}
-        env:
-          SWAGLABS_URL: ${{ secrets.SWAGLABS_URL }}
-          SWAGLABS_USERNAME: ${{ secrets.SWAGLABS_USERNAME }}
-          SWAGLABS_PASSWORD: ${{ secrets.SWAGLABS_PASSWORD }}
         run: |
           mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
                          -Dgroups=SWAG_LABS_REGRESSION \
@@ -201,8 +193,6 @@ jobs:
         if: always()
 
       - name: Send Results to Discord
-        env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
           # Gather metrics from test-summary output
           passed="${{ steps.summary.outputs.passed }}"
@@ -256,10 +246,6 @@ jobs:
           name: target-${{ matrix.browser }} # Match the unique artifact name
 
       - name: Run Tests for ${{ matrix.browser }}
-        env:
-          SWAGLABS_URL: ${{ secrets.SWAGLABS_URL }}
-          SWAGLABS_USERNAME: ${{ secrets.SWAGLABS_USERNAME }}
-          SWAGLABS_PASSWORD: ${{ secrets.SWAGLABS_PASSWORD }}
         run: |
           mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
                          -Dgroups=SWAG_LABS_E2E \
@@ -276,8 +262,6 @@ jobs:
         if: always()
 
       - name: Send Results to Discord
-        env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
           # Gather metrics from test-summary output
           passed="${{ steps.summary.outputs.passed }}"
