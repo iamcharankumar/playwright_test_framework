@@ -1,5 +1,13 @@
 name: Playwright Test Framework
 
+# ---- Global environment (available to every job & step) ----
+env:
+  TZ: Asia/Kolkata
+  SWAGLABS_URL: ${{ secrets.SWAGLABS_URL }}
+  SWAGLABS_USERNAME: ${{ secrets.SWAGLABS_USERNAME }}
+  SWAGLABS_PASSWORD: ${{ secrets.SWAGLABS_PASSWORD }}
+  DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+
 on:
   workflow_dispatch:
   pull_request:
@@ -13,75 +21,78 @@ on:
   schedule:
     - cron: '0 0 * * *'
 
-env:
-  TZ: Asia/Kolkata
-  SWAGLABS_URL: ${{ secrets.SWAGLABS_URL }}
-  SWAGLABS_USERNAME: ${{ secrets.SWAGLABS_USERNAME }}
-  SWAGLABS_PASSWORD: ${{ secrets.SWAGLABS_PASSWORD }}
-  DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-  CODECOV_SLUG: ${{ secrets.CODECOV_SLUG }}
+# Cancel older in-progress runs of the same ref to free runners sooner
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
   build_and_test:
     name: Build and Test
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: true
       matrix:
         browser: [ chrome, firefox, msedge ]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1   # shallow clone for speed
 
-      - name: Setup Java and Maven
+      - name: Setup Java (Temurin) with Maven cache
         uses: actions/setup-java@v4
         with:
           java-version: '17'
-          distribution: 'adopt'
+          distribution: 'temurin'
           cache: maven
 
-      - name: Cache Maven
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.m2/repository
-            target
-          key: maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            maven-      
+      # Install only the browser needed for the current matrix job
+      - name: Install Chrome
+        if: matrix.browser == 'chrome'
+        uses: browser-actions/setup-chrome@latest
+
+      - name: Install Firefox
+        if: matrix.browser == 'firefox'
+        uses: browser-actions/setup-firefox@latest
+
+      - name: Install Edge
+        if: matrix.browser == 'msedge'
+        uses: browser-actions/setup-edge@v1
 
       - name: Build Project
         run: |
-          mvn -B install -DskipTests --no-transfer-progress -T 4C    
+          mvn -B -ntp install -DskipTests -T 4C
 
-      - name: Install Chrome
-        uses: browser-actions/setup-chrome@latest
-      - name: Install Firefox
-        uses: browser-actions/setup-firefox@latest
-      - name: Install Edge
-        uses: browser-actions/setup-edge@v1
-
-      - name: Run Unit Tests
+      # Combine test + coverage into a single Maven invocation (less JVM spin-up)
+      - name: Run Unit Tests with Coverage
         run: |
-          mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
-                         -Dgroups=SWAG_LABS_UNIT \
-                         -Dthreads=3 -Ddataproviderthreadcount=3
+          mvn -B -ntp clean verify \
+            -Drunmode=headless \
+            -Dbrowser=${{ matrix.browser }} \
+            -Dgroups=SWAG_LABS_UNIT \
+            -Dthreads=3 -Ddataproviderthreadcount=3 \
+            jacoco:report
 
-      - name: Generate Coverage Report
-        run: |
-          mvn jacoco:report
-
-      - name: Upload Coverage to Codecov
+      # Upload coverage once (chrome) to avoid 3 identical uploads
+      - name: Upload Coverage to CodeCov
+        if: matrix.browser == 'chrome'
         uses: codecov/codecov-action@v4
         with:
-          token: $CODECOV_TOKEN
-          slug: $CODECOV_SLUG
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: ${{ secrets.CODECOV_SLUG }}
           verbose: true
-
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: target-${{ matrix.browser }} # Unique artifact name
+          name: target-${{ matrix.browser }}
           path: |
             ${{ github.workspace }}/target
             ${{ github.workspace }}/reports
@@ -91,29 +102,34 @@ jobs:
     runs-on: ubuntu-latest
     needs: build_and_test
     strategy:
+      fail-fast: true
       matrix:
         browser: [ chrome, firefox, msedge ]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
-      - name: Setup Java and Maven
+      - name: Setup Java (Temurin) with Maven cache
         uses: actions/setup-java@v4
         with:
           java-version: '17'
-          distribution: 'adopt'
+          distribution: 'temurin'
           cache: maven
 
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: target-${{ matrix.browser }} # Match the unique artifact name
+          name: target-${{ matrix.browser }}
 
-      - name: Run Tests for ${{ matrix.browser }}
+      - name: Run Smoke Tests for ${{ matrix.browser }}
         run: |
-          mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
-                         -Dgroups=SWAG_LABS_SMOKE \
-                         -Dthreads=3 -Ddataproviderthreadcount=3
+          mvn -B -ntp clean test \
+            -Drunmode=headless \
+            -Dbrowser=${{ matrix.browser }} \
+            -Dgroups=SWAG_LABS_SMOKE \
+            -Dthreads=3 -Ddataproviderthreadcount=3
 
       - name: Verify Report Directory
         run: ls target/surefire-reports || echo "Report directory not found"
@@ -127,7 +143,6 @@ jobs:
 
       - name: Send Results to Discord
         run: |
-          # Gather metrics from test-summary output
           passed="${{ steps.summary.outputs.passed }}"
           failed="${{ steps.summary.outputs.failed }}"
           skipped="${{ steps.summary.outputs.skipped }}"
@@ -146,41 +161,46 @@ jobs:
           content+="✅ **Pass %**: ${pass_percentage}%\n"
           content+="❌ **Fail %**: ${fail_percentage}%\n\n"
           content+="-----------------------------------\n\n"
+          
           curl --location "$DISCORD_WEBHOOK_URL" \
                --header 'Content-Type: application/json' \
                --data-raw "{
-                   \"content\": \"$content\",
-                   \"username\": \"TestBot\"
+                 \"content\": \"$content\",
+                 \"username\": \"TestBot\"
                }"
-
   regression_tests:
     name: Run Regression Tests
     runs-on: ubuntu-latest
     needs: build_and_test
     strategy:
+      fail-fast: true
       matrix:
         browser: [ chrome, firefox, msedge ]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
-      - name: Setup Java and Maven
+      - name: Setup Java (Temurin) with Maven cache
         uses: actions/setup-java@v4
         with:
           java-version: '17'
-          distribution: 'adopt'
+          distribution: 'temurin'
           cache: maven
 
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: target-${{ matrix.browser }} # Match the unique artifact name
+          name: target-${{ matrix.browser }}
 
-      - name: Run Tests for ${{ matrix.browser }}
+      - name: Run Regression Tests for ${{ matrix.browser }}
         run: |
-          mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
-                         -Dgroups=SWAG_LABS_REGRESSION \
-                         -Dthreads=3 -Ddataproviderthreadcount=3
+          mvn -B -ntp clean test \
+            -Drunmode=headless \
+            -Dbrowser=${{ matrix.browser }} \
+            -Dgroups=SWAG_LABS_REGRESSION \
+            -Dthreads=3 -Ddataproviderthreadcount=3
 
       - name: Verify Report Directory
         run: ls target/surefire-reports || echo "Report directory not found"
@@ -194,13 +214,13 @@ jobs:
 
       - name: Send Results to Discord
         run: |
-          # Gather metrics from test-summary output
           passed="${{ steps.summary.outputs.passed }}"
           failed="${{ steps.summary.outputs.failed }}"
           skipped="${{ steps.summary.outputs.skipped }}"
           total="${{ steps.summary.outputs.total }}"
           pass_percentage=$(awk "BEGIN {print ($passed/$total)*100}")
           fail_percentage=$(awk "BEGIN {print ($failed/$total)*100}")
+          
           content="-----------------------------------\n\n"
           content+="🛠️ **Job: ${{ github.job }}**\n"
           content+="👤 **User: ${{ github.actor }}**\n"
@@ -212,44 +232,51 @@ jobs:
           content+="✅ **Pass %**: ${pass_percentage}%\n"
           content+="❌ **Fail %**: ${fail_percentage}%\n\n"
           content+="-----------------------------------\n\n"
+          
           curl --location "$DISCORD_WEBHOOK_URL" \
                --header 'Content-Type: application/json' \
                --data-raw "{
-                   \"content\": \"$content\",
-                   \"username\": \"TestBot\"
+                 \"content\": \"$content\",
+                 \"username\": \"TestBot\"
                }"
 
   e2e_tests:
-    name: E2E Tests
+    name: Run E2E Tests
     runs-on: ubuntu-latest
     needs:
       - build_and_test
       - smoke_tests
       - regression_tests
     strategy:
+      fail-fast: true
       matrix:
         browser: [ chrome, firefox, msedge ]
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
-      - name: Setup Java and Maven
+      - name: Setup Java (Temurin) with Maven cache
         uses: actions/setup-java@v4
         with:
           java-version: '17'
-          distribution: 'adopt'
+          distribution: 'temurin'
           cache: maven
 
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: target-${{ matrix.browser }} # Match the unique artifact name
+          name: target-${{ matrix.browser }}
 
-      - name: Run Tests for ${{ matrix.browser }}
+      - name: Run E2E Tests for ${{ matrix.browser }}
         run: |
-          mvn clean test -Drunmode=headless -Dbrowser=${{ matrix.browser }} \
-                         -Dgroups=SWAG_LABS_E2E \
-                         -Dthreads=3 -Ddataproviderthreadcount=3
+          mvn -B -ntp clean test \
+            -Drunmode=headless \
+            -Dbrowser=${{ matrix.browser }} \
+            -Dgroups=SWAG_LABS_E2E \
+            -Dthreads=3 -Ddataproviderthreadcount=3
 
       - name: Verify Report Directory
         run: ls target/surefire-reports || echo "Report directory not found"
@@ -263,13 +290,13 @@ jobs:
 
       - name: Send Results to Discord
         run: |
-          # Gather metrics from test-summary output
           passed="${{ steps.summary.outputs.passed }}"
           failed="${{ steps.summary.outputs.failed }}"
           skipped="${{ steps.summary.outputs.skipped }}"
           total="${{ steps.summary.outputs.total }}"
           pass_percentage=$(awk "BEGIN {print ($passed/$total)*100}")
           fail_percentage=$(awk "BEGIN {print ($failed/$total)*100}")
+
           content="-----------------------------------\n\n"
           content+="🛠️ **Job: ${{ github.job }}**\n"
           content+="👤 **User: ${{ github.actor }}**\n"
@@ -281,9 +308,10 @@ jobs:
           content+="✅ **Pass %**: ${pass_percentage}%\n"
           content+="❌ **Fail %**: ${fail_percentage}%\n\n"
           content+="-----------------------------------\n\n"
+
           curl --location "$DISCORD_WEBHOOK_URL" \
                --header 'Content-Type: application/json' \
                --data-raw "{
-                   \"content\": \"$content\",
-                   \"username\": \"TestBot\"
+                 \"content\": \"$content\",
+                 \"username\": \"TestBot\"
                }"
