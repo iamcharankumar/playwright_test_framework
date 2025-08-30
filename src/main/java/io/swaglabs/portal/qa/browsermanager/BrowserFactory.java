@@ -6,10 +6,10 @@ public class BrowserFactory {
 
     public IBrowser createBrowser() {
         return switch (BrowserName.fromConfigValue(WebPortalConstants.BROWSER)) {
+            case CHROME -> new ChromeBrowser();
+            case MS_EDGE -> new MsEdgeBrowser();
             case FIREFOX -> new FirefoxBrowser();
             case WEBKIT -> new WebkitBrowser();
-            case MS_EDGE -> new MsEdgeBrowser();
-            default -> new ChromeBrowser();
         };
     }
 }

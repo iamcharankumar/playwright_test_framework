@@ -1,10 +1,10 @@
 package io.swaglabs.portal.qa.cdp;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public enum CdpCommands {
 
     NETWORK_ENABLE("Network.enable"),

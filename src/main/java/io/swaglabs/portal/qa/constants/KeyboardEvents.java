@@ -1,10 +1,10 @@
 package io.swaglabs.portal.qa.constants;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public enum KeyboardEvents {
 
     ENTER("Enter"),
