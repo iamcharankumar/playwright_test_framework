@@ -1,10 +1,10 @@
 package io.swaglabs.portal.qa.cdp;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public enum CdpEvents {
 
     NETWORK_REQUEST_WILL_BE_SENT("Network.requestWillBeSent"),

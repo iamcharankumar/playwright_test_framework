@@ -13,7 +13,8 @@ public class ChromeBrowser implements IBrowser {
     @Override
     public BrowserContext createSession(Playwright playwright, boolean isHeadless) {
         BrowserType.LaunchOptions chromeLaunchOptions = WebPortalConstants.BROWSER_LAUNCH_OPTIONS.setHeadless(isHeadless)
-                .setArgs(List.of(WebPortalConstants.WINDOW_POSITION));
+                .setArgs(List.of(WebPortalConstants.WINDOW_POSITION))
+                .setChannel(BrowserName.CHROME.getBrowserType());
         return playwright.chromium().launch(chromeLaunchOptions).newContext(new Browser.NewContextOptions()
                 .setViewportSize(WebPortalConstants.SCREEN_WIDTH, WebPortalConstants.SCREEN_HEIGHT)
                 .setTimezoneId(WebPortalConstants.TIME_ZONE));

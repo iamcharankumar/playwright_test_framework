@@ -1,19 +1,19 @@
 package io.swaglabs.portal.qa.browsermanager;
 
 import io.swaglabs.portal.qa.exceptions.WebUtilsException;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
 import java.util.Objects;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public enum BrowserName {
 
     CHROME("chrome"),
-    FIREFOX("firefox"),
     MS_EDGE("msedge"),
+    FIREFOX("firefox"),
     WEBKIT("webkit");
 
     private final String browserType;
