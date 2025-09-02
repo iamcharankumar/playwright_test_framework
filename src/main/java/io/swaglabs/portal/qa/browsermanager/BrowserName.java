@@ -12,7 +12,7 @@ import java.util.Objects;
 public enum BrowserName {
 
     CHROME("chrome"),
-    MS_EDGE("msedge"),
+    EDGE("msedge"),
     FIREFOX("firefox"),
     WEBKIT("webkit");
 
@@ -21,7 +21,7 @@ public enum BrowserName {
     public static BrowserName fromConfigValue(String browserName) {
         Objects.requireNonNull(browserName, "Browser name cannot be null");
         return Arrays.stream(BrowserName.values())
-                .filter(browserType -> browserType.getBrowserType().equalsIgnoreCase(browserName))
+                .filter(browser -> browser.getBrowserType().equalsIgnoreCase(browserName))
                 .findFirst().orElseThrow(() -> new WebUtilsException("Unknown browser: " + browserName));
     }
 }
