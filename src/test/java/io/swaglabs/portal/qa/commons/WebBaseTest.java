@@ -18,7 +18,7 @@ import java.lang.reflect.Method;
 import java.util.Objects;
 
 @Slf4j
-public abstract class WebBaseTest {
+public class WebBaseTest {
 
     protected static ThreadLocal<Page> page = new ThreadLocal<>();
     private static final ThreadLocal<Playwright> PLAYWRIGHT = new ThreadLocal<>();
