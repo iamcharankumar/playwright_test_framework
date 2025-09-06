@@ -16,17 +16,37 @@ public sealed class SwagLabsTestBase extends WebBaseTest permits SwagLabsE2ETest
 
     @BeforeMethod(alwaysRun = true)
     public void setUpSwagLabsPortal(Method method) {
-        log.info("Thread id in BeforeMethod for the test method : {} is {}.", method.getName(), Thread.currentThread().getId());
-        SWAG_LABS_PORTAL.set(new SwagLabsPortal(page.get()));
-        SWAG_LABS_PORTAL.get().visit();
-        boolean isLoggedIn = SWAG_LABS_PORTAL.get().LOGIN_PAGE.isLoginSuccess();
-        if (!isLoggedIn)
-            throw new WebPageException("Swags Labs Portal Not Logged In!");
+        final long threadId = Thread.currentThread().getId();
+        log.info("Thread {} starting method {}", threadId, method.getName());
+        try {
+            // 1. Initialize portal (thread-safe via ThreadLocal)
+            SWAG_LABS_PORTAL.set(new SwagLabsPortal(page.get()));
+            // 2. Visit and login
+            SWAG_LABS_PORTAL.get().visit();
+            boolean isLoggedIn = SWAG_LABS_PORTAL.get().LOGIN_PAGE.isLoginSuccess();
+            if (!isLoggedIn)
+                throw new WebPageException("Swags Labs Portal Not Logged In!");
+        } catch (Exception e) {
+            log.error("Initialization failed for thread {}", threadId, e);
+            cleanUpResources();
+            throw e;
+        }
     }
 
     @AfterMethod(alwaysRun = true)
     public void tearDownSwagLabsPortal(Method method) {
-        log.info("Thread id in AfterMethod for the test method :{} is {}.", method.getName(), Thread.currentThread().getId());
+        final long threadId = Thread.currentThread().getId();
+        log.info("Thread {} finishing method {}", threadId, method.getName());
         SWAG_LABS_PORTAL.remove();
+    }
+
+    private void cleanUpResources() {
+        try {
+            if (SWAG_LABS_PORTAL.get() != null)
+                // Simple cleanup - just remove the ThreadLocal
+                SWAG_LABS_PORTAL.remove();
+        } catch (Exception e) {
+            log.error("Thread {} cleanup error", Thread.currentThread().getId(), e);
+        }
     }
 }
