@@ -24,7 +24,9 @@ tutorial [here](https://code2tutorial.com/tutorial/81c3753d-35c2-41fd-941c-34a1c
 
 # TEST ARCHITECTURE
 
-![UI_Playwright_Java_Architecture](https://github.com/user-attachments/assets/e31f233b-2974-4e82-babc-19789fa06c31)
+A High Level Diagram for the framework is below.
+
+<img width="7826" height="6274" alt="Playwright_Out_2" src="https://github.com/user-attachments/assets/66c90eb6-5955-4699-8ec6-9d68fd96415d" />
 
 # STEPS FOR THE TEST EXECUTION IN LOCAL
 
