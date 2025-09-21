@@ -26,7 +26,8 @@ tutorial [here](https://code2tutorial.com/tutorial/81c3753d-35c2-41fd-941c-34a1c
 
 A High Level Diagram for the framework is below.
 
-<img width="7826" height="6274" alt="Playwright_Out_2" src="https://github.com/user-attachments/assets/66c90eb6-5955-4699-8ec6-9d68fd96415d" />
+<img width="7826" height="6274" alt="Web_Framework_Architecture_By_Charankumar" src="https://github.com/user-attachments/assets/0179829d-a4c7-4c77-9dd3-cd16addbf5f9" />
+
 
 # STEPS FOR THE TEST EXECUTION IN LOCAL
 
