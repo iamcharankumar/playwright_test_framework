@@ -20,7 +20,7 @@ import java.util.Objects;
 @Slf4j
 public class WebBaseTest {
 
-    protected static ThreadLocal<Page> page = new ThreadLocal<>();
+    protected static final ThreadLocal<Page> PAGE = new ThreadLocal<>();
     private static final ThreadLocal<Playwright> PLAYWRIGHT = new ThreadLocal<>();
     private static BrowserManager browserManager;
 
@@ -33,9 +33,9 @@ public class WebBaseTest {
     @BeforeMethod(alwaysRun = true)
     public void init(Method method) {
         PLAYWRIGHT.set(Playwright.create());
-        page.set(browserManager.getBrowserPage(PLAYWRIGHT.get()));
+        PAGE.set(browserManager.getBrowserPage(PLAYWRIGHT.get()));
         log.info("Browser has been set.");
-        WebTestListeners.setPage(page.get());
+        WebTestListeners.setPage(PAGE.get());
         if (isChromiumBrowser()) {
             initializeCdpSession();
         }
@@ -44,7 +44,7 @@ public class WebBaseTest {
 
     private void initializeCdpSession() {
         if (isChromiumBrowser()) {
-            CdpUtils.initializeCdpSession(page.get());
+            CdpUtils.initializeCdpSession(PAGE.get());
             CdpUtils.enableCdpSession();
             CdpUtils.sendCommand(CdpCommands.NETWORK_ENABLE.getDescription());
             CdpUtils.logErrorResponses();
@@ -60,8 +60,8 @@ public class WebBaseTest {
     }
 
     private void trackPerformanceMetrics(String methodName) {
-        PerformanceUtils.evaluatePageLoadTime(page.get(), methodName);
-        PerformanceUtils.evaluateDomContentLoadTime(page.get(), methodName);
+        PerformanceUtils.evaluatePageLoadTime(PAGE.get(), methodName);
+        PerformanceUtils.evaluateDomContentLoadTime(PAGE.get(), methodName);
     }
 
     @AfterMethod(alwaysRun = true)
@@ -69,8 +69,8 @@ public class WebBaseTest {
         if (isChromiumBrowser()) {
             CdpUtils.destroyCdpSession();
         }
-        browserManager.destroyBrowserPage(page.get());
-        page.remove();
+        browserManager.destroyBrowserPage(PAGE.get());
+        PAGE.remove();
         Objects.requireNonNull(PLAYWRIGHT.get(), "Playwright is null!");
         PLAYWRIGHT.get().close();
         PLAYWRIGHT.remove();

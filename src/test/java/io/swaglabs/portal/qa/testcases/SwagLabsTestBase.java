@@ -20,7 +20,7 @@ public sealed class SwagLabsTestBase extends WebBaseTest permits SwagLabsE2ETest
         log.info("Thread {} starting method {}", threadId, method.getName());
         try {
             // 1. Initialize portal (thread-safe via ThreadLocal)
-            SWAG_LABS_PORTAL.set(new SwagLabsPortal(page.get()));
+            SWAG_LABS_PORTAL.set(new SwagLabsPortal(PAGE.get()));
             // 2. Visit and login
             SWAG_LABS_PORTAL.get().visit();
             boolean isLoggedIn = SWAG_LABS_PORTAL.get().LOGIN_PAGE.isLoginSuccess();
