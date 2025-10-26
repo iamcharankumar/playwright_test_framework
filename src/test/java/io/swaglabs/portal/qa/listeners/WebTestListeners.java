@@ -71,7 +71,7 @@ public class WebTestListeners implements ISuiteListener, ITestListener, IRetryAn
         String filePath = Paths.get(dirPath, fileName).toString();
         try {
             Files.createDirectories(Paths.get(dirPath));
-            WebPortalConstants.SCREENSHOTS_UTILS.takeFullPageScreenshotContext(currentPage).captureScreenshot(filePath);
+            WebPortalConstants.SCREENSHOTS_UTILS.takeFullPageScreenshotContext(currentPage, filePath);
         } catch (IOException e) {
             log.error("Screenshot failed for {}: {}", testName, e.getMessage());
         }

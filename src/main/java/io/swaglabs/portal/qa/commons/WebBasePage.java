@@ -7,7 +7,7 @@ import io.swaglabs.portal.qa.locators.Locators;
 
 import java.util.Objects;
 
-public abstract class WebBasePage {
+public class WebBasePage {
 
     protected Page basePage;
     protected Locators locators;

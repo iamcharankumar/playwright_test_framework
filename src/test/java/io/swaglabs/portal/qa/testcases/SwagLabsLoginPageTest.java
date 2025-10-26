@@ -17,7 +17,7 @@ public final class SwagLabsLoginPageTest extends SwagLabsTestBase {
     @BeforeMethod(alwaysRun = true)
     public void setUpSwagLabsPortal(Method method) {
         log.info("Thread id in BeforeMethod for the test method : {} is {}.", method.getName(), Thread.currentThread().getId());
-        SWAG_LABS_PORTAL.set(new SwagLabsPortal(page.get()));
+        SWAG_LABS_PORTAL.set(new SwagLabsPortal(PAGE.get()));
         SWAG_LABS_PORTAL.get().visit();
     }
 

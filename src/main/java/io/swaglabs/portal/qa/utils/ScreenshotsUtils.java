@@ -30,14 +30,14 @@ public class ScreenshotsUtils {
         return instance;
     }
 
-    public ScreenshotContext takeFullPageScreenshotContext(Page page) {
+    public void takeFullPageScreenshotContext(Page page, String filePath) {
         Objects.requireNonNull(page, "Page cannot be null.");
-        return new ScreenshotContext(new FullPageScreenshotStrategy(page));
+        new ScreenshotContext(new FullPageScreenshotStrategy(page)).captureScreenshot(filePath);
     }
 
-    public ScreenshotContext takeViewportScreenshotContext(Page page) {
+    public void takeViewportScreenshotContext(Page page, String filePath) {
         Objects.requireNonNull(page, "Page cannot be null.");
-        return new ScreenshotContext(new ViewportScreenshotStrategy(page));
+        new ScreenshotContext(new ViewportScreenshotStrategy(page)).captureScreenshot(filePath);
     }
 
     public void takeElementScreenshot(Locator locator, String fileName) {
