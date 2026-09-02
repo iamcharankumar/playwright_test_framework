@@ -1,0 +1,266 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Playwright Web Test Framework — Runtime Architecture",
+    "output": "playwright_runtime_architecture.html",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "primary-path",
+        "label": "Primary runtime path",
+        "focus": [
+          "ci",
+          "testng",
+          "base_test",
+          "browser_manager",
+          "browser_factory",
+          "playwright",
+          "sauce_demo"
+        ],
+        "note": "Follow the test execution path from invocation to target-browser interaction."
+      },
+      {
+        "id": "page-objects",
+        "label": "Page-object flow",
+        "focus": ["portal", "page_objects", "sauce_demo"],
+        "note": "The portal object composes page actions for the app under test."
+      },
+      {
+        "id": "observability",
+        "label": "Observability and quality hooks",
+        "focus": ["base_test", "cdp_monitor", "artifacts"],
+        "note": "CDP, screenshots, and performance checks extend the core browser path without adding noise."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "ci",
+      "type": "external",
+      "label": "CI / Local Runner",
+      "sublabel": "Maven + GitHub Actions",
+      "pos": [40, 280],
+      "size": [150, 70]
+    },
+    {
+      "id": "testng",
+      "type": "backend",
+      "label": "TestNG Suite",
+      "sublabel": "Groups + data providers",
+      "pos": [240, 280],
+      "size": [150, 70]
+    },
+    {
+      "id": "base_test",
+      "type": "backend",
+      "label": "WebBaseTest",
+      "sublabel": "Setup / teardown",
+      "pos": [470, 280],
+      "size": [150, 70]
+    },
+    {
+      "id": "portal",
+      "type": "backend",
+      "label": "SwagLabsPortal",
+      "sublabel": "Page composition",
+      "pos": [690, 280],
+      "size": [150, 70]
+    },
+    {
+      "id": "page_objects",
+      "type": "backend",
+      "label": "Page Objects",
+      "sublabel": "Login / cart / checkout",
+      "pos": [910, 280],
+      "size": [170, 70]
+    },
+    {
+      "id": "browser_manager",
+      "type": "backend",
+      "label": "BrowserManager",
+      "sublabel": "Session lifecycle",
+      "pos": [470, 120],
+      "size": [150, 70]
+    },
+    {
+      "id": "browser_factory",
+      "type": "backend",
+      "label": "BrowserFactory",
+      "sublabel": "Browser selection",
+      "pos": [690, 120],
+      "size": [150, 70]
+    },
+    {
+      "id": "browser_runtime",
+      "type": "external",
+      "label": "Browser Runtime",
+      "sublabel": "Chrome / Edge / Firefox / WebKit",
+      "pos": [910, 120],
+      "size": [170, 70]
+    },
+    {
+      "id": "playwright",
+      "type": "backend",
+      "label": "Playwright Engine",
+      "sublabel": "BrowserContext + Page",
+      "pos": [1130, 120],
+      "size": [180, 70]
+    },
+    {
+      "id": "cdp_monitor",
+      "type": "security",
+      "label": "CDP Monitor",
+      "sublabel": "Network + console tracing",
+      "pos": [470, 440],
+      "size": [170, 70]
+    },
+    {
+      "id": "artifacts",
+      "type": "cloud",
+      "label": "Artifacts",
+      "sublabel": "Screenshots + logs + metrics",
+      "pos": [690, 440],
+      "size": [170, 70]
+    },
+    {
+      "id": "sauce_demo",
+      "type": "external",
+      "label": "Sauce Demo",
+      "sublabel": "App under test",
+      "pos": [1130, 280],
+      "size": [180, 70]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Local test runtime",
+      "wraps": [
+        "ci",
+        "testng",
+        "base_test",
+        "portal",
+        "page_objects",
+        "browser_manager",
+        "browser_factory",
+        "playwright",
+        "cdp_monitor",
+        "artifacts"
+      ],
+      "pad": 24
+    },
+    {
+      "kind": "security-group",
+      "label": "Browser sandbox",
+      "wraps": ["browser_factory", "browser_runtime", "playwright"],
+      "pad": 20
+    }
+  ],
+  "connections": [
+    { "id": "ci-testng", "from": "ci", "to": "testng", "label": "invoke" },
+    {
+      "id": "testng-base",
+      "from": "testng",
+      "to": "base_test",
+      "label": "bootstrap"
+    },
+    {
+      "id": "base-browser",
+      "from": "base_test",
+      "to": "browser_manager",
+      "label": "new page"
+    },
+    {
+      "id": "manager-factory",
+      "from": "browser_manager",
+      "to": "browser_factory",
+      "label": "select driver"
+    },
+    {
+      "id": "factory-runtime",
+      "from": "browser_factory",
+      "to": "browser_runtime",
+      "label": "create session"
+    },
+    {
+      "id": "runtime-playwright",
+      "from": "browser_runtime",
+      "to": "playwright",
+      "label": "hosted context"
+    },
+    {
+      "id": "base-portal",
+      "from": "base_test",
+      "to": "portal",
+      "label": "compose"
+    },
+    {
+      "id": "portal-page",
+      "from": "portal",
+      "to": "page_objects",
+      "label": "actions"
+    },
+    {
+      "id": "page-app",
+      "from": "page_objects",
+      "to": "sauce_demo",
+      "label": "navigate + assert"
+    },
+    {
+      "id": "playwright-app",
+      "from": "playwright",
+      "to": "sauce_demo",
+      "label": "browser traffic",
+      "variant": "emphasis"
+    },
+    {
+      "id": "base-cdp",
+      "from": "base_test",
+      "to": "cdp_monitor",
+      "label": "observe"
+    },
+    {
+      "id": "cdp-artifacts",
+      "from": "cdp_monitor",
+      "to": "artifacts",
+      "label": "log + snapshot"
+    },
+    {
+      "id": "manager-artifacts",
+      "from": "browser_manager",
+      "to": "artifacts",
+      "label": "screenshots + metrics",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Execution path",
+      "items": [
+        "Maven or GitHub Actions invokes the TestNG suite.",
+        "WebBaseTest initializes Playwright, creates a browser page, and tears it down after every test method.",
+        "SwagLabsPortal composes the login, home, cart, and checkout page objects used by the test flow."
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Runtime responsibilities",
+      "items": [
+        "BrowserManager owns the browser context lifecycle and session cleanup.",
+        "BrowserFactory selects the concrete browser implementation for Chrome, Edge, Firefox, or WebKit.",
+        "Page objects target the Sauce Demo UI and assert business behavior rather than raw DOM details."
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Trust and observability boundaries",
+      "items": [
+        "The browser sandbox isolates the Chromium/Firefox/WebKit runtime from the runner process.",
+        "CDP listeners capture network failures, JavaScript exceptions, console errors, and page-load events.",
+        "Screenshots, logs, and performance timing are written to artifact storage for pass/fail investigation."
+      ]
+    }
+  ]
+}
