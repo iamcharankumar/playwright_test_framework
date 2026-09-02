@@ -26,7 +26,7 @@ tutorial [here](https://code2tutorial.com/tutorial/81c3753d-35c2-41fd-941c-34a1c
 
 A High Level Diagram for the framework is below.
 
-[High Level Diagram by Archify](index.html)
+[High Level Diagram by Archify](https://iamcharankumar.github.io/playwright_test_framework/)
 
 <img width="7826" height="6274" alt="Web_Framework_Architecture_By_Charankumar" src="https://github.com/user-attachments/assets/0179829d-a4c7-4c77-9dd3-cd16addbf5f9" />
 
