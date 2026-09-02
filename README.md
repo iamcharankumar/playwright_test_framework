@@ -26,8 +26,9 @@ tutorial [here](https://code2tutorial.com/tutorial/81c3753d-35c2-41fd-941c-34a1c
 
 A High Level Diagram for the framework is below.
 
-<img width="7826" height="6274" alt="Web_Framework_Architecture_By_Charankumar" src="https://github.com/user-attachments/assets/0179829d-a4c7-4c77-9dd3-cd16addbf5f9" />
+[High Level Diagram by Archify](index.html)
 
+<img width="7826" height="6274" alt="Web_Framework_Architecture_By_Charankumar" src="https://github.com/user-attachments/assets/0179829d-a4c7-4c77-9dd3-cd16addbf5f9" />
 
 # STEPS FOR THE TEST EXECUTION IN LOCAL
 
@@ -122,7 +123,7 @@ A High Level Diagram for the framework is below.
 #### BROWSERS & RUN MODES
 
 | Sl.No | Browser Name | Run Mode | mvn command                                                                                                                                               |
-|-------|--------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ----- | ------------ | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 1     | Chrome       | Local    | `mvn clean test -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`                                      |
 | 2     | Chrome       | Headless | `mvn clean test -Drunmode=headless -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`                   |
 | 3     | Firefox      | Local    | `mvn clean test -Dbrowser=firefox -Dgroups=SWAG_LABS_SMOKE,SWAG_LABS_REGRESSION,SWAG_LABS_E2E -Dthreads=3 -Ddataproviderthreadcount=3`                    |
